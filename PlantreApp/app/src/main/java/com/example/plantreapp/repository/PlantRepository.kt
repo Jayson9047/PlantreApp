@@ -9,7 +9,7 @@ import com.example.plantreapp.entities.Plant
 
 class PlantRepository(context: Context) {
     private var dao: PlantDAO? = null
-    private var plants: LiveData<List<Plant>>? = null
+    var plants: LiveData<List<Plant>>? = null
 
     init  {
         val db = AppDatabase.invoke(context)
