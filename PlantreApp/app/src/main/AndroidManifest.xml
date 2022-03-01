@@ -12,6 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantreApp">
         <activity
+            android:name=".ConnBtnActivity"
+            android:exported="false" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".progressBar.MyProgressBar"
+            android:exported="false" />
+        <activity
+            android:name=".myPlants.MyPlantsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".logs.AddLogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".logs.LogsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".journals.JournalsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ConnectionActivity"
             android:exported="false" />
         <activity

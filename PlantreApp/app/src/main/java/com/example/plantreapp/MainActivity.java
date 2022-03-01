@@ -1,31 +1,38 @@
 package com.example.plantreapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.WindowManager;
 
-import android.view.View;
-import android.widget.Button;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.progressBar.MyProgressBar;
+
+/*Splash Screen*/
 
 public class MainActivity extends AppCompatActivity {
-
-    Button ButtonConnectionPage;
-
+    private int SPLASH_TIME = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_splash);
 
-        ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
+        // hide actionbar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
-        ButtonConnectionPage.setOnClickListener(new View.OnClickListener() {
+        // run the splash screen for 'SPLASH_TIME' milliseconds
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ConnectionActivity.class);
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, MyPlantsActivity.class);
                 startActivity(intent);
+                finish();
             }
-        });
-
+        }, SPLASH_TIME);
     }
 }
