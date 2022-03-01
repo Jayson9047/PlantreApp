@@ -24,7 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
         actionBar.setTitle("SETTINGS");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setSelectedItemId(R.id.settings_item);
+        bottomNavigationView.setSelectedItemId(R.id.connection_item);
 
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,10 +34,10 @@ public class SettingsActivity extends AppCompatActivity {
                     case R.id.home_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.search_item:
+                    case R.id.journals_item:
                         //startActivity(new Intent(getApplicationContext(), Search.class));
                         return true;
-                    case R.id.settings_item:
+                    case R.id.connection_item:
                         //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
                 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="Journals"
+        android:id="@+id/journals_item"
+        android:icon="@drawable/ic_search"/>
+
     <item android:title="Home"
         android:id="@+id/home_item"
         android:icon="@drawable/ic_home" />
 
-    <item android:title="Search"
-        android:id="@+id/search_item"
-        android:icon="@drawable/ic_search"/>
-
-    <item android:title="Settings"
-        android:id="@+id/settings_item"
+    <item android:title="Connection"
+        android:id="@+id/connection_item"
         android:icon="@drawable/ic_settings"/>
 </menu>

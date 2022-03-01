@@ -52,10 +52,10 @@ public class JournalsActivity extends AppCompatActivity implements JournalListAd
                     case R.id.home_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.search_item:
+                    case R.id.journals_item:
                         //startActivity(new Intent(getApplicationContext(), Search.class));
                         return true;
-                    case R.id.settings_item:
+                    case R.id.connection_item:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
                 }
