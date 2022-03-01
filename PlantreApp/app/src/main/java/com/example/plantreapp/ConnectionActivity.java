@@ -1,8 +1,10 @@
 package com.example.plantreapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -13,7 +15,11 @@ import android.widget.ArrayAdapter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
@@ -52,7 +58,10 @@ public class ConnectionActivity extends AppCompatActivity {
 
     String error = "";
     String address = "";
+    String receivedMsg = "";
     BluetoothDevice[] BTArray;
+
+    private int port = 4445;
 
     static final int STATE_LISTENING = 1;
     static final int STATE_CONNECTING = 2;
@@ -60,7 +69,8 @@ public class ConnectionActivity extends AppCompatActivity {
     static final int STATE_CONNECTION_FAILED = 4;
     static final int STATE_MESSAGE_RECEIVED = 5;
     static final int STATE_CONNECTION_TEST = 6;
-
+    ArrayList<String> devices;
+    ArrayAdapter arrayAdapter;
     SendReceive sendReceive;
     //public static final String TAG = "BTTag";
 
@@ -78,12 +88,10 @@ public class ConnectionActivity extends AppCompatActivity {
         ButtonConnect = (Button) findViewById(R.id.connectButton);
         textView = (TextView) findViewById(R.id.stat);
         connectStat = (TextView) findViewById(R.id.connectionStatus);
-        BtnSend = (Button)findViewById(R.id.sendButton);
         ButtonInactive.setEnabled(false);
         ButtonListPairedDevices.setEnabled(false);
         emp = (ListView) findViewById(R.id.pairedDeviceList);
         msg_box = (TextView)findViewById(R.id.messageBox);
-        textMessage = (EditText)findViewById(R.id.typeMessage);
         //permissions[0] = "android.permission.BLUETOOTH_CONNECT";
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -105,7 +113,8 @@ public class ConnectionActivity extends AppCompatActivity {
                 } else {
                     textView.setText("Active");
                 }
-
+                ButtonInactive.setEnabled(true);
+                ButtonListPairedDevices.setEnabled(true);
             }
         });
 
@@ -113,6 +122,18 @@ public class ConnectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkPButtonInactive();
+                ButtonInactive.setEnabled(false);
+                ButtonListPairedDevices.setEnabled(false);
+
+                try{
+                    devices.clear();
+                    arrayAdapter.notifyDataSetChanged();
+                }
+                catch (Exception e)
+                {
+                    //do sth here
+                }
+
                 Toast.makeText(getApplicationContext(), "got Button Inactive", Toast.LENGTH_SHORT).show();
             }
         });
@@ -131,6 +152,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 //ConnectDevice();
                 ServerClass serverClass = new ServerClass();
                 serverClass.start();
+
                 Toast.makeText(getApplicationContext(), "got Connect", Toast.LENGTH_SHORT).show();
             }
         });
@@ -149,14 +171,6 @@ public class ConnectionActivity extends AppCompatActivity {
             }
         });
 
-        BtnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String string = String.valueOf(textMessage.getText());
-                sendReceive.write(string.getBytes());
-            }
-        });
-
     }
 
     Handler handler = new Handler(new Handler.Callback() {
@@ -172,6 +186,7 @@ public class ConnectionActivity extends AppCompatActivity {
                     break;
                 case STATE_CONNECTED:
                     connectStat.setText("Connected");
+                    showCredDialog();
                     break;
                 case STATE_CONNECTION_FAILED:
                     connectStat.setText("Connection Failed");
@@ -179,6 +194,20 @@ public class ConnectionActivity extends AppCompatActivity {
                 case STATE_MESSAGE_RECEIVED:
                     byte[] readBuff = (byte[])msg.obj;
                     String tempMsg = new String(readBuff,0,msg.arg1);
+                    if(Integer.valueOf(tempMsg) == 1)
+                    {
+                        AlertDialog.Builder myDialog = new AlertDialog.Builder(ConnectionActivity.this);
+                        TextView tv = new TextView(ConnectionActivity.this);
+                        myDialog.setTitle("Invalid Wifi Credentials Given");
+                        myDialog.setCancelable(true);
+                        myDialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //do nothing
+                            }
+                        });
+                        myDialog.show();
+                    }
                     msg_box.setText(tempMsg);
                     break;
                 case STATE_CONNECTION_TEST:
@@ -206,6 +235,35 @@ public class ConnectionActivity extends AppCompatActivity {
 
     }
 
+    private void showCredDialog()
+    {
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(ConnectionActivity.this);
+        myDialog.setTitle("Wifi Credentials");
+        //final TextView ssidText = new TextView(ConnectionActivity.this);
+        //final EditText ssid = new EditText(ConnectionActivity.this);
+        final View credLayout = getLayoutInflater().inflate(R.layout.credential_dialog,null);
+        //ssidText.setText("Wifi Name");
+
+        myDialog.setView(credLayout);
+
+        myDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                EditText ssid = credLayout.findViewById(R.id.wifiSsid);
+                EditText pass = credLayout.findViewById(R.id.wifiPass);
+                String string = ssid.getText().toString() + "\n" + pass.getText().toString() + "\n" + getIpAddress() + "\n" + String.valueOf(port);
+
+                //sendReceive.write(string.getBytes());
+                //Toast.makeText(ConnectionActivity.this, "Wifi is:" + string, Toast.LENGTH_LONG).show();
+                sendReceive.write(string.getBytes());
+                ServerClass serverClass = new ServerClass();
+                serverClass.start();
+            }
+        });
+        AlertDialog dialog = myDialog.create();
+        dialog.show();
+    }
+
     private void permissionRequestCheck() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, 80);
@@ -227,7 +285,7 @@ public class ConnectionActivity extends AppCompatActivity {
             try {
                 Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-                ArrayList<String> devices = new ArrayList<>();
+                devices = new ArrayList<>();
 
                 int index = 0;
                 BTArray = new BluetoothDevice[pairedDevices.size()];
@@ -239,7 +297,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 }
 
 
-                ArrayAdapter arrayAdapter = new ArrayAdapter(ConnectionActivity.this, android.R.layout.simple_list_item_1, devices);
+                arrayAdapter = new ArrayAdapter(ConnectionActivity.this, android.R.layout.simple_list_item_1, devices);
                 emp.setAdapter(arrayAdapter);
 
 
@@ -260,8 +318,7 @@ public class ConnectionActivity extends AppCompatActivity {
             textView.setText("Active");
 
             if (!bluetoothAdapter.isEnabled()) {
-                ButtonInactive.setEnabled(true);
-                ButtonListPairedDevices.setEnabled(true);
+
                 Toast.makeText(ConnectionActivity.this, "Bluetooth not Enabled", Toast.LENGTH_SHORT).show();
             }
 
@@ -276,6 +333,36 @@ public class ConnectionActivity extends AppCompatActivity {
             bluetoothAdapter.disable();
             textView.setText("Inactive");
         }
+    }
+
+    private String getIpAddress() {
+        String ip = "";
+        try {
+            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                    .getNetworkInterfaces();
+            while (enumNetworkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = enumNetworkInterfaces
+                        .nextElement();
+                Enumeration<InetAddress> enumInetAddress = networkInterface
+                        .getInetAddresses();
+                while (enumInetAddress.hasMoreElements()) {
+                    InetAddress inetAddress = enumInetAddress.nextElement();
+
+                    if (inetAddress.isSiteLocalAddress()) {
+                        ip += inetAddress.getHostAddress();
+                    }
+
+                }
+
+            }
+
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            ip += "Something Wrong! " + e.toString() + "\n";
+        }
+
+        return ip;
     }
 
     private class ServerClass extends Thread {
@@ -323,6 +410,7 @@ public class ConnectionActivity extends AppCompatActivity {
     private class ClientClass extends Thread {
         private BluetoothDevice device;
         private BluetoothSocket socket;
+        public boolean connected = true;
 
         public ClientClass(BluetoothDevice device1) {
             device = device1;

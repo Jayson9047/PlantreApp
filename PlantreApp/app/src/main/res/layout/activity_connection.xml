@@ -23,7 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="22dp"
+            android:layout_height="43dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/messageBox"
-                android:layout_width="wrap_content"
+                android:layout_width="237dp"
                 android:layout_height="wrap_content"
                 android:text="Loading..."
                 android:textSize="20dp" />
@@ -87,27 +87,6 @@
             android:id="@+id/pairedDeviceList"
             android:layout_width="match_parent"
             android:layout_height="559dp" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/typeMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <Button
-                android:id="@+id/sendButton"
-                android:layout_width="111dp"
-                android:layout_height="wrap_content"
-                android:text="Send" />
-        </LinearLayout>
 
     </LinearLayout>
 
