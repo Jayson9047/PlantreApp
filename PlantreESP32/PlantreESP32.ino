@@ -127,6 +127,7 @@ void connectToWifi()
         wifiConnected = true;
         Serial.println(WiFi.localIP());
         Serial.println("Status: Connected");
+        SerialBT.print("0");
         udp.begin(udpPort);
         Serial.println(udpPort);
       }

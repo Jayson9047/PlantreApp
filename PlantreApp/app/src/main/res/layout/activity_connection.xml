@@ -74,13 +74,6 @@
                 android:text="List Paired Devices"
                 android:textSize="10dp" />
 
-            <Button
-                android:id="@+id/connectButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Listen" />
-
         </LinearLayout>
 
         <ListView

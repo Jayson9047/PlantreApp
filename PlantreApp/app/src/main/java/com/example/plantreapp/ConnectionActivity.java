@@ -45,7 +45,7 @@ import androidx.core.app.ActivityCompat;
 
 public class ConnectionActivity extends AppCompatActivity {
 
-    private Button ButtonActive, ButtonInactive, ButtonListPairedDevices, ButtonConnect, BtnSend;
+    private Button ButtonActive, ButtonInactive, ButtonListPairedDevices;
     private TextView textView;
     private TextView connectStat;
     private TextView msg_box;
@@ -85,7 +85,7 @@ public class ConnectionActivity extends AppCompatActivity {
         ButtonActive = (Button) findViewById(R.id.onB);
         ButtonInactive = (Button) findViewById(R.id.offB);
         ButtonListPairedDevices = (Button) findViewById(R.id.listDevices);
-        ButtonConnect = (Button) findViewById(R.id.connectButton);
+
         textView = (TextView) findViewById(R.id.stat);
         connectStat = (TextView) findViewById(R.id.connectionStatus);
         ButtonInactive.setEnabled(false);
@@ -145,17 +145,6 @@ public class ConnectionActivity extends AppCompatActivity {
             }
         });
 
-        ButtonConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //ConnectDevice();
-                ServerClass serverClass = new ServerClass();
-                serverClass.start();
-
-                Toast.makeText(getApplicationContext(), "got Connect", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         emp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -196,19 +185,12 @@ public class ConnectionActivity extends AppCompatActivity {
                     String tempMsg = new String(readBuff,0,msg.arg1);
                     if(Integer.valueOf(tempMsg) == 1)
                     {
-                        AlertDialog.Builder myDialog = new AlertDialog.Builder(ConnectionActivity.this);
-                        TextView tv = new TextView(ConnectionActivity.this);
-                        myDialog.setTitle("Invalid Wifi Credentials Given");
-                        myDialog.setCancelable(true);
-                        myDialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //do nothing
-                            }
-                        });
-                        myDialog.show();
+                        showConnectedDialog("Invalid Wifi Credentials Given");
                     }
-                    msg_box.setText(tempMsg);
+                    if(Integer.valueOf(tempMsg) == 0)
+                    {
+                        showConnectedDialog("Plantre Device is Successfully Connected to Wifi!!!");
+                    }
                     break;
                 case STATE_CONNECTION_TEST:
                     connectStat.setText(error);
@@ -262,6 +244,21 @@ public class ConnectionActivity extends AppCompatActivity {
         });
         AlertDialog dialog = myDialog.create();
         dialog.show();
+    }
+
+    private void showConnectedDialog(String title)
+    {
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(ConnectionActivity.this);
+        TextView tv = new TextView(ConnectionActivity.this);
+        myDialog.setTitle(title);
+        myDialog.setCancelable(true);
+        myDialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //do nothing
+            }
+        });
+        myDialog.show();
     }
 
     private void permissionRequestCheck() {
@@ -438,7 +435,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                error = e.toString();
+                error = "Couldn't Connect to Device, Try Again!";
                 Message message = Message.obtain();
                 message.what = STATE_CONNECTION_TEST;
                 handler.sendMessage(message);
