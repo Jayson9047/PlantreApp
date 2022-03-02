@@ -95,6 +95,9 @@ public class ConnectionActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.home_item:
+                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        return true;
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;

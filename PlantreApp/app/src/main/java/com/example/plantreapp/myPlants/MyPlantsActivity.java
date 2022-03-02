@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.journals.JournalsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,6 +47,9 @@ public class MyPlantsActivity extends AppCompatActivity implements com.example.p
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.home_item:
+                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        return true;
                     case R.id.my_plants_item:
                         return true;
                     case R.id.journals_item:
