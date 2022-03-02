@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
-import com.example.plantreapp.settings.SettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -47,21 +47,21 @@ public class LogsActivity extends AppCompatActivity implements com.example.plant
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setSelectedItemId(R.id.home_item);
+        bottomNavigationView.setSelectedItemId(R.id.my_plants_item);
 
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.home_item:
+                    case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
                     case R.id.journals_item:
                         //startActivity(new Intent(getApplicationContext(), Search.class));
                         return true;
                     case R.id.connection_item:
-                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
                         return true;
                 }
                 return false;

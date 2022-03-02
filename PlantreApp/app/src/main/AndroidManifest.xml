@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantreApp">
         <activity
-            android:name=".ConnBtnActivity"
+            android:name=".connection.ConnBtnActivity"
             android:exported="false" />
         <activity
             android:name=".settings.SettingsActivity"
@@ -33,7 +33,7 @@
             android:name=".journals.JournalsActivity"
             android:exported="false" />
         <activity
-            android:name=".ConnectionActivity"
+            android:name=".connection.ConnectionActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

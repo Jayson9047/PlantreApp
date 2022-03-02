@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConnectionActivity">
+    tools:context=".connection.ConnectionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="22dp"
+            android:layout_height="43dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/messageBox"
-                android:layout_width="wrap_content"
+                android:layout_width="237dp"
                 android:layout_height="wrap_content"
                 android:text="Loading..."
                 android:textSize="20dp" />
@@ -74,41 +74,21 @@
                 android:text="List Paired Devices"
                 android:textSize="10dp" />
 
-            <Button
-                android:id="@+id/connectButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Listen" />
-
         </LinearLayout>
 
         <ListView
             android:id="@+id/pairedDeviceList"
             android:layout_width="match_parent"
-            android:layout_height="450dp" />
+            android:layout_height="400dp" />
 
-        <LinearLayout
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/typeMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <Button
-                android:id="@+id/sendButton"
-                android:layout_width="111dp"
-                android:layout_height="wrap_content"
-                android:text="Send" />
-        </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="#fff"
+            app:menu="@menu/bottom_menu" />
 
     </LinearLayout>
 

@@ -8,8 +8,8 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
-import com.example.plantreapp.progressBar.MyProgressBar;
 
 /*Splash Screen*/
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, MyPlantsActivity.class);
+                Intent intent = new Intent(MainActivity.this, ConnBtnActivity.class);
                 startActivity(intent);
                 finish();
             }
