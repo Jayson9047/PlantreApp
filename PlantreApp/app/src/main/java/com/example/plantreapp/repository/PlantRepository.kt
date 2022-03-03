@@ -42,4 +42,8 @@ class PlantRepository(context: Context) {
     suspend fun insert(plant: Plant) {
         dao?.insert(plant)
     }
+
+    suspend fun insertAll(plants: List<Plant>) {
+        dao?.insertAll(plants)
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.plantreapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +11,9 @@ import android.widget.Button;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.plantreapp.api.APIClient;
+import com.example.plantreapp.repository.PlantRepository;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -18,6 +22,11 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Date;
 import java.util.Enumeration;
+
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         textViewPrompt = (TextView)findViewById(R.id.prompt);
 
         ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
+
+        APIClient.Companion.invoke(this);
+
+        APIClient apiClient = new APIClient(this);
+
+        apiClient.loadPlants();
 
         ButtonConnectionPage.setOnClickListener(new View.OnClickListener() {
             @Override
