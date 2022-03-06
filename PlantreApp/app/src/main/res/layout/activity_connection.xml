@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConnectionActivity">
+    android:background="@drawable/main_bg"
+    tools:context=".connection.ConnectionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,9 +80,17 @@
         <ListView
             android:id="@+id/pairedDeviceList"
             android:layout_width="match_parent"
-            android:layout_height="559dp" />
+            android:layout_height="400dp" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="#fff"
+            app:menu="@menu/bottom_menu" />
 
     </LinearLayout>
-
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.plantreapp;
+package com.example.plantreapp.connection;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -41,6 +42,10 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.util.UUID;
 import androidx.core.app.ActivityCompat;
+
+import com.example.plantreapp.R;
+import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class ConnectionActivity extends AppCompatActivity {
@@ -81,6 +86,31 @@ public class ConnectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
+        bottomNavigationView.setSelectedItemId(R.id.connection_item);
+
+        // nav click handler
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_item:
+                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        return true;
+                    case R.id.my_plants_item:
+                        startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
+                        return true;
+                    case R.id.journals_item:
+                        //startActivity(new Intent(getApplicationContext(), Search.class));
+                        return true;
+                    case R.id.connection_item:
+                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
+                        return true;
+                }
+                return false;
+            }
+        });
 
         ButtonActive = (Button) findViewById(R.id.onB);
         ButtonInactive = (Button) findViewById(R.id.offB);
