@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.entities.Plant;
 
 public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantViewHolder> {
 
@@ -52,7 +53,8 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    plantClickInterface.onDelete(getAdapterPosition());
+                    // Changed to get item at the position - conforms to db call to delete an item
+                    plantClickInterface.onDelete(getItem(getAdapterPosition()));
                 }
             });
 
@@ -71,7 +73,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
     }
 
     interface PlantClickInterface {
-        public void onDelete(int position);
-        public void onSelect(int position, String name);
+        public void onDelete(Plant plant);
+        public void onSelect(int position, String name); // This function may need to be changed to use plant entity
     }
 }
