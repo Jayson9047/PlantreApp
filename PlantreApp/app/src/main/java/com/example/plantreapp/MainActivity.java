@@ -19,9 +19,12 @@ import com.example.plantreapp.entities.Timer;
 import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.repository.TimerRepository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final boolean[] sendNotification = {false};
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "waterPlantChannel";
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void resumeWith(@NonNull Object o) { // For the sake of testing add the timer after the async update.
                 //Insert Test Timer on Plant
-                Timer timer = new Timer(null, "", 1, (float) 10.9, new Date().toString(), new Date().toString());
+                Timer timer = new Timer(null, "", 1, (float) 10.9, new Date().toString(), new Date().toString(), new Date().toString());
 
                 repoTimer.insert(timer, new Continuation<Unit>() {
                     @NonNull
@@ -86,9 +90,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         // Getting All Timers on a single Plant - could be changed to log, journal, etc.
         repoTimer.findByPlantUID(1, new Continuation<List<? extends Timer>>() {
             @NonNull
@@ -105,32 +106,77 @@ public class MainActivity extends AppCompatActivity {
                 for (Timer timer: timers) {
                     //Do some sort of notification check for each timer
                     // send notification if check passes
-                    System.out.println(timer.getLastNotified());
 
-                    //Update the time because we did a notification
-                    Timer tempTimer = new Timer(timer.getUid(), timer.getName(), timer.getPlantUID(), timer.getWaterRate() , new Date().toString(), timer.getDateCreated());
-                    repoTimer.update(tempTimer, new Continuation<Unit>() {
-                        @NonNull
-                        @Override
-                        public CoroutineContext getContext() {
-                            return EmptyCoroutineContext.INSTANCE; // Important to set - null crashes application
-                        }
+                    String lastNotify = timer.getLastNotified();
+                    String currentTime = timer.getCurrentTime();
 
-                        @Override
-                        public void resumeWith(@NonNull Object o) {
-                            System.out.println("Update timer");
+                    System.out.println("LAST NOTIFY: " + lastNotify);
+                    System.out.println("CURRENT TIME: " + currentTime);
+
+                    String subLastNotify = lastNotify.substring(11,19);
+                    String subCurrentTime = currentTime.substring(11,19);
+
+                    System.out.println("SUB LAST NOTIFY: " + subLastNotify);
+                    System.out.println("SUB CURRENT TIME: " + subCurrentTime);
+
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    Date date1 = null;
+                    try {
+                        date1 = timeFormat.parse("4:00:00");
+                        Date date2 = timeFormat.parse(subCurrentTime);
+                        long sum = date1.getTime() + date2.getTime();
+
+                        String date3 = timeFormat.format(new Date(sum));
+                        System.out.println("The sum is "+ date3);
+
+                        if(subLastNotify.compareTo(date3) == 1){
+                            //Update the time because we did a notification
+                            Timer tempTimer = new Timer(timer.getUid(), timer.getName(), timer.getPlantUID(), timer.getWaterRate(), new Date().toString(), new Date().toString(), timer.getDateCreated());
+                            repoTimer.update(tempTimer, new Continuation<Unit>() {
+                                @NonNull
+                                @Override
+                                public CoroutineContext getContext() {
+                                    return EmptyCoroutineContext.INSTANCE; // Important to set - null crashes application
+                                }
+
+                                @Override
+                                public void resumeWith(@NonNull Object o) {
+                                    System.out.println("Notification Sent");
+                                    sendNotification[0] = true;
+                                }
+                            });
+                        }else{
+                            //Update the time because we did a notification
+                            Timer tempTimer = new Timer(timer.getUid(), timer.getName(), timer.getPlantUID(), timer.getWaterRate(), new Date().toString(), timer.getCurrentTime(), timer.getDateCreated());
+                            repoTimer.update(tempTimer, new Continuation<Unit>() {
+                                @NonNull
+                                @Override
+                                public CoroutineContext getContext() {
+                                    return EmptyCoroutineContext.INSTANCE; // Important to set - null crashes application
+                                }
+
+                                @Override
+                                public void resumeWith(@NonNull Object o) {
+                                    System.out.println("Updated timer, no notify");
+                                    sendNotification[0] = false;
+                                }
+                            });
                         }
-                    });
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
 
-
-        Calendar calendar = Calendar.getInstance();
-        Intent intent1 = new Intent(this, AlarmReceiver.class);
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager)this.getSystemService(ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 2000, pendingIntent);
+        if(sendNotification[0] == true){
+            Calendar calendar = Calendar.getInstance();
+            Intent intent1 = new Intent(this, AlarmReceiver.class);
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 2000, pendingIntent);
+        }
 
         ButtonConnectionPage = findViewById(R.id.btnConnPage);
 

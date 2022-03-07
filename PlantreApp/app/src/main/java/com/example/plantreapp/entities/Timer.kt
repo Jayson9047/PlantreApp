@@ -11,6 +11,7 @@ data class Timer (
     @ColumnInfo(name = "plant_uid") val plantUID: Int, // Change this to change the relationship - should it be on a journal, log, plant basis?
     @ColumnInfo(name = "water_rate") val waterRate: Float,
     @ColumnInfo(name = "last_notified") val lastNotified: String,
+    @ColumnInfo(name = "current_Time") val currentTime: String,
     @ColumnInfo(name = "date_created") val dateCreated: String,
 
 )
