@@ -24,7 +24,7 @@ import java.net.SocketException;
 
 public class ConnBtnActivity extends AppCompatActivity {
 
-    Button ButtonConnectionPage;
+    //Button ButtonConnectionPage;
 
     private final static String TAG = ConnBtnActivity.class.getSimpleName();
 
@@ -39,14 +39,14 @@ public class ConnBtnActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conn_btn);
         textViewPrompt = (TextView)findViewById(R.id.prompt);
 
-        ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
+        /*ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
         ButtonConnectionPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ConnBtnActivity.this, ConnectionActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.home_item);
