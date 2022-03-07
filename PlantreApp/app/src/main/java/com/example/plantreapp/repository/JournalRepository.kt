@@ -2,24 +2,22 @@ package com.example.plantreapp.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.plantreapp.dao.JournalDAO
 import com.example.plantreapp.db.AppDatabase
 import com.example.plantreapp.entities.Journal
+import kotlinx.coroutines.runBlocking
 
 class JournalRepository(context: Context) {
     private var dao: JournalDAO? = null
-    private var journals: LiveData<List<Journal>>? = null
+    private var journals: MutableLiveData<List<Journal>> = MutableLiveData()
 
     init  {
         val db = AppDatabase.invoke(context)
         dao = db.journalDao()
-        journals = liveData {
-            val data = dao?.getAll()
-            if (data != null) {
-                emit(data)
-            }
-
+        runBlocking {
+            journals.value = dao?.getAll()
         }
 
     }
@@ -40,7 +38,17 @@ class JournalRepository(context: Context) {
     }
 
     suspend fun insert(journal: Journal) {
-        dao?.insert(journal)
+        runBlocking { dao?.insert(journal) }
+        runBlocking {
+            journals.value = dao?.getAll()
+        }
+    }
+
+    suspend fun delete(journal: Journal) {
+        runBlocking { dao?.insert(journal) }
+        runBlocking {
+            journals.value = dao?.getAll()
+        }
     }
 
 

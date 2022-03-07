@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
+import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.journals.JournalsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -67,7 +68,7 @@ public class MyPlantsActivity extends AppCompatActivity implements com.example.p
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        plantListAdapter = new com.example.plantreapp.myPlants.PlantListAdapter( Plant.itemCallback , this);
+        plantListAdapter = new com.example.plantreapp.myPlants.PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
         plantsViewModel = new ViewModelProvider(this).get(com.example.plantreapp.myPlants.PlantsViewModel.class);
@@ -90,8 +91,8 @@ public class MyPlantsActivity extends AppCompatActivity implements com.example.p
     }
 
     @Override
-    public void onDelete(int position) {
-        plantsViewModel.deletePlant(position);
+    public void onDelete(Plant plant) {
+        plantsViewModel.deletePlant(plant);
     }
 
     @Override
@@ -103,7 +104,8 @@ public class MyPlantsActivity extends AppCompatActivity implements com.example.p
 
     @Override
     public void applyTexts(String name, String description) {
-        Plant plant = new Plant(name, description);
+        // To properly Create a new plant we need more values - rate is in hours and moisture are percentages
+        Plant plant = new Plant(null, name, "scifiName", "URI to picture", description, "seed", 12, 48, 168, 80,90, 60, 80,50, 70);
         plantsViewModel.addPlant(plant);
     }
 }

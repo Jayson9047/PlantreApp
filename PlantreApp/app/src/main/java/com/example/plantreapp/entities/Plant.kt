@@ -1,8 +1,11 @@
 package com.example.plantreapp.entities
 
+import androidx.recyclerview.widget.DiffUtil
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.plantreapp.journals.Journal
+import java.util.*
 
 @Entity
 data class Plant (
@@ -21,4 +24,21 @@ data class Plant (
     @ColumnInfo(name = "max_seedling_moisture")  val maxSeedlingMoisture: Float, // maximum moisture level - seedling
     @ColumnInfo(name = "min_mature_moisture") val minMatureMoisture: Float, // minimum moisture level - Mature
     @ColumnInfo(name = "max_mature_moisture")  val maxMatureMoisture: Float // maximum moisture level - Mature
-)
+) {
+
+    override fun hashCode(): Int {
+        return Objects.hash(uid, name, description)
+    }
+    companion object {
+        var itemCallback: DiffUtil.ItemCallback<Plant> = object : DiffUtil.ItemCallback<Plant>() {
+            override fun areItemsTheSame(oldItem: Plant, newItem: Plant): Boolean {
+                return oldItem.uid == newItem.uid
+            }
+
+            override fun areContentsTheSame(oldItem: Plant, newItem: Plant): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+}
