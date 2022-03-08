@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
+import com.example.plantreapp.entities.Journal;
 import com.example.plantreapp.logs.LogsActivity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,8 +25,9 @@ import java.util.List;
 
 /*Journals Screen*/
 
-public class JournalsActivity extends AppCompatActivity implements JournalListAdapter.JournalClickInterface,
-        com.example.plantreapp.journals.JournalDialog.JournalDialogListener {
+public class JournalsActivity extends AppCompatActivity
+        implements JournalListAdapter.JournalClickInterface,
+        JournalDialog.JournalDialogListener {
 
     private JournalListAdapter journalListAdapter;
     private com.example.plantreapp.journals.JournalsViewModel journalsViewModel;
@@ -70,7 +72,7 @@ public class JournalsActivity extends AppCompatActivity implements JournalListAd
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        journalListAdapter = new JournalListAdapter( Journal.itemCallback , this);
+        journalListAdapter = new JournalListAdapter( Journal.Companion.getItemCallback() , this);
         recyclerView.setAdapter(journalListAdapter);
 
         journalsViewModel = new ViewModelProvider(this).get(com.example.plantreapp.journals.JournalsViewModel.class);
@@ -88,13 +90,13 @@ public class JournalsActivity extends AppCompatActivity implements JournalListAd
 
     public void openDialog() {
         String tag = "Add Journal Dialog";
-        com.example.plantreapp.journals.JournalDialog journalDialog = new com.example.plantreapp.journals.JournalDialog();
+        JournalDialog journalDialog = new JournalDialog();
         journalDialog.show(getSupportFragmentManager(), tag);
     }
 
     @Override
-    public void onDelete(int position) {
-        journalsViewModel.deleteJournal(position);
+    public void onDelete(Journal journal) {
+        journalsViewModel.deleteJournal(journal);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class JournalsActivity extends AppCompatActivity implements JournalListAd
 
     @Override
     public void applyTexts(String name, String description) {
-        Journal journal = new Journal(name, description);
+        Journal journal = new Journal(null, name, description, true, "date...", 1);
         journalsViewModel.addJournal(journal);
     }
 }

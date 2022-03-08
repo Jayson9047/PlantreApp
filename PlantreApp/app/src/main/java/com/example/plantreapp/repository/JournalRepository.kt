@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 class JournalRepository(context: Context) {
     private var dao: JournalDAO? = null
-    private var journals: MutableLiveData<List<Journal>> = MutableLiveData()
+    var journals: MutableLiveData<List<Journal>> = MutableLiveData()
 
     init  {
         val db = AppDatabase.invoke(context)
@@ -19,7 +19,6 @@ class JournalRepository(context: Context) {
         runBlocking {
             journals.value = dao?.getAll()
         }
-
     }
 
     suspend fun getAll() : List<Journal> {
@@ -45,11 +44,10 @@ class JournalRepository(context: Context) {
     }
 
     suspend fun delete(journal: Journal) {
-        runBlocking { dao?.insert(journal) }
+        runBlocking { dao?.delete(journal) }
         runBlocking {
             journals.value = dao?.getAll()
         }
     }
-
 
 }

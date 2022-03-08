@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.entities.Journal;
+import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.myPlants.PlantListAdapter;
 
-public class JournalListAdapter extends ListAdapter<com.example.plantreapp.journals.Journal, JournalListAdapter.JournalViewHolder> {
+public class JournalListAdapter extends ListAdapter<Journal, JournalListAdapter.JournalViewHolder> {
 
     JournalClickInterface journalClickInterface;
 
-    protected JournalListAdapter(@NonNull DiffUtil.ItemCallback<com.example.plantreapp.journals.Journal> diffCallback, JournalClickInterface journalClickInterface) {
+    protected JournalListAdapter(@NonNull DiffUtil.ItemCallback<Journal> diffCallback, JournalListAdapter.JournalClickInterface journalClickInterface) {
         super(diffCallback);
         this.journalClickInterface = journalClickInterface;
     }
@@ -31,7 +34,7 @@ public class JournalListAdapter extends ListAdapter<com.example.plantreapp.journ
 
     @Override
     public void onBindViewHolder(@NonNull JournalViewHolder holder, int position) {
-        com.example.plantreapp.journals.Journal journal = getItem(position);
+        Journal journal = getItem(position);
         holder.bind(journal);
     }
 
@@ -52,7 +55,7 @@ public class JournalListAdapter extends ListAdapter<com.example.plantreapp.journ
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    journalClickInterface.onDelete(getAdapterPosition());
+                    journalClickInterface.onDelete(getItem(getAdapterPosition()));
                 }
             });
 
@@ -64,14 +67,14 @@ public class JournalListAdapter extends ListAdapter<com.example.plantreapp.journ
             });
         }
 
-        public void bind(com.example.plantreapp.journals.Journal journal) {
+        public void bind(Journal journal) {
             nameTextView.setText(journal.getName());
             descriptionTextView.setText(journal.getDescription());
         }
     }
 
     interface JournalClickInterface {
-        public void onDelete(int position);
+        public void onDelete(Journal journal);
         public void onSelect(int position, String name);
     }
 }

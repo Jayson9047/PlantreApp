@@ -71,7 +71,7 @@ public class MyPlantsActivity extends AppCompatActivity
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        plantListAdapter = new com.example.plantreapp.myPlants.PlantListAdapter( Plant.Companion.getItemCallback(), this);
+        plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
         plantsViewModel = new ViewModelProvider(this).get(com.example.plantreapp.myPlants.PlantsViewModel.class);
@@ -82,30 +82,6 @@ public class MyPlantsActivity extends AppCompatActivity
             }
         });
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
-
-
 
     public void addItem(View view) {
         openDialog();
@@ -135,4 +111,26 @@ public class MyPlantsActivity extends AppCompatActivity
         Plant plant = new Plant(null, name, "scifiName", "URI to picture", description, "seed", 12, 48, 168, 80,90, 60, 80,50, 70);
         plantsViewModel.addPlant(plant);
     }
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }*/
 }

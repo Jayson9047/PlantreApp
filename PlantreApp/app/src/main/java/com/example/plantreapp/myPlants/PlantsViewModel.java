@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.repository.PlantRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kotlin.Unit;
