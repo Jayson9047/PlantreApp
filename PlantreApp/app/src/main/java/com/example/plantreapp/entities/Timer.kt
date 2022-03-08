@@ -13,5 +13,4 @@ data class Timer (
     @ColumnInfo(name = "last_notified") val lastNotified: String,
     @ColumnInfo(name = "current_Time") val currentTime: String,
     @ColumnInfo(name = "date_created") val dateCreated: String,
-
 )
