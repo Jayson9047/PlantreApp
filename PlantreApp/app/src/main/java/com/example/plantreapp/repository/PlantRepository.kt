@@ -2,23 +2,25 @@ package com.example.plantreapp.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.plantreapp.dao.PlantDAO
 import com.example.plantreapp.db.AppDatabase
 import com.example.plantreapp.entities.Plant
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class PlantRepository(context: Context) {
     private var dao: PlantDAO? = null
-    private var plants: LiveData<List<Plant>>? = null
+    var plants: MutableLiveData<List<Plant>> = MutableLiveData()
 
     init  {
         val db = AppDatabase.invoke(context)
         dao = db.plantDao()
-        plants = liveData {
-            val data = dao?.getAll()
-            if (data != null) {
-                emit(data)
-            }
+        runBlocking {
+            plants.postValue(dao?.getAll())
         }
     }
 
@@ -38,10 +40,24 @@ class PlantRepository(context: Context) {
     }
 
     suspend fun insert(plant: Plant) {
-        dao?.insert(plant)
+       runBlocking { dao?.insert(plant) }
+        runBlocking {
+            plants.postValue(dao?.getAll())
+        }
     }
 
-    suspend fun insertAll(plants: List<Plant>) {
-        dao?.insertAll(plants)
+    suspend fun delete(plant: Plant) {
+        runBlocking { dao?.delete(plant) }
+        runBlocking {
+            plants.postValue(dao?.getAll())
+        }
+    }
+
+    suspend fun insertAll(plantList: List<Plant>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao?.insertAll(plantList)
+            plants.postValue(dao?.getAll())
+        }
     }
 }
+
