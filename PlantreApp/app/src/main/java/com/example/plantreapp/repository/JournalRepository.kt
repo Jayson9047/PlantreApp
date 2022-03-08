@@ -36,6 +36,14 @@ class JournalRepository(context: Context) {
         return dao?.findById(id) ?: list
     }
 
+    suspend fun findByPlantUID(plant_uid: Int) : List<Journal> {
+        val list: List<Journal> = emptyList()
+        runBlocking {
+            journals.value = dao?.findByPlantUID(plant_uid)
+        }
+        return dao?.findByPlantUID(plant_uid) ?: list
+    }
+
     suspend fun insert(journal: Journal) {
         runBlocking { dao?.insert(journal) }
         runBlocking {
