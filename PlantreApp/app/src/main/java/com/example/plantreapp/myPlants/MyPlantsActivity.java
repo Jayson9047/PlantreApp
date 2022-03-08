@@ -99,9 +99,10 @@ public class MyPlantsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelect(int position, String name) {
+    public void onSelect(Plant plant) {
         Intent intent = new Intent(MyPlantsActivity.this, JournalsActivity.class);
-        intent.putExtra("plantName", name);
+        intent.putExtra("plantName", plant.getName());
+        intent.putExtra("plantUid", plant.getUid());
         startActivity(intent);
     }
 

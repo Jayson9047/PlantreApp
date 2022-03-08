@@ -31,6 +31,8 @@ public class JournalsActivity extends AppCompatActivity
 
     private JournalListAdapter journalListAdapter;
     private com.example.plantreapp.journals.JournalsViewModel journalsViewModel;
+    private int plantUid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class JournalsActivity extends AppCompatActivity
 
         Intent i = getIntent();
         String title = i.getStringExtra("plantName");
+        plantUid = i.getIntExtra("plantUid", 0);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(title.toUpperCase() + " JOURNALS");
@@ -75,7 +78,7 @@ public class JournalsActivity extends AppCompatActivity
         journalListAdapter = new JournalListAdapter( Journal.Companion.getItemCallback() , this);
         recyclerView.setAdapter(journalListAdapter);
 
-        journalsViewModel = new ViewModelProvider(this).get(com.example.plantreapp.journals.JournalsViewModel.class);
+        journalsViewModel = new ViewModelProvider(this).get(JournalsViewModel.class);
         journalsViewModel.getJournalList().observe(this, new Observer<List<Journal>>() {
             @Override
             public void onChanged(List<Journal> journals) {
@@ -108,7 +111,7 @@ public class JournalsActivity extends AppCompatActivity
 
     @Override
     public void applyTexts(String name, String description) {
-        Journal journal = new Journal(null, name, description, true, "date...", 1);
+        Journal journal = new Journal(null, name, description, true, "date...", plantUid);
         journalsViewModel.addJournal(journal);
     }
 }

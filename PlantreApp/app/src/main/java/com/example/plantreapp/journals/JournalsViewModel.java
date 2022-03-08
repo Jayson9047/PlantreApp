@@ -23,9 +23,21 @@ public class JournalsViewModel extends AndroidViewModel {
     private MutableLiveData<List<Journal>> mutableLiveData;
     private JournalRepository repository;
 
-    public JournalsViewModel(@NonNull Application application) {
+    public JournalsViewModel(@NonNull Application application, int plantUid) {
         super(application);
         repository = new JournalRepository(application.getApplicationContext());
+        repository.findByPlantUID(plantUid, new Continuation<List<? extends Journal>>() {
+            @NonNull
+            @Override
+            public CoroutineContext getContext() {
+                return EmptyCoroutineContext.INSTANCE;
+            }
+
+            @Override
+            public void resumeWith(@NonNull Object o) {
+
+            }
+        });
     }
 
     public LiveData<List<Journal>> getJournalList() {
