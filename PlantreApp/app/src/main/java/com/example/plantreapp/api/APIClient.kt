@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLSession
@@ -38,11 +39,11 @@ class APIClient(context: Context) {
             instance?.newCall(request)?.execute().use { response ->
                 if (response != null) {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                    val plants = plantJsonAdapter.fromJson(response.body!!.source())
-                    if (plants != null) {
+                    val res = plantJsonAdapter.fromJson(response.body!!.source())
+                    if (res != null) {
                         val repo = context?.let { PlantRepository(it) }
 
-                        //repo?.insertAll(plants)
+                        repo?.insertAll(res.data)
                         println("Great Success")
 
                     }
@@ -61,9 +62,16 @@ class APIClient(context: Context) {
             instance ?: buildClient().also { instance = it}
         }
 
-        private fun buildClient() = OkHttpClient.Builder().hostnameVerifier(HostnameVerifier() {s: String?, sslSession: SSLSession? ->
+        private fun buildClient() = OkHttpClient.Builder().connectTimeout(5, TimeUnit.MINUTES) // connect timeout
+            .writeTimeout(5, TimeUnit.MINUTES) // write timeout
+            .readTimeout(5, TimeUnit.MINUTES).hostnameVerifier(HostnameVerifier() {s: String?, sslSession: SSLSession? ->
             val hv: HostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
             return@HostnameVerifier true // This needs to change before deploy app - Allows for man in the middle attacks
         }).build()
     }
 }
+
+//.hostnameVerifier(HostnameVerifier() {s: String?, sslSession: SSLSession? ->
+//    val hv: HostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
+//    return@HostnameVerifier true // This needs to change before deploy app - Allows for man in the middle attacks
+//})

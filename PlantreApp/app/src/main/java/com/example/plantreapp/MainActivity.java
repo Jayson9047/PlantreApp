@@ -1,157 +1,38 @@
 package com.example.plantreapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.WindowManager;
 
-import android.view.View;
-import android.widget.Button;
-import android.util.Log;
-import android.widget.TextView;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.plantreapp.api.APIClient;
-import com.example.plantreapp.repository.PlantRepository;
+import com.example.plantreapp.connection.ConnBtnActivity;
+import com.example.plantreapp.myPlants.MyPlantsActivity;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Date;
-import java.util.Enumeration;
-
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.EmptyCoroutineContext;
+/*Splash Screen*/
 
 public class MainActivity extends AppCompatActivity {
-
-    Button ButtonConnectionPage;
-
-    private final static String TAG = MainActivity.class.getSimpleName();
-
-    TextView textViewPrompt;
-
-    static final int UdpServerPORT = 4445;
-    UdpServerThread udpServerThread;
-
+    private int SPLASH_TIME = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        textViewPrompt = (TextView)findViewById(R.id.prompt);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_splash);
 
-        ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
+        // hide actionbar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
-        APIClient.Companion.invoke(this);
-
-        APIClient apiClient = new APIClient(this);
-
-        apiClient.loadPlants();
-
-        ButtonConnectionPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ConnectionActivity.class);
-                startActivity(intent);
-            }
-        });
-
-    }
-    @Override
-    protected void onStart() {
-        udpServerThread = new UdpServerThread(UdpServerPORT);
-        udpServerThread.start();
-        super.onStart();
-    }
-    @Override
-    protected void onStop() {
-        if(udpServerThread != null){
-            udpServerThread.setRunning(false);
-            udpServerThread = null;
-        }
-
-        super.onStop();
-    }
-
-    private void updatePrompt(final String prompt){
-        runOnUiThread(new Runnable() {
+        // run the splash screen for 'SPLASH_TIME' milliseconds
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                textViewPrompt.append(prompt);
+                Intent intent = new Intent(MainActivity.this, ConnBtnActivity.class);
+                startActivity(intent);
+                finish();
             }
-        });
-    }
-
-    private class UdpServerThread extends Thread{
-
-        int serverPort;
-        DatagramSocket socket;
-
-        boolean running;
-
-        public UdpServerThread(int serverPort) {
-            super();
-            this.serverPort = serverPort;
-        }
-
-        public void setRunning(boolean running){
-            this.running = running;
-        }
-
-        @Override
-        public void run() {
-
-            running = true;
-
-            try {
-                socket = new DatagramSocket(serverPort);
-                Log.e(TAG, "UDP Server is running");
-
-                while(running){
-                    byte[] buf = new byte[256];
-
-                    // receive request
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                    socket.receive(packet);     //this code block the program flow
-
-                    String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
-                    int l = Integer.valueOf(msg);
-
-                    //int li = ByteBuffer.wrap(packet.getData()).getInt();
-
-                    //String m = String.valueOf(li);
-                    // send the response to the client at "address" and "port"
-                    InetAddress address = packet.getAddress();
-                    int port = packet.getPort();
-
-                    //updatePrompt("Request from: " + address + ":" + port + "\n");
-                    updatePrompt("Message: "+ l +"\n");
-
-                    /*String dString = new Date().toString() + "\n"
-                            + "Your address " + address.toString() + ":" + String.valueOf(port);
-                    buf = dString.getBytes();
-                    packet = new DatagramPacket(buf, buf.length, address, port);
-                    socket.send(packet);*/
-
-                }
-
-                Log.e(TAG, "UDP Server ended");
-
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if(socket != null){
-                    socket.close();
-                    Log.e(TAG, "socket.close()");
-                }
-            }
-        }
+        }, SPLASH_TIME);
     }
 }

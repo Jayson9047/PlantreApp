@@ -19,9 +19,7 @@ class PlantRepository(context: Context) {
             if (data != null) {
                 emit(data)
             }
-
         }
-
     }
 
     suspend fun getAll() : List<Plant>? {
