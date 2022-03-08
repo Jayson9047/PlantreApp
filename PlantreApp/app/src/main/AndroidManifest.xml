@@ -3,7 +3,6 @@
     package="com.example.plantreapp">
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +13,6 @@
         android:theme="@style/Theme.PlantreApp">
         <activity
             android:name=".connection.ConnBtnActivity"
-            android:exported="false" />
-        <activity
-            android:name=".settings.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".progressBar.MyProgressBar"
