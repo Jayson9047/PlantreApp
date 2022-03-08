@@ -78,7 +78,7 @@ public class JournalsActivity extends AppCompatActivity
         journalListAdapter = new JournalListAdapter( Journal.Companion.getItemCallback() , this);
         recyclerView.setAdapter(journalListAdapter);
 
-        journalsViewModel = new ViewModelProvider(this).get(JournalsViewModel.class);
+        journalsViewModel = new ViewModelProvider(this, new JournalViewModelFactory(this.getApplication(), plantUid)).get(JournalsViewModel.class);
         journalsViewModel.getJournalList().observe(this, new Observer<List<Journal>>() {
             @Override
             public void onChanged(List<Journal> journals) {
