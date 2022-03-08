@@ -22,10 +22,12 @@ public class JournalsViewModel extends AndroidViewModel {
     private static final String TAG = "JournalViewModel";
     private MutableLiveData<List<Journal>> mutableLiveData;
     private JournalRepository repository;
+    private int _plantUid = 0; // Maybe the mutable list needs to live in the view model...
 
     public JournalsViewModel(@NonNull Application application, int plantUid) {
         super(application);
         repository = new JournalRepository(application.getApplicationContext());
+        _plantUid = plantUid;
         repository.findByPlantUID(plantUid, new Continuation<List<? extends Journal>>() {
             @NonNull
             @Override
@@ -46,7 +48,7 @@ public class JournalsViewModel extends AndroidViewModel {
 
     // this position variable can it be replaced with the uuid from the list?
     public void deleteJournal(Journal journal) {
-        repository.delete(journal, new Continuation<Unit>() {
+        repository.delete(journal, _plantUid, new Continuation<Unit>() {
             @NonNull
             @Override
             public CoroutineContext getContext() {
@@ -62,7 +64,7 @@ public class JournalsViewModel extends AndroidViewModel {
     }
 
     public void addJournal(Journal journal) {
-        repository.insert(journal, new Continuation<Unit>() {
+        repository.insert(journal, _plantUid, new Continuation<Unit>() {
             @NonNull
             @Override
             public CoroutineContext getContext() {

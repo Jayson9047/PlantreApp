@@ -44,17 +44,17 @@ class JournalRepository(context: Context) {
         return dao?.findByPlantUID(plant_uid) ?: list
     }
 
-    suspend fun insert(journal: Journal) {
+    suspend fun insert(journal: Journal, plant_uid: Int) {
         runBlocking { dao?.insert(journal) }
         runBlocking {
-            journals.value = dao?.getAll()
+            journals.value = dao?.findByPlantUID(plant_uid)
         }
     }
 
-    suspend fun delete(journal: Journal) {
+    suspend fun delete(journal: Journal, plant_uid: Int) {
         runBlocking { dao?.delete(journal) }
         runBlocking {
-            journals.value = dao?.getAll()
+            journals.value = dao?.findByPlantUID(plant_uid)
         }
     }
 
