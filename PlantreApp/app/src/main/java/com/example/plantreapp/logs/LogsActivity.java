@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
+import com.example.plantreapp.entities.Log;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,12 +25,13 @@ import java.util.List;
 
 /*Logs Screen*/
 
-public class LogsActivity extends AppCompatActivity implements com.example.plantreapp.logs.LogListAdapter.LogClickInterface {
+public class LogsActivity extends AppCompatActivity
+        implements LogListAdapter.LogClickInterface {
 
-    private com.example.plantreapp.logs.LogListAdapter logListAdapter;
+    private LogListAdapter logListAdapter;
     private LogsViewModel logsViewModel;
 
-    private String journalName = "";
+    private String journalName;
 
     //private static String logName;
     //private static String logInfo;
@@ -75,13 +77,13 @@ public class LogsActivity extends AppCompatActivity implements com.example.plant
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        logListAdapter = new com.example.plantreapp.logs.LogListAdapter( com.example.plantreapp.logs.Log.itemCallback , this);
+        logListAdapter = new LogListAdapter( Log.Companion.getItemCallback() , this);
         recyclerView.setAdapter(logListAdapter);
 
         logsViewModel = new ViewModelProvider(this).get(LogsViewModel.class);
-        logsViewModel.getLogList().observe(this, new Observer<List<com.example.plantreapp.logs.Log>>() {
+        logsViewModel.getLogList().observe(this, new Observer<List<Log>>() {
             @Override
-            public void onChanged(List<com.example.plantreapp.logs.Log> logs) {
+            public void onChanged(List<Log> logs) {
                 logListAdapter.submitList(logs);
             }
         });
@@ -89,7 +91,7 @@ public class LogsActivity extends AppCompatActivity implements com.example.plant
         if (i.getStringExtra("newNoteName") != null) {
             String name = i.getStringExtra("newNoteName");
             String info = i.getStringExtra("newNoteInfo");
-            com.example.plantreapp.logs.Log log = new com.example.plantreapp.logs.Log(name, info);
+            Log log = new Log(null, name, 1, "date...", info, "");
             logsViewModel.addLog(log);
 
             //logName = name;
@@ -104,16 +106,16 @@ public class LogsActivity extends AppCompatActivity implements com.example.plant
     }
 
     @Override
-    public void onDelete(int position) {
-        logsViewModel.deleteLog(position);
+    public void onDelete(Log log) {
+        logsViewModel.deleteLog(log);
     }
 
     @Override
-    public void onSelect(int position, String name) {
-        Intent intent = new Intent(LogsActivity.this, com.example.plantreapp.logs.NoteActivity.class);
+    public void onSelect(Log log) {
+        /*Intent intent = new Intent(LogsActivity.this, activity.class);
 
         //intent.putExtra("logID", id);
 
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }

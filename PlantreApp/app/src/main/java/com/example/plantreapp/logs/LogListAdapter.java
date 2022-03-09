@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.entities.Log;
 
-public class LogListAdapter extends ListAdapter<com.example.plantreapp.logs.Log, LogListAdapter.LogViewHolder> {
+public class LogListAdapter extends ListAdapter<Log, LogListAdapter.LogViewHolder> {
 
     LogClickInterface logClickInterface;
 
-    protected LogListAdapter(@NonNull DiffUtil.ItemCallback<com.example.plantreapp.logs.Log> diffCallback, LogClickInterface logClickInterface) {
+    protected LogListAdapter(@NonNull DiffUtil.ItemCallback<Log> diffCallback, LogListAdapter.LogClickInterface logClickInterface) {
         super(diffCallback);
         this.logClickInterface = logClickInterface;
     }
@@ -31,7 +32,7 @@ public class LogListAdapter extends ListAdapter<com.example.plantreapp.logs.Log,
 
     @Override
     public void onBindViewHolder(@NonNull LogViewHolder holder, int position) {
-        com.example.plantreapp.logs.Log log = getItem(position);
+        Log log = getItem(position);
         holder.bind(log);
     }
 
@@ -52,26 +53,26 @@ public class LogListAdapter extends ListAdapter<com.example.plantreapp.logs.Log,
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    logClickInterface.onDelete(getAdapterPosition());
+                    logClickInterface.onDelete(getItem(getAdapterPosition()));
                 }
             });
 
             logItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    logClickInterface.onSelect(getAdapterPosition(), nameTextView.getText().toString());
+                    logClickInterface.onSelect(getItem(getAdapterPosition()));
                 }
             });
         }
 
-        public void bind(com.example.plantreapp.logs.Log log) {
+        public void bind(Log log) {
             nameTextView.setText(log.getName());
             descriptionTextView.setText(log.getDescription());
         }
     }
 
     interface LogClickInterface {
-        public void onDelete(int position);
-        public void onSelect(int position, String name);
+        public void onDelete(Log log);
+        public void onSelect(Log log);
     }
 }
