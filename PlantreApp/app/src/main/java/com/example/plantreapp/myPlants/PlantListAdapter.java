@@ -19,7 +19,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
 
     PlantClickInterface plantClickInterface;
 
-    protected PlantListAdapter(@NonNull DiffUtil.ItemCallback<Plant> diffCallback, PlantClickInterface plantClickInterface) {
+    public PlantListAdapter(@NonNull DiffUtil.ItemCallback<Plant> diffCallback, PlantClickInterface plantClickInterface) {
         super(diffCallback);
         this.plantClickInterface = plantClickInterface;
     }
@@ -72,7 +72,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
         }
     }
 
-    interface PlantClickInterface {
+    public interface PlantClickInterface {
         public void onDelete(Plant plant);
         public void onSelect(Plant plant);
     }
