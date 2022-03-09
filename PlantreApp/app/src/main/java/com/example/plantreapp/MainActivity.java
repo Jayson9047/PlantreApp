@@ -21,12 +21,12 @@ import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button ButtonConnectionPage;
+    Button ButtonConnectionPage, ButtonPump;
 
     private final static String TAG = MainActivity.class.getSimpleName();
 
     TextView textViewPrompt;
-
+    boolean pumpOn;
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
 
@@ -35,14 +35,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textViewPrompt = (TextView)findViewById(R.id.prompt);
-
+        pumpOn = false;
         ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
-
+        ButtonPump = (Button) findViewById(R.id.btnSendPump);
         ButtonConnectionPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ConnectionActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        ButtonPump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pumpOn = true;
             }
         });
 
@@ -117,11 +124,14 @@ public class MainActivity extends AppCompatActivity {
                     //updatePrompt("Request from: " + address + ":" + port + "\n");
                     updatePrompt("Message: "+ l +"\n");
 
-                    /*String dString = new Date().toString() + "\n"
-                            + "Your address " + address.toString() + ":" + String.valueOf(port);
-                    buf = dString.getBytes();
-                    packet = new DatagramPacket(buf, buf.length, address, port);
-                    socket.send(packet);*/
+                    if(pumpOn == true)
+                    {
+                        String dString = "5";
+                        buf = dString.getBytes();
+                        packet = new DatagramPacket(buf, buf.length, address, port);
+                        socket.send(packet);
+                        pumpOn = false;
+                    }
 
                 }
 

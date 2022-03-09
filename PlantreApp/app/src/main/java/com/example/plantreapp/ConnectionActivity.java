@@ -233,7 +233,8 @@ public class ConnectionActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText ssid = credLayout.findViewById(R.id.wifiSsid);
                 EditText pass = credLayout.findViewById(R.id.wifiPass);
-                String string = ssid.getText().toString() + "\n" + pass.getText().toString() + "\n" + getIpAddress() + "\n" + String.valueOf(port);
+                String[] arrOfStr = getIpAddress().split(",");
+                String string = ssid.getText().toString() + "\n" + pass.getText().toString() + "\n" + arrOfStr[0] + "\n" + String.valueOf(port);
 
                 //sendReceive.write(string.getBytes());
                 //Toast.makeText(ConnectionActivity.this, "Wifi is:" + string, Toast.LENGTH_LONG).show();
@@ -346,7 +347,7 @@ public class ConnectionActivity extends AppCompatActivity {
                     InetAddress inetAddress = enumInetAddress.nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
-                        ip += inetAddress.getHostAddress();
+                        ip += inetAddress.getHostAddress() +",";
                     }
 
                 }
