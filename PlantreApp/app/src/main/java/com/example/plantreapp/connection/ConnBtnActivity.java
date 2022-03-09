@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.plantreapp.R;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class ConnBtnActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
                     case R.id.journals_item:
-                        //startActivity(new Intent(getApplicationContext(), Search.class));
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:
                         startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));

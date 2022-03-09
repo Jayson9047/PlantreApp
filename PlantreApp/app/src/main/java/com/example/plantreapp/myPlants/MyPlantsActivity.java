@@ -21,6 +21,7 @@ import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.journals.JournalsActivity;
+import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class MyPlantsActivity extends AppCompatActivity
                     case R.id.my_plants_item:
                         return true;
                     case R.id.journals_item:
-                        //startActivity(new Intent(getApplicationContext(), Search.class));
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:
                         startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));

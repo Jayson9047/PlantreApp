@@ -1,4 +1,4 @@
-package com.example.plantreapp.journals;
+package com.example.plantreapp.search;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,37 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
-import com.example.plantreapp.entities.Journal;
-import com.example.plantreapp.logs.LogsActivity;
+import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
-import com.example.plantreapp.search.SearchActivity;
+import com.example.plantreapp.myPlants.PlantDialog;
+import com.example.plantreapp.myPlants.PlantListAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-/*Journals Screen*/
-
-public class JournalsActivity extends AppCompatActivity
-        implements JournalListAdapter.JournalClickInterface,
-        JournalDialog.JournalDialogListener {
-
-    private JournalListAdapter journalListAdapter;
-    private com.example.plantreapp.journals.JournalsViewModel journalsViewModel;
-    private int plantUid;
-
+public class SearchActivity extends AppCompatActivity implements com.example.plantreapp.myPlants.PlantListAdapter.PlantClickInterface,
+        PlantDialog.PlantDialogListener {
+    private SearchViewModel _viewModel;
+    private PlantListAdapter _listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_journals);
 
-        Intent i = getIntent();
-        String title = i.getStringExtra("plantName");
-        plantUid = i.getIntExtra("plantUid", 0);
+        // Setup view
+        setContentView(R.layout.activity_search);
 
+        // set actionbar title to "my plants"
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(title.toUpperCase() + " JOURNALS");
-
+        actionBar.setTitle("Search");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.my_plants_item);
@@ -63,7 +55,7 @@ public class JournalsActivity extends AppCompatActivity
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
                     case R.id.journals_item:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                        //startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:
                         startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
@@ -73,46 +65,36 @@ public class JournalsActivity extends AppCompatActivity
             }
         });
 
-
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        journalListAdapter = new JournalListAdapter( Journal.Companion.getItemCallback() , this);
-        recyclerView.setAdapter(journalListAdapter);
+        _listAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
 
-        journalsViewModel = new ViewModelProvider(this, new JournalViewModelFactory(this.getApplication(), plantUid)).get(JournalsViewModel.class);
-        journalsViewModel.getJournalList().observe(this, new Observer<List<Journal>>() {
+        recyclerView.setAdapter(_listAdapter );
+
+        _viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        _viewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
             @Override
-            public void onChanged(List<Journal> journals) {
-                journalListAdapter.submitList(journals);
+            public void onChanged(List<Plant> plants) {
+                _listAdapter.submitList(plants);
             }
         });
     }
 
-    public void addItem(View view) {
-        openDialog();
-    }
+    public void refreshList(View view) {
 
-    public void openDialog() {
-        String tag = "Add Journal Dialog";
-        JournalDialog journalDialog = new JournalDialog();
-        journalDialog.show(getSupportFragmentManager(), tag);
     }
-
-    @Override
-    public void onDelete(Journal journal) {
-        journalsViewModel.deleteJournal(journal);
-    }
-
-    @Override
-    public void onSelect(int position, String name) {
-        Intent intent = new Intent(JournalsActivity.this, LogsActivity.class);
-        intent.putExtra("journalName", name);
-        startActivity(intent);
-    }
-
     @Override
     public void applyTexts(String name, String description) {
-        Journal journal = new Journal(null, name, description, true, "date...", plantUid);
-        journalsViewModel.addJournal(journal);
+
+    }
+
+    @Override
+    public void onDelete(Plant plant) {
+
+    }
+
+    @Override
+    public void onSelect(Plant plant) {
+
     }
 }
