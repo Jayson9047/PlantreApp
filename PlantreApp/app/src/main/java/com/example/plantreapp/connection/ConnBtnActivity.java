@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
@@ -27,10 +28,12 @@ public class ConnBtnActivity extends AppCompatActivity {
 
     //Button ButtonConnectionPage;
 
-    private final static String TAG = ConnBtnActivity.class.getSimpleName();
+    Button ButtonPump;
+
+    private final static String TAG = MainActivity.class.getSimpleName();
 
     TextView textViewPrompt;
-
+    boolean pumpOn;
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
 
@@ -39,42 +42,18 @@ public class ConnBtnActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conn_btn);
         textViewPrompt = (TextView)findViewById(R.id.prompt);
+        pumpOn = false;
 
-        /*ButtonConnectionPage = (Button) findViewById(R.id.btnConnPage);
-        ButtonConnectionPage.setOnClickListener(new View.OnClickListener() {
+        ButtonPump = (Button) findViewById(R.id.btnSendPump);
+
+        ButtonPump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ConnBtnActivity.this, ConnectionActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setSelectedItemId(R.id.home_item);
-
-        // nav click handler
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home_item:
-                        //startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
-                        return true;
-                    case R.id.my_plants_item:
-                        startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
-                        return true;
-                    case R.id.journals_item:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        return true;
-                    case R.id.connection_item:
-                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
-                        return true;
-                }
-                return false;
+                pumpOn = true;
             }
         });
-    }
 
+    }
     @Override
     protected void onStart() {
         udpServerThread = new UdpServerThread(UdpServerPORT);
@@ -145,11 +124,14 @@ public class ConnBtnActivity extends AppCompatActivity {
                     //updatePrompt("Request from: " + address + ":" + port + "\n");
                     updatePrompt("Message: "+ l +"\n");
 
-                    /*String dString = new Date().toString() + "\n"
-                            + "Your address " + address.toString() + ":" + String.valueOf(port);
-                    buf = dString.getBytes();
-                    packet = new DatagramPacket(buf, buf.length, address, port);
-                    socket.send(packet);*/
+                    if(pumpOn == true)
+                    {
+                        String dString = "5";
+                        buf = dString.getBytes();
+                        packet = new DatagramPacket(buf, buf.length, address, port);
+                        socket.send(packet);
+                        pumpOn = false;
+                    }
 
                 }
 
