@@ -8,7 +8,7 @@
     tools:context=".logs.NoteActivity">
 
     <TextView
-        android:id="@+id/logName"
+        android:id="@+id/logNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/logInfo"
+        android:id="@+id/logInfoTxt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="48dp"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logName" />
+        app:layout_constraintTop_toBottomOf="@+id/logNameTxt" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"

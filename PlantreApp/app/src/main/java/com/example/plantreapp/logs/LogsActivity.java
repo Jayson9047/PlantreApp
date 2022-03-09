@@ -112,10 +112,10 @@ public class LogsActivity extends AppCompatActivity
 
     @Override
     public void onSelect(Log log) {
-        /*Intent intent = new Intent(LogsActivity.this, activity.class);
+        Intent intent = new Intent(LogsActivity.this, NoteActivity.class);
 
-        //intent.putExtra("logID", id);
+        intent.putExtra("logID", log.getUid());
 
-        startActivity(intent);*/
+        startActivity(intent);
     }
 }
