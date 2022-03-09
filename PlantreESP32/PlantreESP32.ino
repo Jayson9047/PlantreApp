@@ -8,7 +8,7 @@
 #include "BluetoothSerial.h"
 
 
-
+#define WATERPUMP 5
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -43,6 +43,7 @@ const char* password;
 const char * udpAddress;
 WiFiUDP udp;
 unsigned int udpPort;
+bool pumpOn;
 
 char pktbuf[10];
 String x_val;
@@ -55,6 +56,9 @@ void setup() {
   Serial.println("The device started, now you can pair it with bluetooth!");
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //initialize with the I2C addr 0x3C (128x64)
   display.clearDisplay();
+  pinMode(WATERPUMP, OUTPUT);
+  digitalWrite(WATERPUMP, HIGH); 
+  pumpOn = false;
   /*WiFi.begin(ssid,password);
   while(WiFi.waitForConnectResult() != WL_CONNECTED)  {
     Serial.println("Connection Failed! Rebooting...");
@@ -79,6 +83,10 @@ void loop()
       readSoilMoistureValue();
       sendUdpPacket();
       showInOLED();
+      if(pumpOn == true)
+      {
+        runWaterPump();
+      }
   }
   
 }
@@ -112,7 +120,10 @@ void connectToWifi()
         udpAddress = strs[2].c_str();
         port = strs[3];
         udpPort = strs[3].toInt();
-        //Serial.println(ssid+ "\n" + password + "\n" + Ip + "\n" + port);
+        Serial.println(ssid);
+        Serial.println(password);
+        Serial.println(udpAddress);
+        Serial.println(port);
         
     
         WiFi.begin(ssid,password);
@@ -160,6 +171,10 @@ void sendUdpPacket()
       udp.read(pktbuf,1);
       Serial.print("Packet from " + String(udpAddress)+": ");
       Serial.println(pktbuf);
+      if(pktbuf[0] == '5')
+      {
+        pumpOn = true;
+      }
       delay(1000);
     }
 }
@@ -236,4 +251,13 @@ void showInOLED()
       delay(250);
       display.clearDisplay();
     }  
+}
+
+void runWaterPump()
+{
+  digitalWrite(WATERPUMP, LOW);   // turn the LED on (HIGH is the voltage level)
+  delay(10000);                       // wait for a second
+  digitalWrite(WATERPUMP, HIGH);    // turn the LED off by making the voltage LOW
+  delay(2000);                       // wait for a second
+  pumpOn = false;
 }

@@ -18,9 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/log_info"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--android:background="@drawable/border"-->
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:inputType="textMultiLine"
@@ -32,12 +31,13 @@
         android:ems="10"
         android:gravity="start|top"
         android:hint="Info"
-        android:lines="8"
+        android:lines="12"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_name"
+        android:background="#E6D6D6D6"
         />
 
     <Button

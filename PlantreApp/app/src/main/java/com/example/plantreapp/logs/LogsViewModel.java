@@ -1,44 +1,66 @@
 package com.example.plantreapp.logs;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import com.example.plantreapp.entities.Log;
+import com.example.plantreapp.repository.LogRepository;
+
 import java.util.List;
 
-public class LogsViewModel extends ViewModel {
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
+
+public class LogsViewModel extends AndroidViewModel {
 
     private static final String TAG = "LogViewModel";
-    private MutableLiveData<List<com.example.plantreapp.logs.Log>> mutableLiveData;
+    private MutableLiveData<List<Log>> mutableLiveData;
+    private LogRepository repository;
 
-    public LiveData<List<com.example.plantreapp.logs.Log>> getLogList() {
-        if (mutableLiveData == null) {
-            mutableLiveData = new MutableLiveData<>();
-            initLogList();
-        }
-        return mutableLiveData;
+    public LogsViewModel(@NonNull Application application) {
+        super(application);
+        repository = new LogRepository(application.getApplicationContext());
     }
 
-    private void initLogList() {
-        List<com.example.plantreapp.logs.Log> logList = new ArrayList<>();
-        //LogList.add(new Log("Log", "description..."));
-        mutableLiveData.setValue(logList);
+    public LiveData<List<Log>> getLogList() {
+        return repository.getLogs();
     }
 
-    public void deleteLog(int position) {
-        if (mutableLiveData.getValue() != null) {
-            List<com.example.plantreapp.logs.Log> logList = new ArrayList<>(mutableLiveData.getValue());
-            logList.remove(position);
-            mutableLiveData.setValue(logList);
-        }
+    public void deleteLog(Log log) {
+        repository.delete(log, new Continuation<Unit>() {
+            @NonNull
+            @Override
+            public CoroutineContext getContext() {
+                return EmptyCoroutineContext.INSTANCE; // Default to this value, generated snippet is nul
+            }
+
+            @Override
+            public void resumeWith(@NonNull Object o) {
+                // Handle on delete... display a toast
+
+            }
+        });
     }
 
-    public void addLog(com.example.plantreapp.logs.Log log) {
-        if (mutableLiveData.getValue() != null) {
-            List<com.example.plantreapp.logs.Log> logList = new ArrayList<>(mutableLiveData.getValue());
-            logList.add(log);
-            mutableLiveData.setValue(logList);
-        }
+    public void addLog(Log log) {
+        repository.insert(log, new Continuation<Unit>() {
+            @NonNull
+            @Override
+            public CoroutineContext getContext() {
+                return EmptyCoroutineContext.INSTANCE;
+            }
+
+            @Override
+            public void resumeWith(@NonNull Object o) {
+                // Handle on delete... display a toast
+
+            }
+        });
     }
 }

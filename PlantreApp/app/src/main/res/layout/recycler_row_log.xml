@@ -11,6 +11,7 @@
     android:background="@color/white"
     android:layout_margin="4dp"
     android:id="@+id/logItem"
+    android:backgroundTint="#E6FFFFFF"
     >
 
     <TextView

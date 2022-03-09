@@ -38,7 +38,7 @@ public class AddLogActivity extends AppCompatActivity {
                 String name = logName.getText().toString();
                 String info = logInfo.getText().toString();
 
-                Intent intent = new Intent(AddLogActivity.this, com.example.plantreapp.logs.LogsActivity.class);
+                Intent intent = new Intent(AddLogActivity.this, LogsActivity.class);
                 intent.putExtra("newNoteName", name);
                 intent.putExtra("newNoteInfo", info);
                 intent.putExtra("journalName", journalName);

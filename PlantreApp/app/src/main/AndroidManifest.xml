@@ -29,6 +29,9 @@
             android:name=".logs.LogsActivity"
             android:exported="false" />
         <activity
+            android:name=".logs.NoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".journals.JournalsActivity"
             android:exported="false" />
         <activity

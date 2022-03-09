@@ -30,11 +30,11 @@ import java.util.List;
 /*My Plants Screen*/
 
 public class MyPlantsActivity extends AppCompatActivity
-        implements com.example.plantreapp.myPlants.PlantListAdapter.PlantClickInterface,
+        implements PlantListAdapter.PlantClickInterface,
         PlantDialog.PlantDialogListener {
 
-    private com.example.plantreapp.myPlants.PlantListAdapter plantListAdapter;
-    private com.example.plantreapp.myPlants.PlantsViewModel plantsViewModel;
+    private PlantListAdapter plantListAdapter;
+    private PlantsViewModel plantsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class MyPlantsActivity extends AppCompatActivity
         plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
-        plantsViewModel = new ViewModelProvider(this).get(com.example.plantreapp.myPlants.PlantsViewModel.class);
+        plantsViewModel = new ViewModelProvider(this).get(PlantsViewModel.class);
         plantsViewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
             @Override
             public void onChanged(List<Plant> plants) {
