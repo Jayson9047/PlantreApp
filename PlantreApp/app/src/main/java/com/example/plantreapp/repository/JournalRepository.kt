@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 class JournalRepository(context: Context) {
     private var dao: JournalDAO? = null
-    private var journals: MutableLiveData<List<Journal>> = MutableLiveData()
+    var journals: MutableLiveData<List<Journal>> = MutableLiveData()
 
     init  {
         val db = AppDatabase.invoke(context)
@@ -19,7 +19,6 @@ class JournalRepository(context: Context) {
         runBlocking {
             journals.value = dao?.getAll()
         }
-
     }
 
     suspend fun getAll() : List<Journal> {
@@ -37,19 +36,26 @@ class JournalRepository(context: Context) {
         return dao?.findById(id) ?: list
     }
 
-    suspend fun insert(journal: Journal) {
+    suspend fun findByPlantUID(plant_uid: Int) : List<Journal> {
+        val list: List<Journal> = emptyList()
+        runBlocking {
+            journals.value = dao?.findByPlantUID(plant_uid)
+        }
+        return dao?.findByPlantUID(plant_uid) ?: list
+    }
+
+    suspend fun insert(journal: Journal, plant_uid: Int) {
         runBlocking { dao?.insert(journal) }
         runBlocking {
-            journals.value = dao?.getAll()
+            journals.value = dao?.findByPlantUID(plant_uid)
         }
     }
 
-    suspend fun delete(journal: Journal) {
-        runBlocking { dao?.insert(journal) }
+    suspend fun delete(journal: Journal, plant_uid: Int) {
+        runBlocking { dao?.delete(journal) }
         runBlocking {
-            journals.value = dao?.getAll()
+            journals.value = dao?.findByPlantUID(plant_uid)
         }
     }
-
 
 }

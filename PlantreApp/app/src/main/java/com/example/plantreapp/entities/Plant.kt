@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.plantreapp.journals.Journal
 import java.util.*
 
 @Entity

@@ -22,6 +22,7 @@ import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.journals.JournalsActivity;
+import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class MyPlantsActivity extends AppCompatActivity
                     case R.id.my_plants_item:
                         return true;
                     case R.id.journals_item:
-                        //startActivity(new Intent(getApplicationContext(), Search.class));
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:
                         startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
@@ -72,7 +73,7 @@ public class MyPlantsActivity extends AppCompatActivity
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        plantListAdapter = new com.example.plantreapp.myPlants.PlantListAdapter( Plant.Companion.getItemCallback(), this);
+        plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
         plantsViewModel = new ViewModelProvider(this).get(com.example.plantreapp.myPlants.PlantsViewModel.class);
@@ -82,6 +83,36 @@ public class MyPlantsActivity extends AppCompatActivity
                 plantListAdapter.submitList(plants);
             }
         });
+    }
+
+    public void addItem(View view) {
+        openDialog();
+    }
+
+    public void openDialog() {
+        String tag = "Add Plant Dialog";
+        PlantDialog plantDialog = new PlantDialog();
+        plantDialog.show(getSupportFragmentManager(), tag);
+    }
+
+    @Override
+    public void onDelete(Plant plant) {
+        plantsViewModel.deletePlant(plant);
+    }
+
+    @Override
+    public void onSelect(Plant plant) {
+        Intent intent = new Intent(MyPlantsActivity.this, JournalsActivity.class);
+        intent.putExtra("plantName", plant.getName());
+        intent.putExtra("plantUid", plant.getUid());
+        startActivity(intent);
+    }
+
+    @Override
+    public void applyTexts(String name, String description) {
+        // To properly Create a new plant we need more values - rate is in hours and moisture are percentages
+        Plant plant = new Plant(null, name, "scifiName", "URI to picture", description, "seed", 12, 48, 168, 80,90, 60, 80,50, 70);
+        plantsViewModel.addPlant(plant);
     }
 
     /*@Override
@@ -105,35 +136,4 @@ public class MyPlantsActivity extends AppCompatActivity
 
         return super.onCreateOptionsMenu(menu);
     }*/
-
-
-
-    public void addItem(View view) {
-        openDialog();
-    }
-
-    public void openDialog() {
-        String tag = "Add Plant Dialog";
-        PlantDialog plantDialog = new PlantDialog();
-        plantDialog.show(getSupportFragmentManager(), tag);
-    }
-
-    @Override
-    public void onDelete(Plant plant) {
-        plantsViewModel.deletePlant(plant);
-    }
-
-    @Override
-    public void onSelect(int position, String name) {
-        Intent intent = new Intent(MyPlantsActivity.this, JournalsActivity.class);
-        intent.putExtra("plantName", name);
-        startActivity(intent);
-    }
-
-    @Override
-    public void applyTexts(String name, String description) {
-        // To properly Create a new plant we need more values - rate is in hours and moisture are percentages
-        Plant plant = new Plant(null, name, "scifiName", "URI to picture", description, "seed", 12, 48, 168, 80,90, 60, 80,50, 70);
-        plantsViewModel.addPlant(plant);
-    }
 }

@@ -19,7 +19,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
 
     PlantClickInterface plantClickInterface;
 
-    protected PlantListAdapter(@NonNull DiffUtil.ItemCallback<Plant> diffCallback, PlantClickInterface plantClickInterface) {
+    public PlantListAdapter(@NonNull DiffUtil.ItemCallback<Plant> diffCallback, PlantClickInterface plantClickInterface) {
         super(diffCallback);
         this.plantClickInterface = plantClickInterface;
     }
@@ -61,7 +61,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
             plantItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    plantClickInterface.onSelect(getAdapterPosition(), nameTextView.getText().toString());
+                    plantClickInterface.onSelect(getItem(getAdapterPosition()));
                 }
             });
         }
@@ -72,8 +72,8 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
         }
     }
 
-    interface PlantClickInterface {
+    public interface PlantClickInterface {
         public void onDelete(Plant plant);
-        public void onSelect(int position, String name); // This function may need to be changed to use plant entity
+        public void onSelect(Plant plant);
     }
 }
