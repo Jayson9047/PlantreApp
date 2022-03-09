@@ -40,7 +40,6 @@ class APIClient(context: Context) {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     val res = plantJsonAdapter.fromJson(response.body!!.source())
                     if (res != null) {
-                        val repo = context?.let { PlantRepository(it) }
 
                         list.complete(res.data)
                         println("Great Success")
