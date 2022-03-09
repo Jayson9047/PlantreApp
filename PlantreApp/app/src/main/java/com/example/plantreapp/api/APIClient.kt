@@ -6,9 +6,7 @@ import com.example.plantreapp.repository.PlantRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
@@ -33,9 +31,10 @@ class APIClient(context: Context) {
 
 
 
-    fun loadPlants() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val request = Request.Builder().url("https://10.0.0.196:3000/api/plant").build()
+    suspend fun loadPlants() = withContext(Dispatchers.IO) {
+        var list = CompletableDeferred<List<Plant>>();
+
+            val request = Request.Builder().url("https://plantre.azurewebsites.net/api/plant").build()
             instance?.newCall(request)?.execute().use { response ->
                 if (response != null) {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
@@ -43,15 +42,19 @@ class APIClient(context: Context) {
                     if (res != null) {
                         val repo = context?.let { PlantRepository(it) }
 
-                        repo?.insertAll(res.data)
+                        list.complete(res.data)
                         println("Great Success")
 
+                    } else {
+                        list.complete(emptyList())
                     }
 
 
+                } else {
+                    list.complete(emptyList())
                 }
             }
-        }
+        return@withContext list.await();
     }
 
     companion object {
@@ -64,10 +67,12 @@ class APIClient(context: Context) {
 
         private fun buildClient() = OkHttpClient.Builder().connectTimeout(5, TimeUnit.MINUTES) // connect timeout
             .writeTimeout(5, TimeUnit.MINUTES) // write timeout
-            .readTimeout(5, TimeUnit.MINUTES).hostnameVerifier(HostnameVerifier() {s: String?, sslSession: SSLSession? ->
-            val hv: HostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
-            return@HostnameVerifier true // This needs to change before deploy app - Allows for man in the middle attacks
-        }).build()
+            .readTimeout(5, TimeUnit.MINUTES)
+            .hostnameVerifier(HostnameVerifier() {s: String?, sslSession: SSLSession? ->
+                val hv: Boolean = HttpsURLConnection.getDefaultHostnameVerifier().verify("https://plantre.azurewebsites.net", sslSession)
+                return@HostnameVerifier true // This needs to change before deploy app - Allows for man in the middle attacks
+            })
+            .build()
     }
 }
 

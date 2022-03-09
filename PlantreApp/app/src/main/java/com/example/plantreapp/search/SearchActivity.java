@@ -81,7 +81,7 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
     }
 
     public void refreshList(View view) {
-
+        _viewModel.refreshList();
     }
     @Override
     public void applyTexts(String name, String description) {
