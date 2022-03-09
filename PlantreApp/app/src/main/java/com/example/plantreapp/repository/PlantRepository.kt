@@ -7,6 +7,9 @@ import androidx.lifecycle.liveData
 import com.example.plantreapp.dao.PlantDAO
 import com.example.plantreapp.db.AppDatabase
 import com.example.plantreapp.entities.Plant
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class PlantRepository(context: Context) {
@@ -17,7 +20,7 @@ class PlantRepository(context: Context) {
         val db = AppDatabase.invoke(context)
         dao = db.plantDao()
         runBlocking {
-            plants.value = dao?.getAll()
+            plants.postValue(dao?.getAll())
         }
     }
 
@@ -39,14 +42,22 @@ class PlantRepository(context: Context) {
     suspend fun insert(plant: Plant) {
        runBlocking { dao?.insert(plant) }
         runBlocking {
-            plants.value = dao?.getAll()
+            plants.postValue(dao?.getAll())
         }
     }
 
     suspend fun delete(plant: Plant) {
         runBlocking { dao?.delete(plant) }
         runBlocking {
-            plants.value = dao?.getAll()
+            plants.postValue(dao?.getAll())
+        }
+    }
+
+    suspend fun insertAll(plantList: List<Plant>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao?.insertAll(plantList)
+            plants.postValue(dao?.getAll())
         }
     }
 }
+

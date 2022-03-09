@@ -11,6 +11,9 @@ interface PlantDAO {
     @Insert
     suspend fun insert(plant: Plant)
 
+    @Insert
+    suspend fun insertAll(plants: List<Plant>)
+
     @Delete
     suspend fun delete(plant: Plant)
 
