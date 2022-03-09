@@ -112,14 +112,6 @@ public class MyPlantsActivity extends AppCompatActivity
         openDialog();
     }
 
-    public void refreshDatabase(View view) {
-        APIClient.Companion.invoke(this);
-
-        APIClient apiClient = new APIClient(this);
-
-        apiClient.loadPlants();
-    }
-
     public void openDialog() {
         String tag = "Add Plant Dialog";
         PlantDialog plantDialog = new PlantDialog();
