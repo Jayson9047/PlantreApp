@@ -34,7 +34,6 @@ public class JournalsActivity extends AppCompatActivity
     private com.example.plantreapp.journals.JournalsViewModel journalsViewModel;
     private int plantUid;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,9 +103,10 @@ public class JournalsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelect(int position, String name) {
+    public void onSelect(Journal journal) {
         Intent intent = new Intent(JournalsActivity.this, LogsActivity.class);
-        intent.putExtra("journalName", name);
+        intent.putExtra("journalName", journal.getName());
+        intent.putExtra("journalUid", journal.getUid());
         startActivity(intent);
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
+import com.example.plantreapp.entities.Journal;
 import com.example.plantreapp.entities.Log;
+import com.example.plantreapp.journals.JournalViewModelFactory;
+import com.example.plantreapp.journals.JournalsViewModel;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,9 +36,7 @@ public class LogsActivity extends AppCompatActivity
     private LogsViewModel logsViewModel;
 
     private String journalName;
-
-    //private static String logName;
-    //private static String logInfo;
+    private static int journalUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,11 @@ public class LogsActivity extends AppCompatActivity
         Intent i = getIntent();
 
         String title = i.getStringExtra("journalName");
+        int uid = i.getIntExtra("journalUid", 0);
+        if (uid != 0) {
+            journalUid = uid;
+        }
+
         journalName = title;
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(title.toUpperCase() + " LOGS");
@@ -80,7 +87,7 @@ public class LogsActivity extends AppCompatActivity
         logListAdapter = new LogListAdapter( Log.Companion.getItemCallback() , this);
         recyclerView.setAdapter(logListAdapter);
 
-        logsViewModel = new ViewModelProvider(this).get(LogsViewModel.class);
+        logsViewModel = new ViewModelProvider(this, new LogViewModelFactory(this.getApplication(), journalUid)).get(LogsViewModel.class);
         logsViewModel.getLogList().observe(this, new Observer<List<Log>>() {
             @Override
             public void onChanged(List<Log> logs) {
@@ -91,11 +98,8 @@ public class LogsActivity extends AppCompatActivity
         if (i.getStringExtra("newNoteName") != null) {
             String name = i.getStringExtra("newNoteName");
             String info = i.getStringExtra("newNoteInfo");
-            Log log = new Log(null, name, 1, "date...", info, "");
+            Log log = new Log(null, name, journalUid, "date...", info, "");
             logsViewModel.addLog(log);
-
-            //logName = name;
-            //logInfo = info;
         }
     }
 
@@ -111,10 +115,10 @@ public class LogsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelect(Log log) {
+    public void onSelect(int position, String name) {
         Intent intent = new Intent(LogsActivity.this, NoteActivity.class);
 
-        intent.putExtra("logID", log.getUid());
+        intent.putExtra("logName", name);
 
         startActivity(intent);
     }

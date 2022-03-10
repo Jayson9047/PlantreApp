@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg2"
+    android:background="@drawable/bg3"
     tools:context=".logs.AddLogActivity">
 
     <EditText
         android:id="@+id/log_name"
         android:inputType="textPersonName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="Log Name"
@@ -19,6 +19,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/log_info"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="#E6D6D6D6"
         />
 
     <EditText
