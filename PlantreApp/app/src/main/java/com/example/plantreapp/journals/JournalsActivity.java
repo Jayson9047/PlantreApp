@@ -61,7 +61,7 @@ public class JournalsActivity extends AppCompatActivity
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:

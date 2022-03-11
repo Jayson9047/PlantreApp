@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -63,7 +61,7 @@ public class ConnBtnActivity extends AppCompatActivity {
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:

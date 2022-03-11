@@ -8,8 +8,8 @@
         android:id="@+id/my_plants_item"
         android:icon="@drawable/ic_my_plants" />
 
-    <item android:title="Journals"
-        android:id="@+id/journals_item"
+    <item android:title="Search"
+        android:id="@+id/search_item"
         android:icon="@drawable/ic_search"/>
 
     <item android:title="Connection"

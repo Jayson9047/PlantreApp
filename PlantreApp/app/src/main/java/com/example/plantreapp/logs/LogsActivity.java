@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -18,10 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
-import com.example.plantreapp.entities.Journal;
 import com.example.plantreapp.entities.Log;
-import com.example.plantreapp.journals.JournalViewModelFactory;
-import com.example.plantreapp.journals.JournalsViewModel;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -70,7 +66,7 @@ public class LogsActivity extends AppCompatActivity
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         //startActivity(new Intent(getApplicationContext(), Search.class));
                         return true;
                     case R.id.connection_item:
