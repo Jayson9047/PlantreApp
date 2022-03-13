@@ -51,7 +51,7 @@
         android:layout_gravity="center"
         android:text="Percentage"
         android:textAlignment="center"
-        android:textColor="#FF0000"
+        android:textColor="#0A1A6C"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/btnSendPump"
         app:layout_constraintEnd_toEndOf="parent"
