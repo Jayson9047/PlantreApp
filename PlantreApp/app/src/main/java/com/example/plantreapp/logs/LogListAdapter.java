@@ -60,7 +60,7 @@ public class LogListAdapter extends ListAdapter<Log, LogListAdapter.LogViewHolde
             logItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    logClickInterface.onSelect(getItem(getAdapterPosition()));
+                    logClickInterface.onSelect(getAdapterPosition(), nameTextView.getText().toString());
                 }
             });
         }
@@ -73,6 +73,6 @@ public class LogListAdapter extends ListAdapter<Log, LogListAdapter.LogViewHolde
 
     interface LogClickInterface {
         public void onDelete(Log log);
-        public void onSelect(Log log);
+        public void onSelect(int position, String name);
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.plantreapp.entities.Journal;
 import com.example.plantreapp.entities.Log;
 import com.example.plantreapp.repository.LogRepository;
 
@@ -22,10 +23,24 @@ public class LogsViewModel extends AndroidViewModel {
     private static final String TAG = "LogViewModel";
     private MutableLiveData<List<Log>> mutableLiveData;
     private LogRepository repository;
+    private int _journalUid = 0; // Maybe the mutable list needs to live in the view model...
 
-    public LogsViewModel(@NonNull Application application) {
+    public LogsViewModel(@NonNull Application application, int journalUid) {
         super(application);
         repository = new LogRepository(application.getApplicationContext());
+        _journalUid = journalUid;
+        repository.findByJournalUID(journalUid, new Continuation<List<? extends Log>>() {
+            @NonNull
+            @Override
+            public CoroutineContext getContext() {
+                return EmptyCoroutineContext.INSTANCE;
+            }
+
+            @Override
+            public void resumeWith(@NonNull Object o) {
+
+            }
+        });
     }
 
     public LiveData<List<Log>> getLogList() {
@@ -33,7 +48,7 @@ public class LogsViewModel extends AndroidViewModel {
     }
 
     public void deleteLog(Log log) {
-        repository.delete(log, new Continuation<Unit>() {
+        repository.delete(log, _journalUid, new Continuation<Unit>() {
             @NonNull
             @Override
             public CoroutineContext getContext() {
@@ -49,7 +64,7 @@ public class LogsViewModel extends AndroidViewModel {
     }
 
     public void addLog(Log log) {
-        repository.insert(log, new Continuation<Unit>() {
+        repository.insert(log, _journalUid, new Continuation<Unit>() {
             @NonNull
             @Override
             public CoroutineContext getContext() {

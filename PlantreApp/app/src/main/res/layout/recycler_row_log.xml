@@ -11,8 +11,7 @@
     android:background="@color/white"
     android:layout_margin="4dp"
     android:id="@+id/logItem"
-    android:backgroundTint="#E6FFFFFF"
-    >
+    android:backgroundTint="#E6FFFFFF">
 
     <TextView
         android:id="@+id/nameTextview"
@@ -24,7 +23,8 @@
         android:layout_marginTop="0dp"
         android:text="Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="20dp" />
+        android:textSize="24dp"
+        android:textAllCaps="true" />
 
     <TextView
         android:id="@+id/DescriptionTextView"

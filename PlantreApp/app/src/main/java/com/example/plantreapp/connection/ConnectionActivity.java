@@ -18,9 +18,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 
@@ -103,7 +101,7 @@ public class ConnectionActivity extends AppCompatActivity {
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:

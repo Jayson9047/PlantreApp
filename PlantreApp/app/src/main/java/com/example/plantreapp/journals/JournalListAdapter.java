@@ -62,7 +62,7 @@ public class JournalListAdapter extends ListAdapter<Journal, JournalListAdapter.
             journalItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    journalClickInterface.onSelect(getAdapterPosition(), nameTextView.getText().toString());
+                    journalClickInterface.onSelect(getItem(getAdapterPosition()));
                 }
             });
         }
@@ -75,6 +75,6 @@ public class JournalListAdapter extends ListAdapter<Journal, JournalListAdapter.
 
     interface JournalClickInterface {
         public void onDelete(Journal journal);
-        public void onSelect(int position, String name);
+        public void onSelect(Journal journal);
     }
 }

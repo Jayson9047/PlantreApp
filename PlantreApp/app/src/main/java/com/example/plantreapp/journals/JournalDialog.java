@@ -41,7 +41,7 @@ public class JournalDialog extends AppCompatDialogFragment {
                         if (!name.equals("")) {
                             listener.applyTexts(name, description);
                         } else {
-                            listener.applyTexts("My Journal", null);
+                            listener.applyTexts("My Journal", "");
                         }
                     }
                 });

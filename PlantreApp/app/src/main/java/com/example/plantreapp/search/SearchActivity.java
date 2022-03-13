@@ -36,12 +36,12 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
         // Setup view
         setContentView(R.layout.activity_search);
 
-        // set actionbar title to "my plants"
+        // set actionbar title to "Search"
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Search");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setSelectedItemId(R.id.my_plants_item);
+        bottomNavigationView.setSelectedItemId(R.id.search_item);
 
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         //startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:
@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         _listAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
 
-        recyclerView.setAdapter(_listAdapter );
+        recyclerView.setAdapter(_listAdapter);
 
         _viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         _viewModel.getPlantList().observe(this, new Observer<List<Plant>>() {

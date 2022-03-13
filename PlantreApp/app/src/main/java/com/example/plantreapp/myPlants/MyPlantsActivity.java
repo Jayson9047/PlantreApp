@@ -3,14 +3,12 @@ package com.example.plantreapp.myPlants;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -58,7 +56,7 @@ public class MyPlantsActivity extends AppCompatActivity
                         return true;
                     case R.id.my_plants_item:
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:

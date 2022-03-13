@@ -32,9 +32,7 @@ public class LogsActivity extends AppCompatActivity
     private LogsViewModel logsViewModel;
 
     private String journalName;
-
-    //private static String logName;
-    //private static String logInfo;
+    private static int journalUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +42,11 @@ public class LogsActivity extends AppCompatActivity
         Intent i = getIntent();
 
         String title = i.getStringExtra("journalName");
+        int uid = i.getIntExtra("journalUid", 0);
+        if (uid != 0) {
+            journalUid = uid;
+        }
+
         journalName = title;
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(title.toUpperCase() + " LOGS");
@@ -63,7 +66,7 @@ public class LogsActivity extends AppCompatActivity
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
-                    case R.id.journals_item:
+                    case R.id.search_item:
                         //startActivity(new Intent(getApplicationContext(), Search.class));
                         return true;
                     case R.id.connection_item:
@@ -80,7 +83,7 @@ public class LogsActivity extends AppCompatActivity
         logListAdapter = new LogListAdapter( Log.Companion.getItemCallback() , this);
         recyclerView.setAdapter(logListAdapter);
 
-        logsViewModel = new ViewModelProvider(this).get(LogsViewModel.class);
+        logsViewModel = new ViewModelProvider(this, new LogViewModelFactory(this.getApplication(), journalUid)).get(LogsViewModel.class);
         logsViewModel.getLogList().observe(this, new Observer<List<Log>>() {
             @Override
             public void onChanged(List<Log> logs) {
@@ -91,11 +94,8 @@ public class LogsActivity extends AppCompatActivity
         if (i.getStringExtra("newNoteName") != null) {
             String name = i.getStringExtra("newNoteName");
             String info = i.getStringExtra("newNoteInfo");
-            Log log = new Log(null, name, 1, "date...", info, "");
+            Log log = new Log(null, name, journalUid, "date...", info, "");
             logsViewModel.addLog(log);
-
-            //logName = name;
-            //logInfo = info;
         }
     }
 
@@ -111,10 +111,10 @@ public class LogsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelect(Log log) {
+    public void onSelect(int position, String name) {
         Intent intent = new Intent(LogsActivity.this, NoteActivity.class);
 
-        intent.putExtra("logID", log.getUid());
+        intent.putExtra("logName", name);
 
         startActivity(intent);
     }
