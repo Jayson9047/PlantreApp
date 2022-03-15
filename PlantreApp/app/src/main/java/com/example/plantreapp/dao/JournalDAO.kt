@@ -23,5 +23,8 @@ interface JournalDAO {
     @Query("SELECT * FROM journal WHERE uid = :id")
     suspend fun findById(id: Int): List<Journal>
 
+    @Query("SELECT * FROM journal WHERE plant_uid = :plant_uid")
+    suspend fun findByPlantUID(plant_uid: Int): List<Journal>
+
 
 }

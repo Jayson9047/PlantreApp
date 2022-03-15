@@ -1,26 +1,32 @@
 package com.example.plantreapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.WindowManager;
 
-import android.widget.Button;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.plantreapp.connection.ConnBtnActivity;
+import com.example.plantreapp.myPlants.MyPlantsActivity;
+
+/*Splash Screen*/
 
 public class MainActivity extends AppCompatActivity {
-
-    Button ButtonConnectionPage;
-
+    private int SPLASH_TIME = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_splash);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             if(!isTimerServiceRunning()) {
@@ -37,21 +43,28 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
-        ButtonConnectionPage = findViewById(R.id.btnConnPage);
+        // hide actionbar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
-        ButtonConnectionPage.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, ConnectionActivity.class);
-            startActivity(intent);
-        });
+        // run the splash screen for 'SPLASH_TIME' milliseconds
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, ConnBtnActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, SPLASH_TIME);
     }
-
-    public Boolean isTimerServiceRunning(){
+  public Boolean isTimerServiceRunning(){
         @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
             if(TimerService.class.getName().equals(service.service.getClassName())){
                 return true;
+            }else{
+                return false;
             }
         }
-        return false;
     }
 }
