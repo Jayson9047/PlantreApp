@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg3">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".myPlants.AddPlantActivity">
+
+        <EditText
+            android:id="@+id/editPlantName"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="60dp"
+            android:hint="Plant Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/transparent_gray"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/editScifiName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Scifi Name"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editPlantName"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editUri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="URI"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editScifiName"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Description"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            android:lines="4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUri"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editStage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Stage"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editDescription"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editSeedWaterRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Seed Water Rate"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editStage"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editSeedlingWaterRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Seedling Water Rate"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editSeedWaterRate"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMatureWaterRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Mature Water Rate"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editSeedlingWaterRate"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMinSeedMoisture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Min Seed Moisture"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMatureWaterRate"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMaxSeedMoisture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Max Seed Moisture"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMinSeedMoisture"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMinSeedlingMoisture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Min Seedling Moisture"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMaxSeedMoisture"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMaxSeedlingMoisture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Max Seedling Moisture"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMinSeedlingMoisture"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMinMatureMoisture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Min Mature Moisture"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMaxSeedlingMoisture"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editMaxMatureMoisture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:background="@color/transparent_gray"
+            android:hint="Max Mature Moisture"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMinMatureMoisture"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/add_plant_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/aqua"
+            android:text="Add Plant"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMaxMatureMoisture"
+            app:layout_constraintEnd_toStartOf="@id/add_plant_cancel_btn"
+            app:layout_constraintVertical_bias="1"
+            android:width="120dp"/>
+
+        <Button
+            android:id="@+id/add_plant_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/aqua"
+            android:text="Cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMaxMatureMoisture"
+            app:layout_constraintStart_toEndOf="@id/add_plant_btn"
+            app:layout_constraintVertical_bias="1"
+            android:width="120dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

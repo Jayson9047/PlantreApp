@@ -42,7 +42,8 @@
         app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.955" />
+        app:layout_constraintVertical_bias="0.955"
+        android:backgroundTint="@color/aqua"/>
 
     <TextView
         android:id="@+id/text_status"
@@ -70,6 +71,7 @@
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="@+id/bottomNav"
         app:layout_constraintTop_toTopOf="@+id/progessbar_circular"
-        app:layout_constraintVertical_bias="0.876" />
+        app:layout_constraintVertical_bias="0.876"
+        android:backgroundTint="@color/aqua"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

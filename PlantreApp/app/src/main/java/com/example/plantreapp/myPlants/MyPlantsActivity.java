@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
-import com.example.plantreapp.api.APIClient;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
@@ -28,8 +28,7 @@ import java.util.List;
 /*My Plants Screen*/
 
 public class MyPlantsActivity extends AppCompatActivity
-        implements PlantListAdapter.PlantClickInterface,
-        PlantDialog.PlantDialogListener {
+        implements PlantListAdapter.PlantClickInterface {
 
     private PlantListAdapter plantListAdapter;
     private PlantsViewModel plantsViewModel;
@@ -38,6 +37,8 @@ public class MyPlantsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_plants);
+
+        Intent i = getIntent();
 
         // set actionbar title to "my plants"
         ActionBar actionBar = getSupportActionBar();
@@ -74,7 +75,9 @@ public class MyPlantsActivity extends AppCompatActivity
         plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
+
         plantsViewModel = new ViewModelProvider(this).get(PlantsViewModel.class);
+        applyTexts(i);
         plantsViewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
             @Override
             public void onChanged(List<Plant> plants) {
@@ -84,13 +87,12 @@ public class MyPlantsActivity extends AppCompatActivity
     }
 
     public void addItem(View view) {
-        openDialog();
+        OpenAddPlantActivity();
     }
 
-    public void openDialog() {
-        String tag = "Add Plant Dialog";
-        PlantDialog plantDialog = new PlantDialog();
-        plantDialog.show(getSupportFragmentManager(), tag);
+    public void OpenAddPlantActivity() {
+        Intent intent = new Intent(MyPlantsActivity.this, AddPlantActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -106,10 +108,27 @@ public class MyPlantsActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    @Override
-    public void applyTexts(String name, String description) {
-        // To properly Create a new plant we need more values - rate is in hours and moisture are percentages
-        Plant plant = new Plant(null, name, "scifiName", "URI to picture", description, "seed", 12, 48, 168, 80,90, 60, 80,50, 70);
+    //@Override
+    public void applyTexts(Intent i) {
+        PlantInfo plantInfo = i.getParcelableExtra("plantInfo");
+        if (plantInfo == null) return;
+
+        Plant plant = new Plant(null,
+                plantInfo.getName(),
+                plantInfo.getScifiName(),
+                plantInfo.getUri(),
+                plantInfo.getDescription(),
+                plantInfo.getStage(),
+                plantInfo.getSeedWaterRate(),
+                plantInfo.getSeedlingWaterRate(),
+                plantInfo.getMatureWaterRate(),
+                plantInfo.getMinSeedMoisture(),
+                plantInfo.getMaxSeedMoisture(),
+                plantInfo.getMinSeedlingMoisture(),
+                plantInfo.getMaxSeedlingMoisture(),
+                plantInfo.getMinMatureMoisture(),
+                plantInfo.getMaxMatureMoisture());
+
         plantsViewModel.addPlant(plant);
     }
 

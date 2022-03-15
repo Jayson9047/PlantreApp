@@ -13,4 +13,5 @@
     <color name="purple">#673AB7</color>
     <color name="aqua">#00AFA0</color>
     <color name="light_green">#D5FFEA</color>
+    <color name="transparent_gray">#BFEFEFEF</color>
 </resources>

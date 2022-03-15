@@ -18,14 +18,12 @@ import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
-import com.example.plantreapp.myPlants.PlantDialog;
 import com.example.plantreapp.myPlants.PlantListAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements com.example.plantreapp.myPlants.PlantListAdapter.PlantClickInterface,
-        PlantDialog.PlantDialogListener {
+public class SearchActivity extends AppCompatActivity implements com.example.plantreapp.myPlants.PlantListAdapter.PlantClickInterface {
     private SearchViewModel _viewModel;
     private PlantListAdapter _listAdapter;
 
@@ -82,10 +80,6 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
 
     public void refreshList(View view) {
         _viewModel.refreshList();
-    }
-    @Override
-    public void applyTexts(String name, String description) {
-
     }
 
     @Override

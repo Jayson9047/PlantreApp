@@ -24,7 +24,6 @@ public class PlantsViewModel extends AndroidViewModel {
     private MutableLiveData<List<Plant>> mutableLiveData;
     private PlantRepository repository;
 
-
     public PlantsViewModel(@NonNull Application application) {
         super(application);
         repository = new PlantRepository(application.getApplicationContext());
