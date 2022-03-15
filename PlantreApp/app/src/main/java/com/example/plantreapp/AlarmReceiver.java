@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
 
@@ -18,9 +19,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // TODO Auto-generated method stub
         int channelID = 100;
+        Bundle bundle = intent.getExtras();
 
         //change this to the actual plant name
-        String contentText = "Plant Name 1";
+        String contentText = bundle.getString("PlantName");
 
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager) context
@@ -32,12 +34,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
-
         //add a way to open the plant page on click
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(context, "waterPlantChannel")
                 .setSmallIcon(R.drawable.water_plant_icon)
-                .setContentTitle("Time to water")
+                .setContentTitle("Watering")
                 .setContentText(contentText)
                 .setWhen(when)
                 .setContentIntent(pendingIntent);
