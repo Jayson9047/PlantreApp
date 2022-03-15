@@ -6,14 +6,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
+// Class : PlantInfo
+// Desc : emulate data in database, allows users to hold some of the plant information on the phone
 @Entity
-data class Plant (
+data class PlantInfo (
     @PrimaryKey(autoGenerate = true) val uid:Int?,
-    @ColumnInfo(name = "sensor_uuid") val sensor_uuid: String?,// Unique ID of sensor attached to
-    @ColumnInfo(name = "nickname") val nickname: String?, // A psuedonym for the plant
-    @ColumnInfo(name = "name") val name: String?, // common name of plant - rose, pink tulip, climax blueberry, autumncrisp grape
+    @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "scientific_name") val scientificName: String?,
-    @ColumnInfo(name = "picture") val picture: String?, // URI to the picture
+    @ColumnInfo(name = "picture") val picture: String?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "stage") val stage: String?, // seed - seedling - mature
     @ColumnInfo(name = "seed_water_rate") val seed_water_rate: Int, // How often to water - in days 1-7, generally seedlings need a higher rate
@@ -31,12 +31,12 @@ data class Plant (
         return Objects.hash(uid, name, description)
     }
     companion object {
-        var itemCallback: DiffUtil.ItemCallback<Plant> = object : DiffUtil.ItemCallback<Plant>() {
-            override fun areItemsTheSame(oldItem: Plant, newItem: Plant): Boolean {
+        var itemCallback: DiffUtil.ItemCallback<PlantInfo> = object : DiffUtil.ItemCallback<PlantInfo>() {
+            override fun areItemsTheSame(oldItem: PlantInfo, newItem: PlantInfo): Boolean {
                 return oldItem.uid == newItem.uid
             }
 
-            override fun areContentsTheSame(oldItem: Plant, newItem: Plant): Boolean {
+            override fun areContentsTheSame(oldItem: PlantInfo, newItem: PlantInfo): Boolean {
                 return oldItem == newItem
             }
         }

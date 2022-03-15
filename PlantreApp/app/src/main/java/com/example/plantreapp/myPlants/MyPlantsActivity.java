@@ -113,7 +113,7 @@ public class MyPlantsActivity extends AppCompatActivity
         PlantInfo plantInfo = i.getParcelableExtra("plantInfo");
         if (plantInfo == null) return;
 
-        Plant plant = new Plant(null,
+        Plant plant = new Plant(null,null, null,
                 plantInfo.getName(),
                 plantInfo.getScifiName(),
                 plantInfo.getUri(),
