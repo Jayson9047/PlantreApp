@@ -9,13 +9,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.room.util.StringUtil;
 
 import com.example.plantreapp.entities.Timer;
+import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.repository.TimerRepository;
 
 import java.text.ParseException;
@@ -23,13 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
 import kotlin.coroutines.EmptyCoroutineContext;
-
 
 public class TimerService extends Service {
     public static final long HOUR = 3600*1000; // in milli-seconds.
@@ -37,12 +34,13 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         final boolean[] sendNotification = {false};
+        Intent sendNot = new Intent(this, AlarmReceiver.class);
         // Get Data
         TimerRepository repoTimer = new TimerRepository(this);
 
         // No Return value is give by the db function - may need to change
         // Insert Test Timer on Plant
-        Timer timer = new Timer(null, "", 1, (float) 10.9, new Date().toString(), new Date().toString(), new Date().toString());
+        Timer timer = new Timer(null, "Sunflower", 1, (float) 10.9, new Date().toString(), new Date().toString(), new Date().toString());
 
         repoTimer.insert(timer, new Continuation<Unit>() {
             @NonNull
@@ -52,16 +50,12 @@ public class TimerService extends Service {
             }
 
             @Override
-            public void resumeWith(@NonNull Object o) {
-                //Important to watch which functions are called. Some repo functions return
-                // nothing... but you can still do stuff after a call has been completed
-            }
+            public void resumeWith(@NonNull Object o) { }
         });
 
         new Thread(
                 () -> {
                     while(true){
-
                     // Getting All Timers on a single Plant - could be changed to log, journal, etc.
                     repoTimer.findByPlantUID(1, new Continuation<List<? extends Timer>>() {
                         @NonNull
@@ -76,34 +70,18 @@ public class TimerService extends Service {
                             List<Timer> timers = (List<Timer>) o;
 
                             for (Timer timer: timers) {
-
-                                // Getting rid of some of the extra stuff we don't need, some println is // out, can get rid of them later
-                                String tempSubLastNotify = timer.getLastNotified().substring(4);
-                                String tempSubCurrentTime = timer.getCurrentTime().substring(4);
-
-                             //   System.out.println("TEMP SUB LAST NOTIFY: " + tempSubLastNotify);
-                             //   System.out.println("TEMP SUB CURRENT TIME: " + tempSubCurrentTime);
-
-                                String subLastNotify = tempSubLastNotify.substring(0, tempSubLastNotify.length() - 9);
-                                String subCurrentTime = tempSubCurrentTime.substring(0, tempSubCurrentTime.length() - 9);
-
-                             //   System.out.println("SUB LAST NOTIFY: " + subLastNotify);
-                             //   System.out.println("SUB CURRENT TIME: " + subCurrentTime);
-
                                 //set the date format
-                                SimpleDateFormat formatter = new SimpleDateFormat("MMM dd HH:mm:ss");
+                                SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
                                 try {
                                     // Set the strings in a data object
-                                    Date lastNotifyDate = formatter.parse(subLastNotify);
-                                    Date currentTimeDate = formatter.parse(subCurrentTime);
-
-                                  //  System.out.println("LAST DATE: " + lastNotifyDate);
-                                   // System.out.println("CURRENT DATE: " + currentTimeDate);
+                                    Date lastNotifyDate = formatter.parse(timer.getLastNotified());
+                                    Date currentTimeDate = formatter.parse(timer.getCurrentTime());
+                                    float waterRate = timer.getWaterRate() * HOUR;
 
                                     // add the watering rate, will be the actual plant one later
-                                    Date lastNotifyPlusRate = new Date(lastNotifyDate.getTime() + 10000);
-                                  //  System.out.println("SUM: " + lastNotifyPlusRate);
+                                    Date lastNotifyPlusRate = new Date(lastNotifyDate.getTime() + 5000);
+                                    System.out.println("NEW WATER RATE AFTER HOUR: " + lastNotifyPlusRate);
 
                                     // compare and see if it's ready to plant
                                     if(currentTimeDate.compareTo(lastNotifyPlusRate) == 1){
@@ -118,8 +96,8 @@ public class TimerService extends Service {
 
                                             @Override
                                             public void resumeWith(@NonNull Object o) {
-                                               // System.out.println("Notification Sent");
                                                 sendNotification[0] = true;
+                                                sendNot.putExtra("PlantName", timer.getName());
                                             }
                                         });
                                     }else{
@@ -134,7 +112,6 @@ public class TimerService extends Service {
 
                                             @Override
                                             public void resumeWith(@NonNull Object o) {
-                                                //System.out.println("Updated timer, no notify");
                                                 sendNotification[0] = false;
                                             }
                                         });
@@ -149,8 +126,7 @@ public class TimerService extends Service {
                     //sends the actual notification with the eventual actual plant name and ability to click on it
                         if(sendNotification[0]){
                             Calendar calendar = Calendar.getInstance();
-                            Intent intent1 = new Intent(this, AlarmReceiver.class);
-                            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, sendNot, PendingIntent.FLAG_UPDATE_CURRENT);
                             AlarmManager am = (AlarmManager)this.getSystemService(ALARM_SERVICE);
                             am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1, pendingIntent);
                         }
