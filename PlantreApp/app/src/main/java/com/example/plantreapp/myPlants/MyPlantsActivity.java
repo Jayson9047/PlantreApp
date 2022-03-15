@@ -102,8 +102,26 @@ public class MyPlantsActivity extends AppCompatActivity
 
     @Override
     public void onSelect(Plant plant) {
-        Intent intent = new Intent(MyPlantsActivity.this, JournalsActivity.class);
-        intent.putExtra("plantName", plant.getName());
+        PlantInfo info = new PlantInfo(
+                plant.getName(),
+                plant.getScientificName(),
+                null,
+                plant.getDescription(),
+                plant.getStage(),
+                plant.getSeed_water_rate(),
+                plant.getSeedling_water_rate(),
+                plant.getMature_water_rate(),
+                plant.getMin_seed_moisture(),
+                plant.getMax_seed_moisture(),
+                plant.getMin_seedling_moisture(),
+                plant.getMax_seedling_moisture(),
+                plant.getMin_mature_moisture(),
+                plant.getMax_mature_moisture()
+        );
+        //todo: change ints to floats
+
+        Intent intent = new Intent(MyPlantsActivity.this, PlantInfoActivity.class);
+        intent.putExtra("plantInfo", info);
         intent.putExtra("plantUid", plant.getUid());
         startActivity(intent);
     }
@@ -119,9 +137,9 @@ public class MyPlantsActivity extends AppCompatActivity
                 plantInfo.getUri(),
                 plantInfo.getDescription(),
                 plantInfo.getStage(),
-                plantInfo.getSeedWaterRate(),
-                plantInfo.getSeedlingWaterRate(),
-                plantInfo.getMatureWaterRate(),
+                Math.round(plantInfo.getSeedWaterRate()),
+                Math.round(plantInfo.getSeedlingWaterRate()),
+                Math.round(plantInfo.getMatureWaterRate()),
                 plantInfo.getMinSeedMoisture(),
                 plantInfo.getMaxSeedMoisture(),
                 plantInfo.getMinSeedlingMoisture(),

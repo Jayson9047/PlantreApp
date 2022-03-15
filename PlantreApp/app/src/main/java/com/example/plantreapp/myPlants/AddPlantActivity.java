@@ -49,7 +49,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name, scifiName, uri, description, stage;
-                int seedWaterRate, seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture,
+                float seedWaterRate, seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture,
                         minSeedlingMoisture, maxSeedlingMoisture, minMatureMoisture, maxMatureMoisture;
 
                 name = nameTxt.getText().toString();
@@ -59,15 +59,15 @@ public class AddPlantActivity extends AppCompatActivity {
                 stage = stageTxt.getText().toString();
                 // todo: validate user input for integers (null or negative)
                 try {
-                    seedWaterRate = Integer.parseInt(seedWaterRateTxt.getText().toString());
-                    seedlingWaterRate = Integer.parseInt(seedlingWaterRateTxt.getText().toString());
-                    matureWaterRate = Integer.parseInt(matureWaterRateTxt.getText().toString());
-                    minSeedMoisture = Integer.parseInt(minSeedMoistureTxt.getText().toString());
-                    maxSeedMoisture = Integer.parseInt(maxSeedMoistureTxt.getText().toString());
-                    minSeedlingMoisture = Integer.parseInt(minSeedlingMoistureTxt.getText().toString());
-                    maxSeedlingMoisture = Integer.parseInt(maxSeedlingMoistureTxt.getText().toString());
-                    minMatureMoisture = Integer.parseInt(minMatureMoistureTxt.getText().toString());
-                    maxMatureMoisture = Integer.parseInt(maxMatureMoistureTxt.getText().toString());
+                    seedWaterRate = Float.parseFloat(seedWaterRateTxt.getText().toString());
+                    seedlingWaterRate = Float.parseFloat(seedlingWaterRateTxt.getText().toString());
+                    matureWaterRate = Float.parseFloat(matureWaterRateTxt.getText().toString());
+                    minSeedMoisture = Float.parseFloat(minSeedMoistureTxt.getText().toString());
+                    maxSeedMoisture = Float.parseFloat(maxSeedMoistureTxt.getText().toString());
+                    minSeedlingMoisture = Float.parseFloat(minSeedlingMoistureTxt.getText().toString());
+                    maxSeedlingMoisture = Float.parseFloat(maxSeedlingMoistureTxt.getText().toString());
+                    minMatureMoisture = Float.parseFloat(minMatureMoistureTxt.getText().toString());
+                    maxMatureMoisture = Float.parseFloat(maxMatureMoistureTxt.getText().toString());
                 } catch (Exception e) {
                     Toast.makeText(AddPlantActivity.this, String.valueOf("Fields Must Not be Blank"), Toast.LENGTH_SHORT).show();
                     return;
@@ -93,20 +93,3 @@ public class AddPlantActivity extends AppCompatActivity {
         });
     }
 }
-
-/*
-        name
-        scifiName
-        uri
-        description
-        stage
-        seedWaterRate
-        seedlingWaterRate
-        matureWaterRate
-        minSeedMoisture
-        maxSeedMoisture
-        minSeedlingMoisture
-        maxSeedlingMoisture
-        minMatureMoisture
-        maxMatureMoisture
-* */
