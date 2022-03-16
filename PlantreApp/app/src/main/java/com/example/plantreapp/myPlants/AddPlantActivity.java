@@ -57,7 +57,7 @@ public class AddPlantActivity extends AppCompatActivity {
                 uri = uriTxt.getText().toString();
                 description = descriptionTxt.getText().toString();
                 stage = stageTxt.getText().toString();
-                // todo: validate user input for integers (null or negative)
+                // todo: validate user input for integers
                 try {
                     seedWaterRate = Float.parseFloat(seedWaterRateTxt.getText().toString());
                     seedlingWaterRate = Float.parseFloat(seedlingWaterRateTxt.getText().toString());
@@ -69,7 +69,7 @@ public class AddPlantActivity extends AppCompatActivity {
                     minMatureMoisture = Float.parseFloat(minMatureMoistureTxt.getText().toString());
                     maxMatureMoisture = Float.parseFloat(maxMatureMoistureTxt.getText().toString());
                 } catch (Exception e) {
-                    Toast.makeText(AddPlantActivity.this, String.valueOf("Fields Must Not be Blank"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPlantActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

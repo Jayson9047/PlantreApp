@@ -29,7 +29,7 @@ public class AddLogActivity extends AppCompatActivity {
         journalName = i.getStringExtra("journalName");
 
         logName = findViewById(R.id.log_name);
-        logInfo = findViewById(R.id.log_info);
+        logInfo = findViewById(R.id.log_description);
         addBtn = findViewById(R.id.add_log_btn);
 
         addBtn.setOnClickListener(new View.OnClickListener() {

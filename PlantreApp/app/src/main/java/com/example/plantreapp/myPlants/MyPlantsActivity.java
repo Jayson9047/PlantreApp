@@ -3,6 +3,7 @@ package com.example.plantreapp.myPlants;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -75,7 +77,6 @@ public class MyPlantsActivity extends AppCompatActivity
         plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
-
         plantsViewModel = new ViewModelProvider(this).get(PlantsViewModel.class);
         applyTexts(i);
         plantsViewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
@@ -118,7 +119,6 @@ public class MyPlantsActivity extends AppCompatActivity
                 plant.getMin_mature_moisture(),
                 plant.getMax_mature_moisture()
         );
-        //todo: change ints to floats
 
         Intent intent = new Intent(MyPlantsActivity.this, PlantInfoActivity.class);
         intent.putExtra("plantInfo", info);
@@ -150,7 +150,11 @@ public class MyPlantsActivity extends AppCompatActivity
         plantsViewModel.addPlant(plant);
     }
 
-    /*@Override
+
+
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
@@ -170,5 +174,5 @@ public class MyPlantsActivity extends AppCompatActivity
         });
 
         return super.onCreateOptionsMenu(menu);
-    }*/
+    }
 }

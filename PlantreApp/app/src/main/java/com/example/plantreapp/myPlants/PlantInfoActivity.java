@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
-import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.journals.JournalsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,7 +29,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         Intent i = getIntent();
         PlantInfo info = i.getParcelableExtra("plantInfo");
 
-        plantInfoTxt = findViewById(R.id.plantInfoTxt);
+        plantInfoTxt = findViewById(R.id.plantInfoTextView);
         plantInfoTxt.setText(info.getName());
         plantInfoTxt.append("\r\n"+ info.getScifiName() + "\r\n");
         //plantInfoTxt.append(info.getUri() + "\r\n");
