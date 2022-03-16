@@ -5,12 +5,12 @@ import android.os.Parcelable;
 
 public class PlantInfo implements Parcelable {
     private String name, scifiName, uri, description, stage;
-    private int seedWaterRate, seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture,
+    private float seedWaterRate, seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture,
             minSeedlingMoisture, maxSeedlingMoisture, minMatureMoisture, maxMatureMoisture;
 
-    public PlantInfo(String name, String scifiName, String uri, String description, String stage, int seedWaterRate,
-                     int seedlingWaterRate, int matureWaterRate, int minSeedMoisture, int maxSeedMoisture,
-                     int minSeedlingMoisture, int maxSeedlingMoisture, int minMatureMoisture, int maxMatureMoisture) {
+    public PlantInfo(String name, String scifiName, String uri, String description, String stage, float seedWaterRate,
+                     float seedlingWaterRate, float matureWaterRate, float minSeedMoisture, float maxSeedMoisture,
+                     float minSeedlingMoisture, float maxSeedlingMoisture, float minMatureMoisture, float maxMatureMoisture) {
         this.name = name;
         this.scifiName = scifiName;
         this.uri = uri;
@@ -33,15 +33,15 @@ public class PlantInfo implements Parcelable {
         uri = in.readString();
         description = in.readString();
         stage = in.readString();
-        seedWaterRate = in.readInt();
-        seedlingWaterRate = in.readInt();
-        matureWaterRate = in.readInt();
-        minSeedMoisture = in.readInt();
-        maxSeedMoisture = in.readInt();
-        minSeedlingMoisture = in.readInt();
-        maxSeedlingMoisture = in.readInt();
-        minMatureMoisture = in.readInt();
-        maxMatureMoisture = in.readInt();
+        seedWaterRate = in.readFloat();
+        seedlingWaterRate = in.readFloat();
+        matureWaterRate = in.readFloat();
+        minSeedMoisture = in.readFloat();
+        maxSeedMoisture = in.readFloat();
+        minSeedlingMoisture = in.readFloat();
+        maxSeedlingMoisture = in.readFloat();
+        minMatureMoisture = in.readFloat();
+        maxMatureMoisture = in.readFloat();
     }
 
     public static final Creator<PlantInfo> CREATOR = new Creator<PlantInfo>() {
@@ -96,75 +96,75 @@ public class PlantInfo implements Parcelable {
         this.stage = stage;
     }
 
-    public int getSeedWaterRate() {
+    public float getSeedWaterRate() {
         return seedWaterRate;
     }
 
-    public void setSeedWaterRate(int seedWaterRate) {
+    public void setSeedWaterRate(float seedWaterRate) {
         this.seedWaterRate = seedWaterRate;
     }
 
-    public int getSeedlingWaterRate() {
+    public float getSeedlingWaterRate() {
         return seedlingWaterRate;
     }
 
-    public void setSeedlingWaterRate(int seedlingWaterRate) {
+    public void setSeedlingWaterRate(float seedlingWaterRate) {
         this.seedlingWaterRate = seedlingWaterRate;
     }
 
-    public int getMatureWaterRate() {
+    public float getMatureWaterRate() {
         return matureWaterRate;
     }
 
-    public void setMatureWaterRate(int matureWaterRate) {
+    public void setMatureWaterRate(float matureWaterRate) {
         this.matureWaterRate = matureWaterRate;
     }
 
-    public int getMinSeedMoisture() {
+    public float getMinSeedMoisture() {
         return minSeedMoisture;
     }
 
-    public void setMinSeedMoisture(int minSeedMoisture) {
+    public void setMinSeedMoisture(float minSeedMoisture) {
         this.minSeedMoisture = minSeedMoisture;
     }
 
-    public int getMaxSeedMoisture() {
+    public float getMaxSeedMoisture() {
         return maxSeedMoisture;
     }
 
-    public void setMaxSeedMoisture(int maxSeedMoisture) {
+    public void setMaxSeedMoisture(float maxSeedMoisture) {
         this.maxSeedMoisture = maxSeedMoisture;
     }
 
-    public int getMinSeedlingMoisture() {
+    public float getMinSeedlingMoisture() {
         return minSeedlingMoisture;
     }
 
-    public void setMinSeedlingMoisture(int minSeedlingMoisture) {
+    public void setMinSeedlingMoisture(float minSeedlingMoisture) {
         this.minSeedlingMoisture = minSeedlingMoisture;
     }
 
-    public int getMaxSeedlingMoisture() {
+    public float getMaxSeedlingMoisture() {
         return maxSeedlingMoisture;
     }
 
-    public void setMaxSeedlingMoisture(int maxSeedlingMoisture) {
+    public void setMaxSeedlingMoisture(float maxSeedlingMoisture) {
         this.maxSeedlingMoisture = maxSeedlingMoisture;
     }
 
-    public int getMinMatureMoisture() {
+    public float getMinMatureMoisture() {
         return minMatureMoisture;
     }
 
-    public void setMinMatureMoisture(int minMatureMoisture) {
+    public void setMinMatureMoisture(float minMatureMoisture) {
         this.minMatureMoisture = minMatureMoisture;
     }
 
-    public int getMaxMatureMoisture() {
+    public float getMaxMatureMoisture() {
         return maxMatureMoisture;
     }
 
-    public void setMaxMatureMoisture(int maxMatureMoisture) {
+    public void setMaxMatureMoisture(float maxMatureMoisture) {
         this.maxMatureMoisture = maxMatureMoisture;
     }
 
@@ -180,14 +180,31 @@ public class PlantInfo implements Parcelable {
         parcel.writeString(uri);
         parcel.writeString(description);
         parcel.writeString(stage);
-        parcel.writeInt(seedWaterRate);
-        parcel.writeInt(seedlingWaterRate);
-        parcel.writeInt(matureWaterRate);
-        parcel.writeInt(minSeedMoisture);
-        parcel.writeInt(maxSeedMoisture);
-        parcel.writeInt(minSeedlingMoisture);
-        parcel.writeInt(maxSeedlingMoisture);
-        parcel.writeInt(minMatureMoisture);
-        parcel.writeInt(maxMatureMoisture);
+        parcel.writeFloat(seedWaterRate);
+        parcel.writeFloat(seedlingWaterRate);
+        parcel.writeFloat(matureWaterRate);
+        parcel.writeFloat(minSeedMoisture);
+        parcel.writeFloat(maxSeedMoisture);
+        parcel.writeFloat(minSeedlingMoisture);
+        parcel.writeFloat(maxSeedlingMoisture);
+        parcel.writeFloat(minMatureMoisture);
+        parcel.writeFloat(maxMatureMoisture);
     }
 }
+
+        /*
+        name
+        scifiName
+        uri
+        description
+        stage
+        seedWaterRate
+        seedlingWaterRate
+        matureWaterRate
+        minSeedMoisture
+        maxSeedMoisture
+        minSeedlingMoisture
+        maxSeedlingMoisture
+        minMatureMoisture
+        maxMatureMoisture
+        */

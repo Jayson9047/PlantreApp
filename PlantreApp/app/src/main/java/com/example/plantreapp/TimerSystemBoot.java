@@ -8,7 +8,6 @@ import android.os.Build;
 public class TimerSystemBoot extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             Intent timerService = new Intent(context, TimerService.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

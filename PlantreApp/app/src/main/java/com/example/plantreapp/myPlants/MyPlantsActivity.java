@@ -3,6 +3,7 @@ package com.example.plantreapp.myPlants;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -75,7 +77,6 @@ public class MyPlantsActivity extends AppCompatActivity
         plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
         recyclerView.setAdapter(plantListAdapter);
 
-
         plantsViewModel = new ViewModelProvider(this).get(PlantsViewModel.class);
         applyTexts(i);
         plantsViewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
@@ -102,8 +103,25 @@ public class MyPlantsActivity extends AppCompatActivity
 
     @Override
     public void onSelect(Plant plant) {
-        Intent intent = new Intent(MyPlantsActivity.this, JournalsActivity.class);
-        intent.putExtra("plantName", plant.getName());
+        PlantInfo info = new PlantInfo(
+                plant.getName(),
+                plant.getScientificName(),
+                null,
+                plant.getDescription(),
+                plant.getStage(),
+                plant.getSeed_water_rate(),
+                plant.getSeedling_water_rate(),
+                plant.getMature_water_rate(),
+                plant.getMin_seed_moisture(),
+                plant.getMax_seed_moisture(),
+                plant.getMin_seedling_moisture(),
+                plant.getMax_seedling_moisture(),
+                plant.getMin_mature_moisture(),
+                plant.getMax_mature_moisture()
+        );
+
+        Intent intent = new Intent(MyPlantsActivity.this, PlantInfoActivity.class);
+        intent.putExtra("plantInfo", info);
         intent.putExtra("plantUid", plant.getUid());
         startActivity(intent);
     }
@@ -119,9 +137,9 @@ public class MyPlantsActivity extends AppCompatActivity
                 plantInfo.getUri(),
                 plantInfo.getDescription(),
                 plantInfo.getStage(),
-                plantInfo.getSeedWaterRate(),
-                plantInfo.getSeedlingWaterRate(),
-                plantInfo.getMatureWaterRate(),
+                Math.round(plantInfo.getSeedWaterRate()),
+                Math.round(plantInfo.getSeedlingWaterRate()),
+                Math.round(plantInfo.getMatureWaterRate()),
                 plantInfo.getMinSeedMoisture(),
                 plantInfo.getMaxSeedMoisture(),
                 plantInfo.getMinSeedlingMoisture(),
@@ -132,7 +150,11 @@ public class MyPlantsActivity extends AppCompatActivity
         plantsViewModel.addPlant(plant);
     }
 
-    /*@Override
+
+
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
@@ -152,5 +174,5 @@ public class MyPlantsActivity extends AppCompatActivity
         });
 
         return super.onCreateOptionsMenu(menu);
-    }*/
+    }
 }
