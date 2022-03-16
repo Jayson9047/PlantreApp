@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantreApp">
         <activity
+            android:name=".myPlants.PlantInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".myPlants.AddPlantActivity"
             android:exported="false" />
         <activity

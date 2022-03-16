@@ -19,9 +19,6 @@ import kotlin.coroutines.EmptyCoroutineContext;
 
 // Extends AndroidViewModel to get the Context
 public class PlantsViewModel extends AndroidViewModel {
-
-    private static final String TAG = "PlantViewModel";
-    private MutableLiveData<List<Plant>> mutableLiveData;
     private PlantRepository repository;
 
     public PlantsViewModel(@NonNull Application application) {
@@ -35,7 +32,6 @@ public class PlantsViewModel extends AndroidViewModel {
         return repository.getPlants();
     }
 
-    // this position variable can it be replaced with the uuid from the list?
     public void deletePlant(Plant plant) {
         repository.delete(plant, new Continuation<Unit>() {
             @NonNull

@@ -19,6 +19,7 @@ import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Log;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public class LogsActivity extends AppCompatActivity
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
                         return true;
                     case R.id.search_item:
-                        //startActivity(new Intent(getApplicationContext(), Search.class));
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                         return true;
                     case R.id.connection_item:
                         startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
@@ -111,10 +112,13 @@ public class LogsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelect(int position, String name) {
+    public void onSelect(Log log) {
         Intent intent = new Intent(LogsActivity.this, NoteActivity.class);
 
-        intent.putExtra("logName", name);
+        intent.putExtra("logName", log.getName());
+        intent.putExtra("logDescription", log.getDescription());
+
+        // todo: send entire log object
 
         startActivity(intent);
     }

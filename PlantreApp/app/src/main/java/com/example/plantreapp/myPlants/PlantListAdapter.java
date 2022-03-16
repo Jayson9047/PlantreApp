@@ -37,8 +37,6 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
     }
 
     class PlantViewHolder extends RecyclerView.ViewHolder {
-
-        private static final String TAG = "PlantViewHolder";
         TextView nameTextView, descriptionTextView;
         ImageButton deleteButton;
         RelativeLayout plantItem;

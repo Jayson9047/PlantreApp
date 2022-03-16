@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -43,9 +44,12 @@ public class JournalsActivity extends AppCompatActivity
         String title = i.getStringExtra("plantName");
         plantUid = i.getIntExtra("plantUid", 0);
 
+        //
+        //Toast.makeText(JournalsActivity.this, , Toast.LENGTH_SHORT).show();
+        //
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(title.toUpperCase() + " JOURNALS");
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.my_plants_item);
