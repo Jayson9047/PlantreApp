@@ -6,7 +6,7 @@ import com.example.plantreapp.entities.PlantInfo
 
 @Dao
 interface PlantInfoDAO {
-    @Query("SELECT * FROM plant")
+    @Query("SELECT * FROM plantInfo")
     suspend fun getAll(): List<PlantInfo>
 
     @Insert
