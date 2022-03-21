@@ -51,45 +51,45 @@ public class AddPlantActivity extends AppCompatActivity {
 
         // setting stage items
         stageTxt = findViewById(R.id.stage_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, stages);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, stages);
         stageTxt.setAdapter(adapterItems);
 
         // setting seed water rate items
         seedWaterRateTxt = findViewById(R.id.seed_water_rate_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, seedWaterRates);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, seedWaterRates);
         seedWaterRateTxt.setAdapter(adapterItems);
 
         // seedling water rate items...
         seedlingWaterRateTxt = findViewById(R.id.seedling_water_rate_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, seedlingWaterRates);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, seedlingWaterRates);
         seedlingWaterRateTxt.setAdapter(adapterItems);
 
         matureWaterRateTxt = findViewById(R.id.mature_water_rate_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, matureWaterRates);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, matureWaterRates);
         matureWaterRateTxt.setAdapter(adapterItems);
 
         minSeedMoistureTxt = findViewById(R.id.min_seed_moisture_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, minSeedMoistures);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, minSeedMoistures);
         minSeedMoistureTxt.setAdapter(adapterItems);
 
         maxSeedMoistureTxt = findViewById(R.id.max_seed_moisture_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, maxSeedMoistures);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, maxSeedMoistures);
         maxSeedMoistureTxt.setAdapter(adapterItems);
 
         minSeedlingMoistureTxt = findViewById(R.id.min_seedling_moisture_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, minSeedlingMoistures);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, minSeedlingMoistures);
         minSeedlingMoistureTxt.setAdapter(adapterItems);
 
         maxSeedlingMoistureTxt = findViewById(R.id.max_seedling_moisture_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, maxSeedlingMoistures);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, maxSeedlingMoistures);
         maxSeedlingMoistureTxt.setAdapter(adapterItems);
 
         minMatureMoistureTxt = findViewById(R.id.min_mature_moisture_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, minMatureMoistures);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, minMatureMoistures);
         minMatureMoistureTxt.setAdapter(adapterItems);
 
         maxMatureMoistureTxt = findViewById(R.id.max_mature_moisture_txt);
-        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item, maxMatureMoistures);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, maxMatureMoistures);
         maxMatureMoistureTxt.setAdapter(adapterItems);
 
         // add btn click listener
