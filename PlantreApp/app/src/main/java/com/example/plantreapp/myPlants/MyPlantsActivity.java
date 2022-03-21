@@ -25,7 +25,9 @@ import com.example.plantreapp.journals.JournalsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /*My Plants Screen*/
 
@@ -34,6 +36,7 @@ public class MyPlantsActivity extends AppCompatActivity
 
     private PlantListAdapter plantListAdapter;
     private PlantsViewModel plantsViewModel;
+    private List<Plant> tmpPlantList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class MyPlantsActivity extends AppCompatActivity
             @Override
             public void onChanged(List<Plant> plants) {
                 plantListAdapter.submitList(plants);
+                tmpPlantList = plantListAdapter.getCurrentList();
             }
         });
     }
@@ -148,11 +152,8 @@ public class MyPlantsActivity extends AppCompatActivity
                 plantInfo.getMaxMatureMoisture());
 
         plantsViewModel.addPlant(plant);
+        //tmpPlantList = plantListAdapter.getCurrentList();
     }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -168,6 +169,21 @@ public class MyPlantsActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.length() == 0) {
+                    plantListAdapter.submitList(tmpPlantList);
+                }
+                else {
+                    List<Plant> plants = plantListAdapter.getCurrentList();
+                    List<Plant> filtered = new ArrayList<Plant>();
+
+                    for (Plant plant : plants) {
+                        if (plant.getName().toLowerCase().contains(newText.toLowerCase())){
+                            filtered.add(plant);
+                        }
+                    }
+
+                    plantListAdapter.submitList(filtered);
+                }
 
                 return false;
             }
