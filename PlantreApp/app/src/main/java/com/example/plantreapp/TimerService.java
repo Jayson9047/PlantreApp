@@ -1,25 +1,24 @@
 package com.example.plantreapp;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.example.plantreapp.entities.Timer;
-import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.repository.TimerRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,10 +30,9 @@ import kotlin.coroutines.EmptyCoroutineContext;
 public class TimerService extends Service {
     public static final long HOUR = 3600*1000; // in milli-seconds.
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        final boolean[] sendNotification = {false};
-        Intent sendNot = new Intent(this, AlarmReceiver.class);
         // Get Data
         TimerRepository repoTimer = new TimerRepository(this);
 
@@ -71,20 +69,23 @@ public class TimerService extends Service {
 
                             for (Timer timer: timers) {
                                 //set the date format
-                                SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
                                 try {
                                     // Set the strings in a data object
                                     Date lastNotifyDate = formatter.parse(timer.getLastNotified());
                                     Date currentTimeDate = formatter.parse(timer.getCurrentTime());
+                                    System.out.println("CURRENT: " + timer.getCurrentTime());
                                     float waterRate = timer.getWaterRate() * HOUR;
 
                                     // add the watering rate, will be the actual plant one later
+                                    assert lastNotifyDate != null;
                                     Date lastNotifyPlusRate = new Date(lastNotifyDate.getTime() + 5000);
                                     System.out.println("NEW WATER RATE AFTER HOUR: " + lastNotifyPlusRate);
 
                                     // compare and see if it's ready to plant
-                                    if(currentTimeDate.compareTo(lastNotifyPlusRate) == 1){
+                                    assert currentTimeDate != null;
+                                    if(currentTimeDate.compareTo(lastNotifyPlusRate) >= 0){
                                         //Update the time because we did a notification
                                         Timer tempTimer = new Timer(timer.getUid(), timer.getName(), timer.getPlantUID(), timer.getWaterRate(), new Date().toString(), new Date().toString(), timer.getDateCreated());
                                         repoTimer.update(tempTimer, new Continuation<Unit>() {
@@ -96,8 +97,13 @@ public class TimerService extends Service {
 
                                             @Override
                                             public void resumeWith(@NonNull Object o) {
-                                                sendNotification[0] = true;
-                                                sendNot.putExtra("PlantName", timer.getName());
+                                                NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(getApplicationContext(), "waterPlantChannel")
+                                                        .setSmallIcon(R.drawable.water_plant_icon)
+                                                        .setContentTitle("Watering")
+                                                        .setContentText(timer.getName());
+
+                                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                notificationManager.notify(0, notifyBuilder.build());
                                             }
                                         });
                                     }else{
@@ -112,7 +118,6 @@ public class TimerService extends Service {
 
                                             @Override
                                             public void resumeWith(@NonNull Object o) {
-                                                sendNotification[0] = false;
                                             }
                                         });
                                     }
@@ -122,14 +127,6 @@ public class TimerService extends Service {
                             }
                         }
                     });
-
-                    //sends the actual notification with the eventual actual plant name and ability to click on it
-                        if(sendNotification[0]){
-                            Calendar calendar = Calendar.getInstance();
-                            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, sendNot, PendingIntent.FLAG_UPDATE_CURRENT);
-                            AlarmManager am = (AlarmManager)this.getSystemService(ALARM_SERVICE);
-                            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1, pendingIntent);
-                        }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -142,12 +139,11 @@ public class TimerService extends Service {
         //Create the timer service so it can keep running
         final String CHANNELID = "Timer Service";
         NotificationChannel channel;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(
-                    CHANNELID,
-                    CHANNELID,
-                    NotificationManager.IMPORTANCE_LOW
-            );
+        channel = new NotificationChannel(
+                CHANNELID,
+                CHANNELID,
+                NotificationManager.IMPORTANCE_LOW
+        );
 
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
@@ -156,7 +152,6 @@ public class TimerService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher_background);
 
         startForeground(1111, notification.build());
-        }
         return super.onStartCommand(intent, flags, startId);
     }
 
