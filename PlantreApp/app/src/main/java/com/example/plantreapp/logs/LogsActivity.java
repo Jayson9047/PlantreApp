@@ -3,12 +3,14 @@ package com.example.plantreapp.logs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -17,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
+import com.example.plantreapp.entities.Journal;
 import com.example.plantreapp.entities.Log;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*Logs Screen*/
@@ -34,6 +38,8 @@ public class LogsActivity extends AppCompatActivity
 
     private String journalName;
     private static int journalUid;
+
+    private List<Log> tmpLogList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +95,7 @@ public class LogsActivity extends AppCompatActivity
             @Override
             public void onChanged(List<Log> logs) {
                 logListAdapter.submitList(logs);
+                tmpLogList = logListAdapter.getCurrentList();
             }
         });
 
@@ -121,5 +128,44 @@ public class LogsActivity extends AppCompatActivity
         // todo: send entire log object
 
         startActivity(intent);
+    }
+
+
+    // search logs
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() == 0) {
+                    logListAdapter.submitList(tmpLogList);
+                }
+                else {
+                    List<Log> logs = logListAdapter.getCurrentList();
+                    List<Log> filtered = new ArrayList<Log>();
+
+                    for (Log log : logs) {
+                        if (log.getName().toLowerCase().contains(newText.toLowerCase())){
+                            filtered.add(log);
+                        }
+                    }
+
+                    logListAdapter.submitList(filtered);
+                }
+
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 }

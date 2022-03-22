@@ -17,31 +17,37 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 /*Splash Screen*/
 
 public class MainActivity extends AppCompatActivity {
     private int SPLASH_TIME = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            if(!isTimerServiceRunning()) {
-                Intent timerIntent = new Intent(this, TimerService.class);
-                startForegroundService(timerIntent);
-            }
-            CharSequence name = "waterPlantChannel";
-            String description = "Channel for watering the plants";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("waterPlantChannel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        /*
+         * if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+         * if(!isTimerServiceRunning()) {
+         * Intent timerIntent = new Intent(this, TimerService.class);
+         * startForegroundService(timerIntent);
+         * }
+         * CharSequence name = "waterPlantChannel";
+         * String description = "Channel for watering the plants";
+         * int importance = NotificationManager.IMPORTANCE_DEFAULT;
+         * NotificationChannel channel = new NotificationChannel("waterPlantChannel",
+         * name, importance);
+         * channel.setDescription(description);
+         * 
+         * NotificationManager notificationManager =
+         * getSystemService(NotificationManager.class);
+         * notificationManager.createNotificationChannel(channel);
+         * }
+         */
 
         // hide actionbar
         ActionBar actionBar = getSupportActionBar();
@@ -51,20 +57,25 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, ConnBtnActivity.class);
+                Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
                 startActivity(intent);
                 finish();
             }
         }, SPLASH_TIME);
     }
-    public Boolean isTimerServiceRunning(){
-        @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
-            if(TimerService.class.getName().equals(service.service.getClassName())){
-                return true;
-            }
-        }
-        return false;
-    }
 
+    /*
+     * public Boolean isTimerServiceRunning(){
+     * 
+     * @SuppressLint("ServiceCast") ActivityManager activityManager =
+     * (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+     * for(ActivityManager.RunningServiceInfo service:
+     * activityManager.getRunningServices(Integer.MAX_VALUE)){
+     * if(TimerService.class.getName().equals(service.service.getClassName())){
+     * return true;
+     * }
+     * }
+     * return false;
+     * }
+     */
 }
