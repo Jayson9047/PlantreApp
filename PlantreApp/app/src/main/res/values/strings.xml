@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">PlantreApp</string>
+
+    //Headings
+    <string name="heading_one">Welcome to Plantre!</string>
+    <string name="heading_two">Heading 2</string>
+    <string name="heading_three">Heading 3</string>
+    <string name="heading_fourth">Heading 4</string>
+
+    //Description
+    <string name="desc_one">Description 1…</string>
+    <string name="desc_two">Description 2…</string>
+    <string name="desc_three">Description 3…</string>
+    <string name="desc_fourth">Description 4…</string>
 </resources>

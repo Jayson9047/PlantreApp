@@ -2,6 +2,7 @@ package com.example.plantreapp.journals;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,11 +20,13 @@ import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Journal;
+import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.logs.LogsActivity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*Journals Screen*/
@@ -34,6 +38,8 @@ public class JournalsActivity extends AppCompatActivity
     private JournalListAdapter journalListAdapter;
     private com.example.plantreapp.journals.JournalsViewModel journalsViewModel;
     private int plantUid;
+
+    private List<Journal> tmpJournalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,7 @@ public class JournalsActivity extends AppCompatActivity
             @Override
             public void onChanged(List<Journal> journals) {
                 journalListAdapter.submitList(journals);
+                tmpJournalList = journalListAdapter.getCurrentList();
             }
         });
     }
@@ -118,5 +125,44 @@ public class JournalsActivity extends AppCompatActivity
     public void applyTexts(String name, String description) {
         Journal journal = new Journal(null, name, description, true, "date...", plantUid);
         journalsViewModel.addJournal(journal);
+    }
+
+
+    // search journals
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() == 0) {
+                    journalListAdapter.submitList(tmpJournalList);
+                }
+                else {
+                    List<Journal> journals = journalListAdapter.getCurrentList();
+                    List<Journal> filtered = new ArrayList<Journal>();
+
+                    for (Journal journal : journals) {
+                        if (journal.getName().toLowerCase().contains(newText.toLowerCase())){
+                            filtered.add(journal);
+                        }
+                    }
+
+                    journalListAdapter.submitList(filtered);
+                }
+
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 }

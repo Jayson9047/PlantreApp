@@ -14,4 +14,12 @@
     <color name="aqua">#00AFA0</color>
     <color name="light_green">#D5FFEA</color>
     <color name="transparent_gray">#BFEFEFEF</color>
+
+    //onboarding colors
+    <color name="background">#F0F4F3</color>
+    <color name="buttontext">#50C2C9</color>
+
+    //indicator color
+    <color name="inactive">#C4C4C4</color>
+    <color name="active">#50C2C9</color>
 </resources>

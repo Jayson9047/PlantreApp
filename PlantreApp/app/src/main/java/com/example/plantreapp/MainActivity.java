@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 /*Splash Screen*/
 
@@ -51,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, ConnBtnActivity.class);
+                Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
                 startActivity(intent);
                 finish();
             }
         }, SPLASH_TIME);
     }
+
     /*public Boolean isTimerServiceRunning(){
         @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){

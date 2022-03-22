@@ -155,6 +155,7 @@ public class MyPlantsActivity extends AppCompatActivity
         //tmpPlantList = plantListAdapter.getCurrentList();
     }
 
+    // search plants
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
