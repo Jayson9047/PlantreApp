@@ -12,7 +12,7 @@ data class Plant (
     @ColumnInfo(name = "sensor_uuid") val sensor_uuid: String?,// Unique ID of sensor attached to
     @ColumnInfo(name = "nickname") val nickname: String?, // A psuedonym for the plant
     @ColumnInfo(name = "name") val name: String?, // common name of plant - rose, pink tulip, climax blueberry, autumncrisp grape
-    @ColumnInfo(name = "scientific_name") val scientificName: String?,
+    @ColumnInfo(name = "scientific_name") val scientific_name: String?,
     @ColumnInfo(name = "picture") val picture: String?, // URI to the picture
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "stage") val stage: String?, // seed - seedling - mature

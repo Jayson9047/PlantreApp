@@ -13,7 +13,7 @@ data class PlantInfo (
     @PrimaryKey(autoGenerate = true) val uid:Int?,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "scientific_name") val scientificName: String?,
-    @ColumnInfo(name = "picture") val picture: String?,
+    @ColumnInfo(name = "pictures") val pictures: List<String>?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "stage") val stage: String?, // seed - seedling - mature
     @ColumnInfo(name = "seed_water_rate") val seed_water_rate: Int, // How often to water - in days 1-7, generally seedlings need a higher rate

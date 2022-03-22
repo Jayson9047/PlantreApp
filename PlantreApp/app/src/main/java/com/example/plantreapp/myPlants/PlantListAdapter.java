@@ -1,5 +1,6 @@
 package com.example.plantreapp.myPlants;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
 
         public void bind(Plant plant) {
             nameTextView.setText(plant.getName());
-            descriptionTextView.setText(plant.getDescription());
+            descriptionTextView.setText(plant.getScientific_name());
         }
     }
 

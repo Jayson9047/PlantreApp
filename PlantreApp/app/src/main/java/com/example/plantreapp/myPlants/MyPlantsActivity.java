@@ -105,7 +105,7 @@ public class MyPlantsActivity extends AppCompatActivity
     public void onSelect(Plant plant) {
         PlantInfo info = new PlantInfo(
                 plant.getName(),
-                plant.getScientificName(),
+                plant.getScientific_name(),
                 null,
                 plant.getDescription(),
                 plant.getStage(),
