@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="sample"
-    android:textColor="@color/white"
+    android:textColor="@color/darkGray"
     android:padding="10dp"
     android:layout_margin="2dp"
     >
+    <!-- todo: Fix colours -->
 </TextView>

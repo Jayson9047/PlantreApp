@@ -1,11 +1,9 @@
 package com.example.plantreapp.onBoarding;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,8 +36,9 @@ public class OnBoardingActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextbtn);
         skipBtn = findViewById(R.id.skipButton);
 
+        // todo: uncomment code
         // check if the onboarding ui has been shown before
-        SharedPreferences settings=getSharedPreferences("prefs",0);
+        /*SharedPreferences settings=getSharedPreferences("prefs",0);
         boolean firstRun=settings.getBoolean("firstRun",false);
         if (!firstRun) // running for the first time
         {
@@ -52,7 +51,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             Intent i = new Intent(OnBoardingActivity.this, ConnBtnActivity.class);
             startActivity(i);
             finish();
-        }
+        }*/
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
