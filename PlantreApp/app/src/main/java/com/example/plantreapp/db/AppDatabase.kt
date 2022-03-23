@@ -13,7 +13,7 @@ import com.example.plantreapp.entities.Log
 import com.example.plantreapp.entities.Plant
 import com.example.plantreapp.entities.Timer
 
-@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class], version = 11)
+@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class], version = 12)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDAO
     abstract fun journalDao(): JournalDAO

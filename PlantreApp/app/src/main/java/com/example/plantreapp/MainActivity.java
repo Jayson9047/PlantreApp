@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, SPLASH_TIME);
     }
+
     public Boolean isTimerServiceRunning(){
         @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){

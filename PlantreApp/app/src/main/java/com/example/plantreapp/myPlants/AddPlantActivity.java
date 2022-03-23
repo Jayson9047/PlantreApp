@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.TimerService;
 import com.example.plantreapp.logs.AddLogActivity;
 import com.example.plantreapp.logs.LogsActivity;
 

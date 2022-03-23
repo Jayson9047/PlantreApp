@@ -3,7 +3,13 @@ package com.example.plantreapp.connection;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -14,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
+import com.example.plantreapp.TimerService;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

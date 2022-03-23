@@ -25,5 +25,4 @@ interface PlantDAO {
 
     @Query("SELECT * FROM plant WHERE uid = :id")
     suspend fun findById(id: Int) : List<Plant>
-
 }
