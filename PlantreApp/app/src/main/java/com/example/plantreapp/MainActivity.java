@@ -1,13 +1,6 @@
 package com.example.plantreapp;
 
-import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -15,8 +8,6 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.plantreapp.connection.ConnBtnActivity;
-import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 /*Splash Screen*/
