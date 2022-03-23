@@ -325,7 +325,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 }
 
 
-                arrayAdapter = new ArrayAdapter(ConnectionActivity.this, android.R.layout.simple_list_item_1, devices);
+                arrayAdapter = new ArrayAdapter(ConnectionActivity.this, R.layout.rows, devices);
                 emp.setAdapter(arrayAdapter);
 
 
