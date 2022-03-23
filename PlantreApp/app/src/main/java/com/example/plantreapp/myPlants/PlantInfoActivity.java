@@ -31,19 +31,19 @@ public class PlantInfoActivity extends AppCompatActivity {
 
         plantInfoTxt = findViewById(R.id.plantInfoTextView);
         plantInfoTxt.setText(info.getName());
-        plantInfoTxt.append("\r\n Scientific Name: "+ info.getScifiName() + "\r\n");
+        plantInfoTxt.append("\r\nScientific Name: "+ info.getScifiName() + "\r\n");
         //plantInfoTxt.append(info.getUri() + "\r\n");
         plantInfoTxt.append("Description: " + info.getDescription() + "\r\n");
         plantInfoTxt.append("Stage: " + info.getStage() + "\r\n");
         plantInfoTxt.append("Seed Water Rate: " + info.getSeedWaterRate() + "\r\n");
         plantInfoTxt.append("Seedling Water Rate: " + info.getSeedlingWaterRate() + "\r\n");
         plantInfoTxt.append("Mature Water Rate: " + info.getMatureWaterRate() + "\r\n");
-        plantInfoTxt.append("Min Seed Moisture: " + info.getMinSeedMoisture() + "\r\n");
-        plantInfoTxt.append("Max Seed Moisture: " + info.getMaxSeedMoisture() + "\r\n");
-        plantInfoTxt.append("Min Seedling Moisture: " + info.getMinSeedlingMoisture() + "\r\n");
-        plantInfoTxt.append("Max Seedling Moisture: " + info.getMaxSeedlingMoisture() + "\r\n");
-        plantInfoTxt.append("Min Mature Moisture: " + info.getMinMatureMoisture() + "\r\n");
-        plantInfoTxt.append("Max Mature Moisture: " + info.getMaxMatureMoisture() + "\r\n");
+        plantInfoTxt.append("Min Seed Moisture: " + info.getMinSeedMoisture() + "%\r\n");
+        plantInfoTxt.append("Max Seed Moisture: " + info.getMaxSeedMoisture() + "%\r\n");
+        plantInfoTxt.append("Min Seedling Moisture: " + info.getMinSeedlingMoisture() + "%\r\n");
+        plantInfoTxt.append("Max Seedling Moisture: " + info.getMaxSeedlingMoisture() + "%\r\n");
+        plantInfoTxt.append("Min Mature Moisture: " + info.getMinMatureMoisture() + "%\r\n");
+        plantInfoTxt.append("Max Mature Moisture: " + info.getMaxMatureMoisture() + "%\r\n");
 
         // set actionbar title to "my plants"
         ActionBar actionBar = getSupportActionBar();

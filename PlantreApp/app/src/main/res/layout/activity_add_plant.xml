@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_marginTop="40dp"
-            android:layout_marginHorizontal="60dp"
+            android:layout_marginHorizontal="50dp"
             android:hint="Plant Name"
             android:lines="1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,7 @@
             android:id="@+id/editScifiName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
+            android:layout_marginHorizontal="50dp"
             android:background="@color/transparent_gray"
             android:hint="Scifi Name"
             android:lines="1"
@@ -47,7 +47,7 @@
             android:id="@+id/editUri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
+            android:layout_marginHorizontal="50dp"
             android:background="@color/transparent_gray"
             android:hint="URI"
             android:lines="1"
@@ -63,7 +63,7 @@
             android:id="@+id/editDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
+            android:layout_marginHorizontal="50dp"
             android:background="@color/transparent_gray"
             android:hint="Description"
             android:paddingHorizontal="12dp"
@@ -86,7 +86,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editDescription"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/stage_txt"
                 android:layout_width="match_parent"
@@ -105,7 +105,7 @@
             app:layout_constraintTop_toBottomOf="@+id/StageLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/seed_water_rate_txt"
                 android:layout_width="match_parent"
@@ -124,8 +124,8 @@
             app:layout_constraintTop_toBottomOf="@+id/SeedWaterRateLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
-                android:textSize="18sp"
+                android:layout_marginHorizontal="50dp"
+                android:textSize="20sp"
                 android:id="@+id/seedling_water_rate_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/SeedlingWaterRateLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/mature_water_rate_txt"
                 android:layout_width="match_parent"
@@ -156,13 +156,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Min Seed Moisture"
+            android:hint="Min Seed Moisture (%)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MatureWaterRateLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/min_seed_moisture_txt"
                 android:layout_width="match_parent"
@@ -175,13 +175,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Max Seed Moisture"
+            android:hint="Max Seed Moisture (%)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MinSeedMoistureLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/max_seed_moisture_txt"
                 android:layout_width="match_parent"
@@ -194,13 +194,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Min Seedling Moisture"
+            android:hint="Min Seedling Moisture (%)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MaxSeedMoistureLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/min_seedling_moisture_txt"
                 android:layout_width="match_parent"
@@ -213,13 +213,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Max Seedling Moisture"
+            android:hint="Max Seedling Moisture (%)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MinSeedlingMoistureLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/max_seedling_moisture_txt"
                 android:layout_width="match_parent"
@@ -232,13 +232,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Min Mature Moisture"
+            android:hint="Min Mature Moisture (%)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MaxSeedlingMoistureLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/min_mature_moisture_txt"
                 android:layout_width="match_parent"
@@ -251,13 +251,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Max Mature Moisture"
+            android:hint="Max Mature Moisture (%)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MinMatureMoistureLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
             <AutoCompleteTextView
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="50dp"
                 android:textSize="20sp"
                 android:id="@+id/max_mature_moisture_txt"
                 android:layout_width="match_parent"
@@ -278,7 +278,7 @@
             app:layout_constraintTop_toBottomOf="@+id/MaxMatureMoistureLayout"
             app:layout_constraintEnd_toStartOf="@id/add_plant_cancel_btn"
             app:layout_constraintVertical_bias="1"
-            android:width="120dp"/>
+            android:width="130dp"/>
 
         <Button
             android:id="@+id/add_plant_cancel_btn"
@@ -293,7 +293,7 @@
             app:layout_constraintTop_toBottomOf="@+id/MaxMatureMoistureLayout"
             app:layout_constraintStart_toEndOf="@id/add_plant_btn"
             app:layout_constraintVertical_bias="1"
-            android:width="120dp"/>
+            android:width="130dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
