@@ -32,7 +32,7 @@
             android:name=".myPlants.AddPlantActivity"
             android:exported="false" />
         <activity
-            android:name=".connection.ConnBtnActivity"
+            android:name=".connection.WaterInfoActivity"
             android:exported="false" />
         <activity
             android:name=".progressBar.MyProgressBar"

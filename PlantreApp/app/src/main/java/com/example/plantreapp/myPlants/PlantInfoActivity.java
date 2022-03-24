@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.plantreapp.R;
-import com.example.plantreapp.connection.ConnBtnActivity;
+import com.example.plantreapp.connection.WaterInfoActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.journals.JournalsActivity;
 import com.example.plantreapp.search.SearchActivity;
@@ -58,7 +58,7 @@ public class PlantInfoActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_item:
-                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        startActivity(new Intent(getApplicationContext(), WaterInfoActivity.class));
                         return true;
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));

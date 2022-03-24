@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.plantreapp.R;
-import com.example.plantreapp.connection.ConnBtnActivity;
+import com.example.plantreapp.connection.WaterInfoActivity;
 
 public class OnBoardingActivity extends AppCompatActivity {
     ViewPager mSlideViewPager;
@@ -70,7 +70,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                 if (getItem(0) < 3)
                     mSlideViewPager.setCurrentItem(getItem(1),true);
                 else {
-                    Intent i = new Intent(OnBoardingActivity.this, ConnBtnActivity.class);
+                    Intent i = new Intent(OnBoardingActivity.this, WaterInfoActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -80,7 +80,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(OnBoardingActivity.this, ConnBtnActivity.class);
+                Intent i = new Intent(OnBoardingActivity.this, WaterInfoActivity.class);
                 startActivity(i);
                 finish();
             }

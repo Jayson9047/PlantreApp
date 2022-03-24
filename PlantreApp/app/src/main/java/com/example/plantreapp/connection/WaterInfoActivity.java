@@ -1,41 +1,27 @@
 package com.example.plantreapp.connection;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.MenuItem;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.example.plantreapp.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.plantreapp.R;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-
-import android.os.Handler;
-import android.widget.ProgressBar;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import java.util.ArrayList;
 
 
-public class ConnBtnActivity extends AppCompatActivity {
+public class WaterInfoActivity extends AppCompatActivity {
 
     //Button ButtonConnectionPage;
 
-    Button ButtonPump, ButtonPump2;
+    /*Button ButtonPump, ButtonPump2;
     ProgressBar circular_pro, circular_pro2;
 
     TextView status, status2;
@@ -50,7 +36,14 @@ public class ConnBtnActivity extends AppCompatActivity {
     boolean pumpOn, secondPumpOn;
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
-    boolean udpConnected = false;
+    boolean udpConnected = false;*/
+
+
+
+    //Declare Recyclerview , Adapter and ArrayList
+    private RecyclerView recyclerView;
+    private WaterInfoAdapter adapter;
+    private ArrayList<WaterInfo> waterInfoArrayList;
 
 
     @Override
@@ -61,11 +54,17 @@ public class ConnBtnActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.home_item);
 
-        OkHttpClient httpClient = new OkHttpClient();
+
+        // init recycler view
+        initView();
+
+
+
+        /*OkHttpClient httpClient = new OkHttpClient();
         String firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         String secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
         Request request1 = new Request.Builder().url(firstWaterPumpUrl).build();
-        Request request2 = new Request.Builder().url(secondWaterPumpUrl).build();
+        Request request2 = new Request.Builder().url(secondWaterPumpUrl).build();*/
 
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -89,7 +88,7 @@ public class ConnBtnActivity extends AppCompatActivity {
             }
         });
 
-        circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
+        /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
         circular_pro2 = (ProgressBar)findViewById(R.id.progessbar_circular2);
 
         status= (TextView)findViewById(R.id.text_status);
@@ -178,7 +177,7 @@ public class ConnBtnActivity extends AppCompatActivity {
                 }
 
             }
-        }).start();
+        }).start();*/
 /*
         clickme_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +227,8 @@ public class ConnBtnActivity extends AppCompatActivity {
 */
 
     }
-    @Override
+
+    /*@Override
     protected void onStart() {
         udpServerThread = new UdpServerThread(UdpServerPORT);
         udpServerThread.start();
@@ -242,7 +242,7 @@ public class ConnBtnActivity extends AppCompatActivity {
         }
 
         super.onStop();
-    }
+    }*/
 
     /*private void updatePrompt(final String prompt){
         runOnUiThread(new Runnable() {
@@ -253,7 +253,7 @@ public class ConnBtnActivity extends AppCompatActivity {
         });
     }*/
 
-    private class UdpServerThread extends Thread{
+    /*private class UdpServerThread extends Thread{
 
         int serverPort;
         DatagramSocket socket;
@@ -372,5 +372,23 @@ public class ConnBtnActivity extends AppCompatActivity {
                 }
             }
         }
+    }*/
+
+    private void initView() {
+        // Initialize RecyclerView and set Adapter
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        waterInfoArrayList = new ArrayList<>();
+        adapter = new WaterInfoAdapter(this, waterInfoArrayList);
+        recyclerView.setAdapter(adapter);
+        createList();
+    }
+
+    private void createList() {
+        //data to be shown in list
+        waterInfoArrayList.add(new WaterInfo( 25 ,"Water Plant" , "Percentage"));
+        waterInfoArrayList.add(new WaterInfo( 50 ,"Water Plant" , "Percentage"));
+        waterInfoArrayList.add(new WaterInfo( 75 ,"Water Plant" , "Percentage"));
+        waterInfoArrayList.add(new WaterInfo( 100 ,"Water Plant" , "Percentage"));
     }
 }

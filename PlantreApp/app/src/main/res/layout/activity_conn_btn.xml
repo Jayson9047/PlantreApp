@@ -5,40 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img"
-    tools:context=".connection.ConnBtnActivity">
+    tools:context=".connection.WaterInfoActivity">
 
-
-    <ProgressBar
-        android:id="@+id/progessbar_circular"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="269dp"
-        android:layout_height="295dp"
-        android:layout_gravity="center"
-        android:background="@drawable/circle_shape"
-        android:indeterminate="false"
-        android:progress="100"
-        android:progressDrawable="@drawable/circular_progressbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
-
-    <ProgressBar
-        android:id="@+id/progessbar_circular2"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="269dp"
-        android:layout_height="295dp"
-        android:layout_gravity="center"
-        android:background="@drawable/circle_shape"
-        android:indeterminate="false"
-        android:progress="100"
-        android:progressDrawable="@drawable/circular_progressbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.713" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNav"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:layout_editor_absoluteY="1dp"
+        tools:listitem="@layout/recycler_row_sensor"
+        android:layout_marginBottom="65dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -50,62 +29,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu" />
-
-    <Button
-        android:id="@+id/btnSendPump"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/aqua"
-        android:text="Water Plant 1"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.438" />
-
-    <Button
-        android:id="@+id/btnSendPump2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/aqua"
-        android:text="Water Plant 2"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.937"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
-
-    <TextView
-        android:id="@+id/text_status"
-        android:layout_width="224dp"
-        android:layout_height="56dp"
-        android:layout_gravity="center"
-        android:text="Percentage"
-        android:textAlignment="center"
-        android:textColor="#0A1A6C"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progessbar_circular"
-        app:layout_constraintEnd_toEndOf="@+id/progessbar_circular"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="@+id/progessbar_circular"
-        app:layout_constraintTop_toTopOf="@+id/progessbar_circular"
-        app:layout_constraintVertical_bias="0.482" />
-
-
-    <TextView
-        android:id="@+id/text_status2"
-        android:layout_width="224dp"
-        android:layout_height="56dp"
-        android:layout_gravity="center"
-        android:text="Sensor 2"
-        android:textAlignment="center"
-        android:textColor="#0A1A6C"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progessbar_circular2"
-        app:layout_constraintEnd_toEndOf="@+id/progessbar_circular2"
-        app:layout_constraintStart_toStartOf="@+id/progessbar_circular2"
-        app:layout_constraintTop_toBottomOf="@+id/progessbar_circular" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

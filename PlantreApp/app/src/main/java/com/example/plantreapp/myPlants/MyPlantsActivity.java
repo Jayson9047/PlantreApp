@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -18,16 +17,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
-import com.example.plantreapp.connection.ConnBtnActivity;
+import com.example.plantreapp.connection.WaterInfoActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
-import com.example.plantreapp.journals.JournalsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /*My Plants Screen*/
 
@@ -58,7 +55,7 @@ public class MyPlantsActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_item:
-                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        startActivity(new Intent(getApplicationContext(), WaterInfoActivity.class));
                         return true;
                     case R.id.my_plants_item:
                         return true;
