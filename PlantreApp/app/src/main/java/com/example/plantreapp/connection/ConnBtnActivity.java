@@ -1,26 +1,20 @@
 package com.example.plantreapp.connection;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-
-import android.view.MenuItem;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
 import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
-import com.example.plantreapp.TimerService;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,9 +24,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-
-import android.os.Handler;
-import android.widget.ProgressBar;
 
 
 public class ConnBtnActivity extends AppCompatActivity {
@@ -50,8 +41,8 @@ public class ConnBtnActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
     //TextView textViewPrompt;
-    boolean pumpOn;
-    static final int UdpServerPORT = 4445;
+     public static boolean pumpOn;
+     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
 
     @Override

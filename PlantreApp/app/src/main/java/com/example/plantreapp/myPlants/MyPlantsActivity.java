@@ -107,9 +107,13 @@ public class MyPlantsActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onDelete(Plant plant) {
         plantsViewModel.deletePlant(plant);
+        Intent deletePlant = new Intent(this, TimerService.class);
+        deletePlant.putExtra("deletedPlant", plant.getName());
+        startForegroundService(deletePlant);
     }
 
     @Override

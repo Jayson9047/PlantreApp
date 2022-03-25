@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
@@ -21,6 +20,7 @@ import com.example.plantreapp.entities.Timer;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.repository.TimerRepository;
+import com.example.plantreapp.connection.ConnBtnActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,18 +35,18 @@ import kotlin.coroutines.EmptyCoroutineContext;
 
 public class TimerService extends Service {
     public static final long HOUR = 3600*1000; // in milli-seconds.
-
+    public static int PLANTUIDAMOUNT = 0;
     @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Get Data
         TimerRepository repoTimer = new TimerRepository(this);
         PlantRepository repoPlant = new PlantRepository(this);
-        Timer[] timer = new Timer[1000];
-        int[] plantUIDS = new int[1000];
+        Timer[] timer = new Timer[1];
+        int[] plantUIDS = new int[256];
+        String deletePlant = intent.getStringExtra("deletedPlant");
 
         for (int x = 0; x < 1000; x++) {
-            int finalX = x;
             repoPlant.findById(x, new Continuation<List<? extends Plant>>() {
                 @NonNull
                 @Override
@@ -57,27 +57,17 @@ public class TimerService extends Service {
                 @Override
                 public void resumeWith(@NonNull Object o) {
                     List<Plant> plants = (List<Plant>) o;
-                    for(Plant plant : plants) {
-                        timer[finalX] = new Timer(null, Objects.requireNonNull(plant.getName()), plant.getUid(), plant.getStage(), plant.getSeedling_water_rate(), plant.getSeed_water_rate(), plant.getMature_water_rate(), new Date().toString(), new Date().toString(), new Date().toString());
-                        if (plant.getUid() == timer[finalX].getPlantUID()) {
-                            for (int j = 0; j < timer.length; j++) {
-                                for (int k = j + 1; k < timer.length; k++) {
-                                    if(timer[k] != null && timer[j] != null) {
-                                        if (k != j && timer[k].getName().compareTo(timer[j].getName()) == 0) {
-                                            timer[j] = null;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (!plants.isEmpty()) {
+                        Plant plant = plants.get(0);
+                        timer[0] = new Timer(null, Objects.requireNonNull(plant.getName()), plant.getUid(), plant.getStage(), plant.getSeedling_water_rate(), plant.getSeed_water_rate(), plant.getMature_water_rate(), new Date().toString(), new Date().toString(), new Date().toString());
                     }
                 }
             });
         }
 
-        for(int i = 0; i < 1000; i++) {
-            if(timer[i] != null) {
-                repoTimer.insert(timer[i], new Continuation<Unit>() {
+        if(deletePlant == null) {
+            if (timer[0] != null) {
+                repoTimer.insert(timer[0], new Continuation<Unit>() {
                     @NonNull
                     @Override
                     public CoroutineContext getContext() {
@@ -85,10 +75,40 @@ public class TimerService extends Service {
                     }
 
                     @Override
-                    public void resumeWith(@NonNull Object o) {}
+                    public void resumeWith(@NonNull Object o) {
+                    }
                 });
-                plantUIDS[i] = timer[i].getPlantUID();
+                plantUIDS[PLANTUIDAMOUNT] = timer[0].getPlantUID();
+                PLANTUIDAMOUNT++;
             }
+        }else{
+            repoTimer.findByName(deletePlant, new Continuation<List<? extends Timer>>() {
+                @Override
+                public void resumeWith(@NonNull Object o) {
+                    List<Timer> timers = (List<Timer>) o;
+                    for (int i = 0; i < timers.size(); i++) {
+                        timer[0] = timers.get(i);
+                        if (deletePlant.equals(timer[0].getName())) {
+                            repoTimer.delete(timer[0], new Continuation<Unit>() {
+                                @NonNull
+                                @Override
+                                public CoroutineContext getContext() {
+                                    return EmptyCoroutineContext.INSTANCE;
+                                }
+
+                                @Override
+                                public void resumeWith(@NonNull Object o) {}
+                            });
+                        }
+                    }
+                }
+
+                @NonNull
+                @Override
+                public CoroutineContext getContext() {
+                    return EmptyCoroutineContext.INSTANCE;
+                }
+            });
         }
 
         new Thread(
@@ -128,7 +148,7 @@ public class TimerService extends Service {
                                                     waterRateStage = 1000f;
                                                 }
 
-                                                int waterRate = Math.round(waterRateStage * 1000);
+                                                int waterRate = Math.round(waterRateStage * HOUR);
 
                                                 // add the watering rate, will be the actual plant one later
                                                 assert lastNotifyDate != null;
@@ -161,24 +181,7 @@ public class TimerService extends Service {
                                                             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                                             int id = (int) System.currentTimeMillis();
                                                             notificationManager.notify(id, notifyBuilder.build());
-
-                                                            /*
-
-
-
-
-
-                                                            Put the water pump activation here
-
-
-
-
-
-
-
-
-                                                            */
-
+                                                            ConnBtnActivity.pumpOn = true;
                                                         }
                                                     });
                                                 } else {
