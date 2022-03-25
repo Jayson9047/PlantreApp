@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.plantreapp.dao.*
 import com.example.plantreapp.entities.*
 
-@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, PlantInfo::class], version = 13)
+@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, PlantInfo::class], version = 14)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDAO
     abstract fun journalDao(): JournalDAO

@@ -1,7 +1,7 @@
 package com.example.plantreapp.api
 
 import android.content.Context
-import com.example.plantreapp.entities.Plant
+import com.example.plantreapp.entities.PlantInfo
 import com.example.plantreapp.repository.PlantRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -16,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLSession
 
 data class ResponsePlants(
-    val data: List<Plant>
+    val data: List<PlantInfo>
 )
 
 class APIClient(context: Context) {
@@ -32,7 +32,7 @@ class APIClient(context: Context) {
 
 
     suspend fun loadPlants() = withContext(Dispatchers.IO) {
-        var list = CompletableDeferred<List<Plant>>();
+        var list = CompletableDeferred<List<PlantInfo>>();
 
             val request = Request.Builder().url("https://plantre.azurewebsites.net/api/plant").build()
             instance?.newCall(request)?.execute().use { response ->
