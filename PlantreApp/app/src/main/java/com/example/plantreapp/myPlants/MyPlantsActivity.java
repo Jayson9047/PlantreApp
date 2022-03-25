@@ -130,29 +130,32 @@ public class MyPlantsActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    //@Override
+    // updating plants in plants view model
     public void applyTexts(Intent i) {
         PlantInfo plantInfo = i.getParcelableExtra("plantInfo");
-        if (plantInfo == null) return;
+        if (plantInfo != null) {
+            Plant plant = new Plant(null,
+                    null,
+                    null,
+                    plantInfo.getName(),
+                    plantInfo.getScifiName(),
+                    plantInfo.getUri(),
+                    plantInfo.getDescription(),
+                    plantInfo.getStage(),
+                    Math.round(plantInfo.getSeedWaterRate()),
+                    Math.round(plantInfo.getSeedlingWaterRate()),
+                    Math.round(plantInfo.getMatureWaterRate()),
+                    plantInfo.getMinSeedMoisture(),
+                    plantInfo.getMaxSeedMoisture(),
+                    plantInfo.getMinSeedlingMoisture(),
+                    plantInfo.getMaxSeedlingMoisture(),
+                    plantInfo.getMinMatureMoisture(),
+                    plantInfo.getMaxMatureMoisture()
+            );
 
-        Plant plant = new Plant(null,null, null,
-                plantInfo.getName(),
-                plantInfo.getScifiName(),
-                plantInfo.getUri(),
-                plantInfo.getDescription(),
-                plantInfo.getStage(),
-                Math.round(plantInfo.getSeedWaterRate()),
-                Math.round(plantInfo.getSeedlingWaterRate()),
-                Math.round(plantInfo.getMatureWaterRate()),
-                plantInfo.getMinSeedMoisture(),
-                plantInfo.getMaxSeedMoisture(),
-                plantInfo.getMinSeedlingMoisture(),
-                plantInfo.getMaxSeedlingMoisture(),
-                plantInfo.getMinMatureMoisture(),
-                plantInfo.getMaxMatureMoisture());
+            plantsViewModel.addPlant(plant);
+        }
 
-        plantsViewModel.addPlant(plant);
-        //tmpPlantList = plantListAdapter.getCurrentList();
     }
 
     // search plants

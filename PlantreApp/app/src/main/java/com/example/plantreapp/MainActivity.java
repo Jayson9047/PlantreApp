@@ -1,13 +1,6 @@
 package com.example.plantreapp;
 
-import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -15,8 +8,6 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.plantreapp.connection.ConnBtnActivity;
-import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 /*Splash Screen*/
@@ -64,18 +55,14 @@ public class MainActivity extends AppCompatActivity {
         }, SPLASH_TIME);
     }
 
-    /*
-     * public Boolean isTimerServiceRunning(){
-     * 
-     * @SuppressLint("ServiceCast") ActivityManager activityManager =
-     * (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-     * for(ActivityManager.RunningServiceInfo service:
-     * activityManager.getRunningServices(Integer.MAX_VALUE)){
-     * if(TimerService.class.getName().equals(service.service.getClassName())){
-     * return true;
-     * }
-     * }
-     * return false;
-     * }
-     */
+    /*public Boolean isTimerServiceRunning(){
+        @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
+            if(TimerService.class.getName().equals(service.service.getClassName())){
+                return true;
+            }
+        }
+        return false;
+    }*/
+    //this is test
 }

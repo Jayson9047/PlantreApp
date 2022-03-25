@@ -3,13 +3,13 @@
 
     //Headings
     <string name="heading_one">Welcome to Plantre!</string>
-    <string name="heading_two">Heading 2</string>
-    <string name="heading_three">Heading 3</string>
-    <string name="heading_fourth">Heading 4</string>
+    <string name="heading_two">Pick Your Plants</string>
+    <string name="heading_three">Automate Watering</string>
+    <string name="heading_fourth">Log Your Progress</string>
 
     //Description
-    <string name="desc_one">Description 1…</string>
-    <string name="desc_two">Description 2…</string>
-    <string name="desc_three">Description 3…</string>
-    <string name="desc_fourth">Description 4…</string>
+    <string name="desc_one"></string>
+    <string name="desc_two">Select from a vast collection of plants from our database or put in your own</string>
+    <string name="desc_three">Plantre will automate the watering process for you, all you have to do is wait for the results</string>
+    <string name="desc_fourth">Write down notes to keep track of your plant</string>
 </resources>

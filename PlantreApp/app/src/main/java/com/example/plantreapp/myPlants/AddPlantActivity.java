@@ -1,8 +1,5 @@
 package com.example.plantreapp.myPlants;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +8,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.R;
 
@@ -126,6 +126,20 @@ public class AddPlantActivity extends AppCompatActivity {
                     maxMatureMoisture = Float.parseFloat(maxMatureMoistureTxt.getText().toString());
                 } catch (Exception e) {
                     Toast.makeText(AddPlantActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // validating user input
+                if (minSeedMoisture > maxSeedMoisture) {
+                    Toast.makeText(AddPlantActivity.this, "Min Seed Moisture can not be greater than Max Seed Moisture", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (minSeedlingMoisture > maxSeedlingMoisture) {
+                    Toast.makeText(AddPlantActivity.this, "Min Seedling Moisture can not be greater than Max Seedling Moisture", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (minMatureMoisture > maxMatureMoisture) {
+                    Toast.makeText(AddPlantActivity.this, "Min Mature-Plant Moisture can not be greater than Max Mature-Plant Moisture", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
