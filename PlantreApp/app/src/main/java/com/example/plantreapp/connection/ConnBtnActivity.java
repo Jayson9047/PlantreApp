@@ -1,8 +1,10 @@
 package com.example.plantreapp.connection;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +17,10 @@ import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
-public class WaterInfoActivity extends AppCompatActivity {
+public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapter.WaterInfoInterface {
 
     //Button ButtonConnectionPage;
 
@@ -379,16 +382,29 @@ public class WaterInfoActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         waterInfoArrayList = new ArrayList<>();
-        adapter = new WaterInfoAdapter(this, waterInfoArrayList);
+        adapter = new WaterInfoAdapter(this, waterInfoArrayList, this);
         recyclerView.setAdapter(adapter);
-        createList();
+        initList(2);
     }
 
-    private void createList() {
-        //data to be shown in list
-        waterInfoArrayList.add(new WaterInfo( 25 ,"Water Plant" , "Percentage"));
-        waterInfoArrayList.add(new WaterInfo( 50 ,"Water Plant" , "Percentage"));
-        waterInfoArrayList.add(new WaterInfo( 75 ,"Water Plant" , "Percentage"));
-        waterInfoArrayList.add(new WaterInfo( 100 ,"Water Plant" , "Percentage"));
+    private void initList(int numItems) {
+        for (int i = 0; i < numItems; i++) {
+            //data to be shown in list
+            waterInfoArrayList.add(new WaterInfo(0, "Water Plant", "Percentage"));
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onBtnClick(int position, WaterInfo waterInfo)
+    {
+        Random r = new Random();
+        int low = 10;
+        int high = 100;
+        int result = r.nextInt(high-low) + low;
+
+        Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+        waterInfo.setPercentage(result);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -20,9 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantreApp">
         <activity
-            android:name=".SelectImageActivity"
-            android:exported="false" />
-        <activity
             android:name=".onBoarding.OnBoardingActivity"
             android:exported="false" />
         <activity
@@ -32,7 +29,7 @@
             android:name=".myPlants.AddPlantActivity"
             android:exported="false" />
         <activity
-            android:name=".connection.WaterInfoActivity"
+            android:name=".connection.ConnBtnActivity"
             android:exported="false" />
         <activity
             android:name=".progressBar.MyProgressBar"

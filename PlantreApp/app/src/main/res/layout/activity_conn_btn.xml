@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img"
-    tools:context=".connection.WaterInfoActivity">
+    tools:context=".connection.ConnBtnActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:layout_editor_absoluteY="1dp"
-        tools:listitem="@layout/recycler_row_sensor"
+        tools:listitem="@layout/recycler_row_conn_btn"
         android:layout_marginBottom="65dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -1,43 +1,31 @@
 package com.example.plantreapp.connection;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
-import java.util.Set;
-import java.util.ArrayList;
-
-import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
-import android.bluetooth.BluetoothDevice;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
+import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.UUID;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.plantreapp.R;
@@ -45,8 +33,16 @@ import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-
-import android.view.MenuItem;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Set;
+import java.util.UUID;
 
 public class ConnectionActivity extends AppCompatActivity {
 
@@ -96,7 +92,7 @@ public class ConnectionActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_item:
-                        startActivity(new Intent(getApplicationContext(), WaterInfoActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
                         return true;
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));

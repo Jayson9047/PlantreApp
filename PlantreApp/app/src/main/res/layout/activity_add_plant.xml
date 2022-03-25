@@ -47,23 +47,30 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"/>
 
-        <EditText
-            android:id="@+id/editUri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:background="@color/transparent_gray"
-            android:hint="URI"
-            android:lines="1"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="12dp"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/plantPic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:srcCompat="@drawable/plant"
+            android:background="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editScifiName"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="50dp"/>
+
+        <Button
+            android:id="@+id/select_img_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/editDescription"
+            app:layout_constraintStart_toEndOf="@+id/plantPic"
+            app:layout_constraintTop_toBottomOf="@+id/editScifiName"
+            android:layout_marginStart="120dp"
+            android:layout_marginEnd="50dp"
+            android:backgroundTint="@color/white"
+            android:text="Select Image"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"/>
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/editDescription"
@@ -78,7 +85,7 @@
             android:lines="4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editUri"
+            app:layout_constraintTop_toBottomOf="@+id/plantPic"
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textColorHint="@color/black"/>

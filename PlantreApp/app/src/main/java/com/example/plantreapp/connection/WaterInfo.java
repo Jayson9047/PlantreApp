@@ -1,21 +1,21 @@
 package com.example.plantreapp.connection;
 
 public class WaterInfo {
-    private int progress;
+    private int percentage;
     private String btnName, text;
 
-    public WaterInfo(int progress, String btnName, String text) {
-        this.progress = progress;
+    public WaterInfo(int percentage, String btnName, String text) {
+        this.percentage = percentage;
         this.btnName = btnName;
         this.text = text;
     }
 
-    public int getProgress() {
-        return progress;
+    public int getPercentage() {
+        return percentage;
     }
 
-    public void setProgress(int progress) {
-        this.progress = progress;
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
     }
 
     public String getBtnName() {
@@ -33,5 +33,4 @@ public class WaterInfo {
     public void setText(String txt) {
         this.text = txt;
     }
-
 }

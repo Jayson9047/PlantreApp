@@ -1,17 +1,17 @@
 package com.example.plantreapp.myPlants;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.plantreapp.R;
-import com.example.plantreapp.connection.WaterInfoActivity;
+import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.journals.JournalsActivity;
 import com.example.plantreapp.search.SearchActivity;
@@ -58,7 +58,7 @@ public class PlantInfoActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_item:
-                        startActivity(new Intent(getApplicationContext(), WaterInfoActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
                         return true;
                     case R.id.my_plants_item:
                         startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
