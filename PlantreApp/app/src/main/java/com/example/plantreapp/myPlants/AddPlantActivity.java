@@ -13,6 +13,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.TimerService;
+import com.example.plantreapp.logs.AddLogActivity;
+import com.example.plantreapp.logs.LogsActivity;
 
 public class AddPlantActivity extends AppCompatActivity {
     private Button addBtn, cancelBtn;

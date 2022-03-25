@@ -10,6 +10,7 @@ import com.example.plantreapp.entities.*
 
 @Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, PlantInfo::class], version = 14)
 @TypeConverters(Converters::class)
+
 abstract class AppDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDAO
     abstract fun journalDao(): JournalDAO
