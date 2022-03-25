@@ -48,7 +48,7 @@ public class ConnBtnActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
     //TextView textViewPrompt;
-    public boolean pumpOn, secondPumpOn;
+    public static boolean pumpOn, secondPumpOn;
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
     boolean udpConnected = false;
