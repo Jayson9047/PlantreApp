@@ -36,6 +36,8 @@ public class AddPlantActivity extends AppCompatActivity {
     private final String[] minMatureMoistures = {"20", "40", "60", "80", "100"};
     private final String[] maxMatureMoistures = {"20", "40", "60", "80", "100"};
 
+    private PlantInfo plantInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,11 @@ public class AddPlantActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Add Plant");
+
+        // Check if plant info is being passed in
+        Intent intent = new Intent();
+        plantInfo = intent.getParcelableExtra("PLANTINFO");
+
 
         nameTxt = findViewById(R.id.editPlantName);
         scifiNameTxt = findViewById(R.id.editScifiName);
