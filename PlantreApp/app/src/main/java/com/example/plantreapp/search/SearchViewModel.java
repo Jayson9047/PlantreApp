@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.plantreapp.api.APIClient;
-import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.entities.PlantInfo;
 
 import java.util.List;
 
@@ -18,16 +18,16 @@ import kotlin.coroutines.EmptyCoroutineContext;
 
 
 public class SearchViewModel extends AndroidViewModel {
-    private MutableLiveData<List<Plant>> mutableLiveData;
+    private MutableLiveData<List<PlantInfo>> mutableLiveData;
     private Application _application;
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
         _application = application;
-        mutableLiveData = new MutableLiveData<List<Plant>>();
+        mutableLiveData = new MutableLiveData<List<PlantInfo>>();
     }
 
-    public LiveData<List<Plant>> getPlantList() {
+    public LiveData<List<PlantInfo>> getPlantList() {
         return mutableLiveData;
     }
 
@@ -36,7 +36,7 @@ public class SearchViewModel extends AndroidViewModel {
 
         APIClient apiClient = new APIClient(_application);
 
-        apiClient.loadPlants(new Continuation<List<? extends Plant>>() {
+        apiClient.loadPlants(new Continuation<List<? extends PlantInfo>>() {
             @NonNull
             @Override
             public CoroutineContext getContext() {
@@ -45,7 +45,7 @@ public class SearchViewModel extends AndroidViewModel {
 
             @Override
             public void resumeWith(@NonNull Object o) {
-                List<Plant> list = (List<Plant>) o;
+                List<PlantInfo> list = (List<PlantInfo>) o;
 
                 mutableLiveData.postValue(list);
             }

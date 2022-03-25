@@ -17,15 +17,17 @@ import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.entities.PlantInfo;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.myPlants.PlantInfoActivity;
 import com.example.plantreapp.myPlants.PlantListAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements com.example.plantreapp.myPlants.PlantListAdapter.PlantClickInterface {
+public class SearchActivity extends AppCompatActivity implements DBPlantInfoListAdapter.PlantInfoClickInterface {
     private SearchViewModel _viewModel;
-    private PlantListAdapter _listAdapter;
+    private DBPlantInfoListAdapter _listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +67,14 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        _listAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
+        _listAdapter = new DBPlantInfoListAdapter(PlantInfo.Companion.getItemCallback(), (DBPlantInfoListAdapter.PlantInfoClickInterface) this);
 
         recyclerView.setAdapter(_listAdapter);
 
         _viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        _viewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
+        _viewModel.getPlantList().observe(this, new Observer<List<PlantInfo>>() {
             @Override
-            public void onChanged(List<Plant> plants) {
+            public void onChanged(List<PlantInfo> plants) {
                 _listAdapter.submitList(plants);
             }
         });
@@ -83,12 +85,14 @@ public class SearchActivity extends AppCompatActivity implements com.example.pla
     }
 
     @Override
-    public void onDelete(Plant plant) {
+    public void onDelete(PlantInfo plantInfo) {
 
     }
 
     @Override
-    public void onSelect(Plant plant) {
-
+    public void onSelect(PlantInfo plantInfo) {
+        Intent intent = new Intent(this, DBPlantInfoActivity.class);
+        intent.putExtra("PLANTINFO", plantInfo);
+        startActivity(intent);
     }
 }

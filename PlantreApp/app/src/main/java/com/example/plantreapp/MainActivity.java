@@ -14,26 +14,31 @@ import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 public class MainActivity extends AppCompatActivity {
     private int SPLASH_TIME = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            if(!isTimerServiceRunning()) {
-                Intent timerIntent = new Intent(this, TimerService.class);
-                startForegroundService(timerIntent);
-            }
-            CharSequence name = "waterPlantChannel";
-            String description = "Channel for watering the plants";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("waterPlantChannel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }*/
+        /*
+         * if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+         * if(!isTimerServiceRunning()) {
+         * Intent timerIntent = new Intent(this, TimerService.class);
+         * startForegroundService(timerIntent);
+         * }
+         * CharSequence name = "waterPlantChannel";
+         * String description = "Channel for watering the plants";
+         * int importance = NotificationManager.IMPORTANCE_DEFAULT;
+         * NotificationChannel channel = new NotificationChannel("waterPlantChannel",
+         * name, importance);
+         * channel.setDescription(description);
+         * 
+         * NotificationManager notificationManager =
+         * getSystemService(NotificationManager.class);
+         * notificationManager.createNotificationChannel(channel);
+         * }
+         */
 
         // hide actionbar
         ActionBar actionBar = getSupportActionBar();

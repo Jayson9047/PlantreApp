@@ -4,21 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.plantreapp.dao.JournalDAO
-import com.example.plantreapp.dao.LogDAO
-import com.example.plantreapp.dao.PlantDAO
-import com.example.plantreapp.dao.TimerDAO
-import com.example.plantreapp.entities.Journal
-import com.example.plantreapp.entities.Log
-import com.example.plantreapp.entities.Plant
-import com.example.plantreapp.entities.Timer
+import androidx.room.TypeConverters
+import com.example.plantreapp.dao.*
+import com.example.plantreapp.entities.*
 
-@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class], version = 11)
+@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, PlantInfo::class], version = 14)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDAO
     abstract fun journalDao(): JournalDAO
     abstract fun logDao(): LogDAO
     abstract fun timerDao(): TimerDAO
+    abstract fun plantInfoDao(): PlantInfoDAO
 
     companion object {
         @Volatile private var instance: AppDatabase? = null
