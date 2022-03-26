@@ -68,9 +68,11 @@
         <entry key="..\:/VISUALSTUDIOCODE/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.5475" />
         <entry key="..\:/VISUALSTUDIOCODE/PlantreApp/PlantreApp/app/src/main/res/layout/activity_connection.xml" value="0.5541666666666667" />
         <entry key="..\:/VISUALSTUDIOCODE/PlantreApp/PlantreApp/app/src/main/res/layout/activity_main.xml" value="0.5541666666666667" />
+        <entry key="app/src/main/res/drawable/border.xml" value="0.4455" />
         <entry key="app/src/main/res/layout/activity_conn_btn.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/activity_db_plant_info.xml" value="0.19351570415400202" />
         <entry key="app/src/main/res/layout/activity_journals.xml" value="0.20969202898550723" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.24366767983789261" />
         <entry key="app/src/main/res/layout/activity_logs.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/activity_my_plants.xml" value="0.35505981445312507" />
         <entry key="app/src/main/res/layout/activity_note.xml" value="0.20969202898550723" />

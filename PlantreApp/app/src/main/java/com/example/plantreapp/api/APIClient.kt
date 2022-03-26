@@ -1,40 +1,95 @@
 package com.example.plantreapp.api
 
 import android.content.Context
+import androidx.core.content.edit
 import com.example.plantreapp.entities.PlantInfo
-import com.example.plantreapp.repository.PlantRepository
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLSession
 
+data class  User(
+    val username: String
+        )
 data class ResponsePlants(
     val data: List<PlantInfo>
 )
+
+data class ResponseLoginUser (
+    val secret_token: String,
+    val user: User
+        )
+
+val JSON: MediaType = "application/json; charset=utf-8".toMediaType()
 
 class APIClient(context: Context) {
     private var context : Context? = null;
     private val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
     private val plantJsonAdapter = moshi.adapter<ResponsePlants>(ResponsePlants::class.java)
-
+    private val loginJsonAdapter = moshi.adapter<ResponseLoginUser>(ResponseLoginUser::class.java)
     init {
         this.context = context
     }
 
+    suspend fun loginUser(email: String, password: String) = withContext(Dispatchers.IO) {
+        var isLoggedIn = CompletableDeferred<Boolean>()
+        val json = "{\"email\":\"$email\",\"password\":\"$password\"}";
+        val body = json.toRequestBody(JSON);
+        val request = Request.Builder().url("https://10.0.0.196:3000/api/user/login").addHeader("Connection", "close").post(body).build()
 
+        instance?.newCall(request)?.execute().use { response ->
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val res = loginJsonAdapter.fromJson(response.body!!.source())
+                    if (res != null) {
+                        val sharedPrefs = context?.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+                        if (sharedPrefs != null) {
+                            sharedPrefs?.edit(){
+                                putString("secret_token", res.secret_token)
+                                commit()
+                                isLoggedIn.complete(true)
+                            }
+                        } else {
+                            isLoggedIn.complete(false)
+                        }
+                    } else {
+                        isLoggedIn.complete(false)
+                    }
+                } else {
+                    isLoggedIn.complete(false)
+                }
+            } else {
+                isLoggedIn.complete(false)
+            }
+        }
+
+        return@withContext isLoggedIn.await();
+    }
+
+    suspend fun logoutUser() {
+
+    }
+
+    suspend fun activeUser() {
+
+    }
+
+    suspend fun registerUser() {
+
+    }
 
     suspend fun loadPlants() = withContext(Dispatchers.IO) {
         var list = CompletableDeferred<List<PlantInfo>>();
 
-            val request = Request.Builder().url("https://plantre.azurewebsites.net/api/plant").build()
+            val request = Request.Builder().url("https://10.0.0.196:3000/api/plant").build()
             instance?.newCall(request)?.execute().use { response ->
                 if (response != null) {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
