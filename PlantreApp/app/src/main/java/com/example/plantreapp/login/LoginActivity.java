@@ -15,6 +15,7 @@ import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
 import com.example.plantreapp.api.APIClient;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
+import com.example.plantreapp.register.RegisterActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import kotlin.coroutines.Continuation;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textViewEmail;
     private TextView textViewPassword;
     private Button buttonLogin;
+    private Button buttonRegister;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +40,15 @@ public class LoginActivity extends AppCompatActivity {
         textViewEmail = findViewById(R.id.editTextEmailAddress);
         textViewPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
+        buttonRegister = findViewById(R.id.buttonSignup);
+
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override

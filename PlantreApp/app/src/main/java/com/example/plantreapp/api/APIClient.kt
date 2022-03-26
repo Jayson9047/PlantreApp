@@ -16,7 +16,11 @@ import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLSession
 
 data class  User(
-    val username: String
+    val username: String,
+    val firstname: String?,
+    val lastname: String?,
+    val email: String,
+    val password: String,
         )
 data class ResponsePlants(
     val data: List<PlantInfo>
@@ -30,9 +34,10 @@ data class ResponseLoginUser (
 val JSON: MediaType = "application/json; charset=utf-8".toMediaType()
 
 class APIClient(context: Context) {
+    private val base_url = "https://10.0.0.196:3000"
     private var context : Context? = null;
     private val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-
+    private val userJsonAdapter = moshi.adapter<User>(User::class.java)
     private val plantJsonAdapter = moshi.adapter<ResponsePlants>(ResponsePlants::class.java)
     private val loginJsonAdapter = moshi.adapter<ResponseLoginUser>(ResponseLoginUser::class.java)
     init {
@@ -43,7 +48,7 @@ class APIClient(context: Context) {
         var isLoggedIn = CompletableDeferred<Boolean>()
         val json = "{\"email\":\"$email\",\"password\":\"$password\"}";
         val body = json.toRequestBody(JSON);
-        val request = Request.Builder().url("https://10.0.0.196:3000/api/user/login").addHeader("Connection", "close").post(body).build()
+        val request = Request.Builder().url("$base_url/user/login").addHeader("Connection", "close").post(body).build()
 
         instance?.newCall(request)?.execute().use { response ->
             if (response != null) {
@@ -74,6 +79,25 @@ class APIClient(context: Context) {
         return@withContext isLoggedIn.await();
     }
 
+    suspend fun registerUser(user: User) = withContext(Dispatchers.IO)  {
+        var userComplete = CompletableDeferred<User?>()
+        val body = userJsonAdapter.toJson(user).toRequestBody(JSON)
+        val request = Request.Builder().url("$base_url/api/user/register").addHeader("Connection", "close").post(body).build()
+
+        instance?.newCall(request)?.execute().use { response ->
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val res = userJsonAdapter.fromJson(response.body!!.source())
+                    if (res != null) {
+                        userComplete.complete(res);
+                    }
+                }
+            }
+        }
+
+        return@withContext userComplete.await();
+    }
+
     suspend fun logoutUser() {
 
     }
@@ -82,14 +106,12 @@ class APIClient(context: Context) {
 
     }
 
-    suspend fun registerUser() {
 
-    }
 
     suspend fun loadPlants() = withContext(Dispatchers.IO) {
         var list = CompletableDeferred<List<PlantInfo>>();
 
-            val request = Request.Builder().url("https://10.0.0.196:3000/api/plant").build()
+            val request = Request.Builder().url("$base_url/api/plant").build()
             instance?.newCall(request)?.execute().use { response ->
                 if (response != null) {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")

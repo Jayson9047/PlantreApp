@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantreApp">
+        <activity android:name=".register.RegisterActivity" android:exported="false"/>
         <activity android:name=".login.LoginActivity" android:exported="false"/>
         <activity
             android:name=".SelectImageActivity"
