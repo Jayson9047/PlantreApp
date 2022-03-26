@@ -53,7 +53,6 @@ public class ConnBtnActivity extends AppCompatActivity {
     UdpServerThread udpServerThread;
     boolean udpConnected = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

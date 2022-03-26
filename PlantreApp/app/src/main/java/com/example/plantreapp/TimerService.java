@@ -173,7 +173,7 @@ public class TimerService extends Service {
 
                                                             NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(getApplicationContext(), "waterPlantChannel")
                                                                     .setSmallIcon(R.drawable.water_plant_icon)
-                                                                    .setContentTitle("Watering:")
+                                                                    .setContentTitle("Watering: ")
                                                                     .setContentText(timer.getName())
                                                                     .setAutoCancel(true)
                                                                     .setContentIntent(resultOpenPlantPage);
@@ -229,7 +229,7 @@ public class TimerService extends Service {
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
                 .setContentText("Timer Is Running")
                 .setContentTitle("Timer Service")
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setSmallIcon(R.drawable.leaf);
 
         startForeground(1111, notification.build());
         return super.onStartCommand(intent, flags, startId);
