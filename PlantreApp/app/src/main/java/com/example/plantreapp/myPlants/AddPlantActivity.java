@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.plantreapp.R;
 
@@ -24,6 +25,7 @@ public class AddPlantActivity extends AppCompatActivity {
     private Button addBtn, cancelBtn;
     RadioGroup radioGroup;
     RadioButton radioButton1, radioButton2;
+    ConstraintLayout moistureLayout, hourLayout;
     SeekBar seekbar1, seekbar2, seekbar3, seekbar4, seekbar5, seekbar6, seekbar7, seekbar8, seekbar9;
     TextView Seed_Max, Seed_min, Seeding_max, Seeding_min, Mature_max, Mature_min, Seed_hour, Seeding_hour, Mature_hour;
 
@@ -85,6 +87,9 @@ public class AddPlantActivity extends AppCompatActivity {
         Seed_hour =(TextView)findViewById(R.id.Seed_hour);
         Seeding_hour =(TextView)findViewById(R.id.Seeding_hour);
         Mature_hour =(TextView)findViewById(R.id.Mature_hour);
+
+        moistureLayout = findViewById(R.id.moistureLayout);
+        hourLayout = findViewById(R.id.hourLayout);
 
 
 
@@ -342,6 +347,15 @@ public class AddPlantActivity extends AppCompatActivity {
         int radioId= radioGroup.getCheckedRadioButtonId();
         radioButton1 = findViewById(R.id.radio_one);
         radioButton2 = findViewById(R.id.radio_two);
+
+
+        if (radioButton1.isChecked()) {
+            moistureLayout.setVisibility(View.VISIBLE);
+            hourLayout.setVisibility(View.INVISIBLE);
+        } else if (radioButton2.isChecked()) {
+            moistureLayout.setVisibility(View.INVISIBLE);
+            hourLayout.setVisibility(View.VISIBLE);
+        }
 
         /*if (radioButton1.isChecked())
         {
