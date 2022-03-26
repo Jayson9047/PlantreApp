@@ -48,7 +48,7 @@ class APIClient(context: Context) {
         var isLoggedIn = CompletableDeferred<Boolean>()
         val json = "{\"email\":\"$email\",\"password\":\"$password\"}";
         val body = json.toRequestBody(JSON);
-        val request = Request.Builder().url("$base_url/user/login").addHeader("Connection", "close").post(body).build()
+        val request = Request.Builder().url("$base_url/api/user/login").addHeader("Connection", "close").post(body).build()
 
         instance?.newCall(request)?.execute().use { response ->
             if (response != null) {
