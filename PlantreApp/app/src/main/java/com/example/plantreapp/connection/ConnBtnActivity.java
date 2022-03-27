@@ -16,6 +16,26 @@ import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.plantreapp.MainActivity;
+//import com.loopj.android.http.AsyncHttpClient;
+//import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+
+import android.os.Handler;
+import android.widget.ProgressBar;
+
+//import cz.msebera.android.httpclient.Header;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,8 +50,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     TextView status, status2;
     private int progressStatus;
     private Handler handler = new Handler();
-    private int soilMoisture = 0;
-    private int soilMoisture2 = 0;
+
 
     private final static String TAG = MainActivity.class.getSimpleName();
 
@@ -40,15 +59,20 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
     boolean udpConnected = false;*/
+    private Handler handler = new Handler();
+    private int soilMoisture = 0;
+    private int soilMoisture2 = 0;
 
-
-
+    private final static String TAG = MainActivity.class.getSimpleName();
+    UdpServerThread udpServerThread;
+    static final int UdpServerPORT = 4445;
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
     private ArrayList<WaterInfo> waterInfoArrayList;
-
-
+    private WaterInfo wInfo;
+    private boolean firstSensorReceiving;
+    private boolean secondSensorReceiving;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +81,12 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.home_item);
 
-
+        wInfo = new WaterInfo(10,"buttonName","test");
         // init recycler view
         initView();
 
-
+        firstSensorReceiving = false;
+        secondSensorReceiving = false;
 
         /*OkHttpClient httpClient = new OkHttpClient();
         String firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
@@ -231,7 +256,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     }
 
-    /*@Override
+    @Override
     protected void onStart() {
         udpServerThread = new UdpServerThread(UdpServerPORT);
         udpServerThread.start();
@@ -245,7 +270,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         }
 
         super.onStop();
-    }*/
+    }
 
     /*private void updatePrompt(final String prompt){
         runOnUiThread(new Runnable() {
@@ -256,7 +281,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         });
     }*/
 
-    /*private class UdpServerThread extends Thread{
+    private class UdpServerThread extends Thread{
 
         int serverPort;
         DatagramSocket socket;
@@ -292,8 +317,9 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                     String[] allValues = msg.split(",");
                     int l = Integer.valueOf(allValues[0]);
                     int m = Integer.valueOf(allValues[1]);
-                    circular_pro.setProgress(soilMoisture);
-
+                    //wInfo.setPercentage(soilMoisture);
+                    //wInfo.setText(String.valueOf(soilMoisture));
+                    //adapter.notifyDataSetChanged();
                     if(soilMoisture <0 )
                     {
                         soilMoisture = 0;
@@ -307,8 +333,9 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         soilMoisture = l;
                     }
 
-                    circular_pro2.setProgress(soilMoisture2);
-
+                    //wInfo.setPercentage(soilMoisture2);
+                    //wInfo.setText(String.valueOf(soilMoisture2));
+                    //adapter.notifyDataSetChanged();
                     if(soilMoisture2 <0 )
                     {
                         soilMoisture2 = 0;
@@ -332,7 +359,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                     //updatePrompt("Request from: " + address + ":" + port + "\n");
                     //updatePrompt("Message: "+ soilMoisture +"\n");
 
-                    if(pumpOn == true)
+                    /*if(pumpOn == true)
                     {
                         if(udpConnected)
                         {
@@ -358,7 +385,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                             socket.send(packet);
                             secondPumpOn = false;
                         }
-                    }
+                    }*/
 
                 }
 
@@ -375,7 +402,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 }
             }
         }
-    }*/
+    }
 
     private void initView() {
         // Initialize RecyclerView and set Adapter
@@ -396,15 +423,56 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBtnClick(int position, WaterInfo waterInfo)
+    public void onBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w)
     {
         Random r = new Random();
-        int low = 10;
-        int high = 100;
-        int result = r.nextInt(high-low) + low;
 
-        Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
-        waterInfo.setPercentage(result);
+        //int result = r.nextInt(high-low) + low;
+        wInfo = waterInfo;
+
+        WaterInfo w1 = w.get(0);
+        WaterInfo w2 = w.get(1);
+        int l = w.size();
+        w1.setText(String.valueOf(l));
         adapter.notifyDataSetChanged();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            setProg(soilMoisture, w1);
+                            adapter.notifyDataSetChanged();
+                            setProg(soilMoisture2, w2);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                    try {
+                        Thread.sleep(200);
+
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }).start();
+    }
+
+    private void setProg(int sMoisture, WaterInfo w)
+    {
+        w.setPercentage(sMoisture);
+        if(sMoisture <0 )
+        {
+            sMoisture = 0;
+        }
+        if(sMoisture > 100)
+        {
+            sMoisture = 100;
+        }
+        w.setText(sMoisture+"%");
     }
 }
