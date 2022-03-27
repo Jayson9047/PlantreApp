@@ -148,7 +148,12 @@ public class AddPlantActivity extends AppCompatActivity {
 
                 name = nameTxt.getText().toString();
                 scifiName = scifiNameTxt.getText().toString();
-                uri = imageUri.toString();
+                try {
+                    uri = imageUri.toString();
+                } catch (Exception e) {
+                    Toast.makeText(AddPlantActivity.this, "Please select an image.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 description = descriptionTxt.getText().toString();
                 stage = stageTxt.getText().toString();
 

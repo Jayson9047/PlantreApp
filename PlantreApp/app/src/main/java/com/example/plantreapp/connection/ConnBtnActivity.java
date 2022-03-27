@@ -3,6 +3,8 @@ package com.example.plantreapp.connection;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -11,33 +13,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.example.plantreapp.MainActivity;
-//import com.loopj.android.http.AsyncHttpClient;
-//import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-
-import android.os.Handler;
-import android.widget.ProgressBar;
-
-//import cz.msebera.android.httpclient.Header;
-
 import java.util.ArrayList;
-import java.util.Random;
+
+//import com.loopj.android.http.AsyncHttpClient;
+//import com.loopj.android.http.AsyncHttpResponseHandler;
+//import cz.msebera.android.httpclient.Header;
 
 
 public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapter.WaterInfoInterface {
@@ -423,11 +414,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w)
+    public void onWaterBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w)
     {
-        Random r = new Random();
-
-        //int result = r.nextInt(high-low) + low;
         wInfo = waterInfo;
 
         WaterInfo w1 = w.get(0);
@@ -443,7 +431,6 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-
                             setProg(soilMoisture, w1);
                             adapter.notifyDataSetChanged();
                             setProg(soilMoisture2, w2);
@@ -462,6 +449,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         }).start();
     }
 
+    @Override
+    public void onSelectPlantClick(int position, WaterInfo waterInfo) {
+        //Intent intent = new Intent(ConnBtnActivity.this, SelectPlantActivity.class);
+        //startActivity(intent);
+        Toast.makeText(getApplicationContext(), "Select Plant Btn Clicked", Toast.LENGTH_SHORT).show();
+
+    }
+
     private void setProg(int sMoisture, WaterInfo w)
     {
         w.setPercentage(sMoisture);
@@ -476,3 +471,24 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         w.setText(sMoisture+"%");
     }
 }
+
+/*@SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onWaterBtnClick(int position, WaterInfo waterInfo)
+    {
+        Random r = new Random();
+        int low = 10;
+        int high = 100;
+        int result = r.nextInt(high-low) + low;
+
+        Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+        waterInfo.setPercentage(result);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSelectPlantClick(int position, WaterInfo waterInfo) {
+        //Intent intent = new Intent(ConnBtnActivity.this, SelectPlantActivity.class);
+        //startActivity(intent);
+    }*/

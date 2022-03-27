@@ -14,6 +14,18 @@
     android:id="@+id/sensorItem"
     android:backgroundTint="#59203F6E">
 
+    <TextView
+        android:id="@+id/text_plant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="No Plant Selected"
+        android:textColor="#373737"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
         android:id="@+id/progessbar_circular"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -27,17 +39,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnSendPump"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="@color/aqua"
         android:text="Water Plant 1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progessbar_circular" />
+
+    <Button
+        android:id="@+id/btnSelectPlant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/aqua"
+        android:text="Select Plant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progessbar_circular" />
 
     <TextView

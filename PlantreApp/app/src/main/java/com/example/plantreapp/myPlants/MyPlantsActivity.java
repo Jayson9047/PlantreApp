@@ -46,6 +46,28 @@ public class MyPlantsActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("MY PLANTS");
 
+        // nav bar
+        setNavigation();
+
+        // Toast.makeText(Home.this, String.valueOf(id), Toast.LENGTH_SHORT).show();
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
+        recyclerView.setAdapter(plantListAdapter);
+
+        plantsViewModel = new ViewModelProvider(this).get(PlantsViewModel.class);
+        applyTexts(i);
+        plantsViewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
+            @Override
+            public void onChanged(List<Plant> plants) {
+                plantListAdapter.submitList(plants);
+                tmpPlantList = plantListAdapter.getCurrentList();
+            }
+        });
+    }
+
+    public void setNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.my_plants_item);
 
@@ -67,23 +89,6 @@ public class MyPlantsActivity extends AppCompatActivity
                         return true;
                 }
                 return false;
-            }
-        });
-
-        // Toast.makeText(Home.this, String.valueOf(id), Toast.LENGTH_SHORT).show();
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        plantListAdapter = new PlantListAdapter( Plant.Companion.getItemCallback(), this);
-        recyclerView.setAdapter(plantListAdapter);
-
-        plantsViewModel = new ViewModelProvider(this).get(PlantsViewModel.class);
-        applyTexts(i);
-        plantsViewModel.getPlantList().observe(this, new Observer<List<Plant>>() {
-            @Override
-            public void onChanged(List<Plant> plants) {
-                plantListAdapter.submitList(plants);
-                tmpPlantList = plantListAdapter.getCurrentList();
             }
         });
     }

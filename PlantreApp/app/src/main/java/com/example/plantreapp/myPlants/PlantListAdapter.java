@@ -1,9 +1,11 @@
 package com.example.plantreapp.myPlants;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +42,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
         TextView nameTextView, descriptionTextView;
         ImageButton deleteButton;
         RelativeLayout plantItem;
+        ImageView imageView;
 
         public PlantViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -47,6 +50,7 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
             descriptionTextView = itemView.findViewById(R.id.DescriptionTextView);
             deleteButton = itemView.findViewById(R.id.deletePlantButton);
             plantItem = itemView.findViewById(R.id.plantItem);
+            imageView = itemView.findViewById(R.id.imageView);
 
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,11 +71,12 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
         public void bind(Plant plant) {
             nameTextView.setText(plant.getName());
             descriptionTextView.setText(plant.getDescription());
+            imageView.setImageURI(Uri.parse(plant.getPicture()));
         }
     }
 
     public interface PlantClickInterface {
-        public void onDelete(Plant plant);
-        public void onSelect(Plant plant);
+        void onDelete(Plant plant);
+        void onSelect(Plant plant);
     }
 }

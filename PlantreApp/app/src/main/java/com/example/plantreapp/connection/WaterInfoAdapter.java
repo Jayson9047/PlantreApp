@@ -47,31 +47,40 @@ public class WaterInfoAdapter extends RecyclerView.Adapter<WaterInfoAdapter.Wate
 
     public class WaterInfoViewHolder extends RecyclerView.ViewHolder {
         private ProgressBar bar;
-        Button btn;
+        Button waterBtn, selectPlantBtn;
         TextView txt;
 
         public WaterInfoViewHolder(@NonNull View itemView) {
             super(itemView);
             bar = itemView.findViewById(R.id.progessbar_circular);
-            btn = itemView.findViewById(R.id.btnSendPump);
+            waterBtn = itemView.findViewById(R.id.btnSendPump);
+            selectPlantBtn = itemView.findViewById(R.id.btnSelectPlant);
             txt = itemView.findViewById(R.id.text_status);
 
-            btn.setOnClickListener(new View.OnClickListener(){
+            waterBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    waterInfoInterface.onBtnClick(getAdapterPosition(), waterInfoArr.get(getAdapterPosition()), waterInfoArr);
+                    waterInfoInterface.onWaterBtnClick(getAdapterPosition(), waterInfoArr.get(getAdapterPosition()), waterInfoArr);
+                }
+            });
+
+            selectPlantBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    waterInfoInterface.onSelectPlantClick(getAdapterPosition(), waterInfoArr.get(getAdapterPosition()));
                 }
             });
         }
 
         public void setDetails(WaterInfo waterInfo) {
             bar.setProgress(waterInfo.getPercentage());
-            btn.setText(String.format("%s", waterInfo.getBtnName()));
+            waterBtn.setText(String.format("%s", waterInfo.getBtnName()));
             txt.setText(String.format("%s", waterInfo.getText()));
         }
     }
 
     public interface WaterInfoInterface {
-        void onBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w);
+        void onWaterBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w);
+        void onSelectPlantClick(int position, WaterInfo info);
     }
 }
