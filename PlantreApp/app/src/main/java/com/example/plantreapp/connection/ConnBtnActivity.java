@@ -17,6 +17,8 @@ import com.example.plantreapp.R;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -27,6 +29,7 @@ import java.net.SocketException;
 import android.os.Handler;
 import android.widget.ProgressBar;
 
+import cz.msebera.android.httpclient.Header;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -38,7 +41,7 @@ public class ConnBtnActivity extends AppCompatActivity {
     Button ButtonPump, ButtonPump2;
     ProgressBar circular_pro, circular_pro2;
 
-    TextView status, status2;
+    TextView status, status2, test, testbtn;
     private int progressStatus;
     private Handler handler = new Handler();
     private int soilMoisture = 0;
@@ -51,8 +54,8 @@ public class ConnBtnActivity extends AppCompatActivity {
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
     boolean udpConnected = false;
-
-
+    InetAddress savedAddress = null;
+    int savedPort = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +64,8 @@ public class ConnBtnActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.home_item);
 
-        OkHttpClient httpClient = new OkHttpClient();
         String firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         String secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
-        Request request1 = new Request.Builder().url(firstWaterPumpUrl).build();
-        Request request2 = new Request.Builder().url(secondWaterPumpUrl).build();
 
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -94,6 +94,8 @@ public class ConnBtnActivity extends AppCompatActivity {
 
         status= (TextView)findViewById(R.id.text_status);
         status2= (TextView)findViewById(R.id.text_status2);
+        test = (TextView)findViewById(R.id.testID);
+        testbtn = (TextView)findViewById(R.id.testID2);
         //textViewPrompt = (TextView)findViewById(R.id.prompt);
         pumpOn = false;
 
@@ -106,10 +108,14 @@ public class ConnBtnActivity extends AppCompatActivity {
                 if(udpConnected == true)
                 {
                     pumpOn = true;
+                    testbtn.setText("Watering via UDP");
                 }
                 else
                 {
-                    httpClient.newCall(request1);
+                    testbtn.setText("Watering via Cloud");
+                    turnOnWaterPumpViaCloud(firstWaterPumpUrl);
+                    //status.setText("UDP not Connected");
+                    //httpClient.newCall(request1);
                 }
             }
         });
@@ -120,10 +126,14 @@ public class ConnBtnActivity extends AppCompatActivity {
                 if(udpConnected == true)
                 {
                     secondPumpOn = true;
+                    testbtn.setText("Watering via UDP");
                 }
                 else
                 {
-                    httpClient.newCall(request2);
+                    //status2.setText("UDP not Connected");
+                    //httpClient.newCall(request2);
+                    testbtn.setText("Watering via Cloud");
+                    turnOnWaterPumpViaCloud(secondWaterPumpUrl);
                 }
             }
         });
@@ -157,14 +167,14 @@ public class ConnBtnActivity extends AppCompatActivity {
                                     soilMoisture2 = 100;
                                 }
                                 status2.setText(soilMoisture2+"%");
-                                udpConnected = true;
+
                             }
                             catch (Exception e)
                             {
                                 //UDP not receiving yet
                                 status.setText("Not receiving");
                                 status2.setText("Not receiving");
-                                udpConnected = false;
+
                             }
 
                         }
@@ -179,54 +189,38 @@ public class ConnBtnActivity extends AppCompatActivity {
 
             }
         }).start();
-/*
-        clickme_btn.setOnClickListener(new View.OnClickListener() {
+
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while(true){
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    circular_pro.setProgress(soilMoisture);
-                                    if(soilMoisture <0 )
-                                    {
-                                        soilMoisture = 0;
-                                    }
-                                    if(soilMoisture > 100)
-                                    {
-                                        soilMoisture = 100;
-                                    }
-                                    status.setText(soilMoisture+"%");
+            public void run() {
+                while (true) {
 
-                                    circular_pro2.setProgress(soilMoisture2);
-                                    if(soilMoisture2 <0 )
-                                    {
-                                        soilMoisture2 = 0;
-                                    }
-                                    if(soilMoisture2 > 100)
-                                    {
-                                        soilMoisture2 = 100;
-                                    }
-                                    status2.setText(soilMoisture2+"%");
-                                }
-                            });
-                            try {
-                                Thread.sleep(200);
-
-                            }catch (InterruptedException e){
-                                e.printStackTrace();
+                    if(savedAddress != null)
+                    {
+                        try {
+                            if(savedAddress.isReachable(savedPort))
+                            {
+                                test.setText("Got it");
+                                udpConnected = true;
                             }
+                            else
+                            {
+                                test.setText("Went out of Home Network");
+                                udpConnected = false;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            udpConnected = false;
                         }
-
                     }
-                }).start();
+                    else
+                    {
+                        test.setText("Not in Home Network");
+                        udpConnected = false;
+                    }
+                }
             }
-        });
-*/
-
+        }).start();
     }
     @Override
     protected void onStart() {
@@ -244,14 +238,22 @@ public class ConnBtnActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    /*private void updatePrompt(final String prompt){
-        runOnUiThread(new Runnable() {
+    private void turnOnWaterPumpViaCloud(String url)
+    {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, new AsyncHttpResponseHandler() {
             @Override
-            public void run() {
-                textViewPrompt.append(prompt);
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                //
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                //
             }
         });
-    }*/
+    }
+
 
     private class UdpServerThread extends Thread{
 
@@ -281,6 +283,22 @@ public class ConnBtnActivity extends AppCompatActivity {
                 while(running){
                     byte[] buf = new byte[256];
 
+/*                    if(savedAddress != null)
+                    {
+                        if(savedAddress.isReachable(savedPort))
+                        {
+                            test.setText("Got it");
+                        }
+                        else
+                        {
+                            test.setText("Went out of Home Network");
+                        }
+                    }
+                    else
+                    {
+                        test.setText("Not in Home Network");
+                    }*/
+
                     // receive request
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
                     socket.receive(packet);     //this code block the program flow
@@ -289,6 +307,9 @@ public class ConnBtnActivity extends AppCompatActivity {
                     String[] allValues = msg.split(",");
                     int l = Integer.valueOf(allValues[0]);
                     int m = Integer.valueOf(allValues[1]);
+
+
+
                     circular_pro.setProgress(soilMoisture);
 
                     if(soilMoisture <0 )
@@ -329,32 +350,27 @@ public class ConnBtnActivity extends AppCompatActivity {
                     //updatePrompt("Request from: " + address + ":" + port + "\n");
                     //updatePrompt("Message: "+ soilMoisture +"\n");
 
+                    savedAddress = address;
+                    savedPort = port;
+
+
                     if(pumpOn == true)
                     {
-                        if(udpConnected)
-                        {
-                            String dString = "5";
-                            buf = dString.getBytes();
-                            packet = new DatagramPacket(buf, buf.length, address, port);
-                            socket.send(packet);
-                            pumpOn = false;
-                        }
-                        else
-                        {
-
-                        }
+                        String dString = "5";
+                        buf = dString.getBytes();
+                        packet = new DatagramPacket(buf, buf.length, address, port);
+                        socket.send(packet);
+                        pumpOn = false;
 
                     }
 
                     if(secondPumpOn == true)
                     {
-                        if(udpConnected) {
-                            String dString = "4";
-                            buf = dString.getBytes();
-                            packet = new DatagramPacket(buf, buf.length, address, port);
-                            socket.send(packet);
-                            secondPumpOn = false;
-                        }
+                        String dString = "4";
+                        buf = dString.getBytes();
+                        packet = new DatagramPacket(buf, buf.length, address, port);
+                        socket.send(packet);
+                        secondPumpOn = false;
                     }
 
                 }
