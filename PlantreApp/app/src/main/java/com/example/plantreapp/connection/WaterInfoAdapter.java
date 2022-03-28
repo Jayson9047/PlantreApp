@@ -1,6 +1,5 @@
 package com.example.plantreapp.connection;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,43 +8,35 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.entities.Moisture;
 
-import java.util.ArrayList;
-
-public class WaterInfoAdapter extends RecyclerView.Adapter<WaterInfoAdapter.WaterInfoViewHolder> {
-    private Context context;
-    private ArrayList<WaterInfo> waterInfoArr;
+public class WaterInfoAdapter extends ListAdapter<Moisture, WaterInfoAdapter.WaterInfoViewHolder>  {
 
     WaterInfoInterface waterInfoInterface;
 
-    public WaterInfoAdapter(Context context, ArrayList<WaterInfo> waterInfoArr, WaterInfoInterface waterInfoInterface) {
-        this.context = context;
-        this.waterInfoArr = waterInfoArr;
+    public WaterInfoAdapter(@NonNull DiffUtil.ItemCallback<Moisture> diffCallback, WaterInfoAdapter.WaterInfoInterface waterInfoInterface) {
+        super(diffCallback);
         this.waterInfoInterface = waterInfoInterface;
     }
 
     @NonNull
     @Override
-    public WaterInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_row_conn_btn,parent,false);
-        return new WaterInfoViewHolder(view);
+    public WaterInfoAdapter.WaterInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new WaterInfoAdapter.WaterInfoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_conn_btn, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WaterInfoViewHolder holder, int position) {
-        WaterInfo waterInfo = waterInfoArr.get(position);
-        holder.setDetails(waterInfo);
+    public void onBindViewHolder(@NonNull WaterInfoAdapter.WaterInfoViewHolder holder, int position) {
+        Moisture moisture = getItem(position);
+        holder.bind(moisture);
     }
 
-    @Override
-    public int getItemCount() {
-        return waterInfoArr.size();
-    }
-
-    public class WaterInfoViewHolder extends RecyclerView.ViewHolder {
+    class WaterInfoViewHolder extends RecyclerView.ViewHolder {
         private ProgressBar bar;
         Button waterBtn, selectPlantBtn;
         TextView txt;
@@ -57,30 +48,30 @@ public class WaterInfoAdapter extends RecyclerView.Adapter<WaterInfoAdapter.Wate
             selectPlantBtn = itemView.findViewById(R.id.btnSelectPlant);
             txt = itemView.findViewById(R.id.text_status);
 
-            waterBtn.setOnClickListener(new View.OnClickListener(){
+            waterBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    waterInfoInterface.onWaterBtnClick(getAdapterPosition(), waterInfoArr.get(getAdapterPosition()), waterInfoArr);
+                public void onClick(View v) {
+                    waterInfoInterface.onWaterBtnClick(getItem(getAdapterPosition()), getAdapterPosition());
                 }
             });
 
             selectPlantBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    waterInfoInterface.onSelectPlantClick(getAdapterPosition(), waterInfoArr.get(getAdapterPosition()));
+                    waterInfoInterface.onSelectPlantClick(getItem(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }
 
-        public void setDetails(WaterInfo waterInfo) {
-            bar.setProgress(waterInfo.getPercentage());
-            waterBtn.setText(String.format("%s", waterInfo.getBtnName()));
-            txt.setText(String.format("%s", waterInfo.getText()));
+        public void bind(Moisture moisture) {
+            bar.setProgress(moisture.getPercentage());
+            waterBtn.setText(String.format("%s", moisture.getBtnName()));
+            txt.setText(String.format("%s", moisture.getText()));
         }
     }
 
     public interface WaterInfoInterface {
-        void onWaterBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w);
-        void onSelectPlantClick(int position, WaterInfo info);
+        void onWaterBtnClick(Moisture moisture, int position);
+        void onSelectPlantClick(Moisture moisture, int position);
     }
 }

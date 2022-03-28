@@ -1,21 +1,24 @@
 package com.example.plantreapp.connection;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
+import com.example.plantreapp.entities.Moisture;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
+import com.example.plantreapp.myPlants.PlantInfo;
+import com.example.plantreapp.myPlants.SelectPlantActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,6 +28,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.List;
 
 //import com.loopj.android.http.AsyncHttpClient;
 //import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -60,6 +64,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
+    private WaterInfoViewModel viewModel;
     private ArrayList<WaterInfo> waterInfoArrayList;
     private WaterInfo wInfo;
     private boolean firstSensorReceiving;
@@ -69,12 +74,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conn_btn);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setSelectedItemId(R.id.home_item);
-
         wInfo = new WaterInfo(10,"buttonName","test");
-        // init recycler view
-        initView();
 
         firstSensorReceiving = false;
         secondSensorReceiving = false;
@@ -85,27 +85,49 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         Request request1 = new Request.Builder().url(firstWaterPumpUrl).build();
         Request request2 = new Request.Builder().url(secondWaterPumpUrl).build();*/
 
-        // nav click handler
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        // nav
+        setNavigation();
+
+
+        RecyclerView recyclerView = findViewById(R.id.connBtnRecyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        adapter = new WaterInfoAdapter( Moisture.Companion.getItemCallback(), this);
+        recyclerView.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider(this).get(WaterInfoViewModel.class);
+
+        // todo: init list on the first time the page loads instead of having to changing activities and then coming back
+        // init list if its empty
+        if (viewModel.getMoistureList().getValue().isEmpty()) {
+            viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
+            viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
+            adapter.submitList(viewModel.getMoistureList().getValue());
+            //adapter.notifyDataSetChanged();
+        }
+
+        // get selected plant info
+        int plantUid = getIntent().getIntExtra("plantUid", -1);
+        int posToChange = getIntent().getIntExtra("position", -1);
+        PlantInfo info = getIntent().getParcelableExtra("plantInfo");
+
+        if (plantUid != -1 && posToChange != -1 && info != null) {
+            Moisture tmpMoisture = viewModel.getMoistureList().getValue().get(posToChange);
+            Moisture moisture = new Moisture(tmpMoisture.getUid(), tmpMoisture.getPercentage(), /*info.getName()*/"percentage", tmpMoisture.getBtnName(), plantUid);
+            viewModel.updateMoisture(moisture);
+
+            adapter.submitList(viewModel.getMoistureList().getValue());
+            adapter.notifyItemChanged(posToChange);
+        }
+
+        viewModel.getMoistureList().observe(this, new Observer<List<Moisture>>() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home_item:
-                        //startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
-                        return true;
-                    case R.id.my_plants_item:
-                        startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
-                        return true;
-                    case R.id.search_item:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        return true;
-                    case R.id.connection_item:
-                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
-                        return true;
-                }
-                return false;
+            public void onChanged(List<Moisture> moistures) {
+                adapter.submitList(moistures);
+                adapter.notifyDataSetChanged();
+                //tmpPlantList = plantListAdapter.getCurrentList();
             }
         });
+
 
         /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
         circular_pro2 = (ProgressBar)findViewById(R.id.progessbar_circular2);
@@ -245,6 +267,32 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         });
 */
 
+    }
+
+    public void setNavigation() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
+        bottomNavigationView.setSelectedItemId(R.id.home_item);
+        // nav click handler
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_item:
+                        //startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        return true;
+                    case R.id.my_plants_item:
+                        startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
+                        return true;
+                    case R.id.search_item:
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                        return true;
+                    case R.id.connection_item:
+                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -396,23 +444,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     }
 
     private void initView() {
-        // Initialize RecyclerView and set Adapter
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        waterInfoArrayList = new ArrayList<>();
-        adapter = new WaterInfoAdapter(this, waterInfoArrayList, this);
-        recyclerView.setAdapter(adapter);
-        initList(2);
     }
 
     private void initList(int numItems) {
-        for (int i = 0; i < numItems; i++) {
-            //data to be shown in list
-            waterInfoArrayList.add(new WaterInfo(0, "Water Plant", "Percentage"));
-        }
+        //for (int i = 0; i < numItems; i++) {
+        //}
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    /*@SuppressLint("NotifyDataSetChanged")
     @Override
     public void onWaterBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w)
     {
@@ -444,17 +483,22 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         e.printStackTrace();
                     }
                 }
-
             }
         }).start();
+    }*/
+
+    @Override
+    public void onWaterBtnClick(Moisture moisture, int position) {
+
+        return;
     }
 
     @Override
-    public void onSelectPlantClick(int position, WaterInfo waterInfo) {
-        //Intent intent = new Intent(ConnBtnActivity.this, SelectPlantActivity.class);
-        //startActivity(intent);
-        Toast.makeText(getApplicationContext(), "Select Plant Btn Clicked", Toast.LENGTH_SHORT).show();
-
+    public void onSelectPlantClick(Moisture moisture, int position) {
+        Intent intent = new Intent(ConnBtnActivity.this, SelectPlantActivity.class);
+        intent.putExtra("position", position);
+        startActivity(intent);
+        return;
     }
 
     private void setProg(int sMoisture, WaterInfo w)
@@ -472,23 +516,3 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     }
 }
 
-/*@SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void onWaterBtnClick(int position, WaterInfo waterInfo)
-    {
-        Random r = new Random();
-        int low = 10;
-        int high = 100;
-        int result = r.nextInt(high-low) + low;
-
-        Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
-        waterInfo.setPercentage(result);
-
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onSelectPlantClick(int position, WaterInfo waterInfo) {
-        //Intent intent = new Intent(ConnBtnActivity.this, SelectPlantActivity.class);
-        //startActivity(intent);
-    }*/
