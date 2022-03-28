@@ -95,13 +95,24 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         recyclerView.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(WaterInfoViewModel.class);
+        viewModel.getMoistureList().observe(this, new Observer<List<Moisture>>() {
+            @Override
+            public void onChanged(List<Moisture> moistures) {
+                adapter.submitList(moistures);
+                //adapter.notifyDataSetChanged();
+                //tmpPlantList = plantListAdapter.getCurrentList();
+            }
+        });
+
+
+
 
         // todo: init list on the first time the page loads instead of having to changing activities and then coming back
         // init list if its empty
         if (viewModel.getMoistureList().getValue().isEmpty()) {
             viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
             viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
-            adapter.submitList(viewModel.getMoistureList().getValue());
+            //adapter.submitList(viewModel.getMoistureList().getValue());
             //adapter.notifyDataSetChanged();
         }
 
@@ -115,18 +126,11 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             Moisture moisture = new Moisture(tmpMoisture.getUid(), tmpMoisture.getPercentage(), /*info.getName()*/"percentage", tmpMoisture.getBtnName(), plantUid);
             viewModel.updateMoisture(moisture);
 
-            adapter.submitList(viewModel.getMoistureList().getValue());
-            adapter.notifyItemChanged(posToChange);
+            //adapter.submitList(viewModel.getMoistureList().getValue());
+            //adapter.notifyItemChanged(posToChange);
         }
 
-        viewModel.getMoistureList().observe(this, new Observer<List<Moisture>>() {
-            @Override
-            public void onChanged(List<Moisture> moistures) {
-                adapter.submitList(moistures);
-                adapter.notifyDataSetChanged();
-                //tmpPlantList = plantListAdapter.getCurrentList();
-            }
-        });
+
 
 
         /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
