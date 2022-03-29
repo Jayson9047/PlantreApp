@@ -16,11 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
 import com.example.plantreapp.entities.Moisture;
+import com.example.plantreapp.journals.JournalViewModelFactory;
+import com.example.plantreapp.journals.JournalsViewModel;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.myPlants.PlantInfo;
 import com.example.plantreapp.myPlants.SelectPlantActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.plantreapp.connection.WaterInfoViewModel;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -94,7 +97,9 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         adapter = new WaterInfoAdapter( Moisture.Companion.getItemCallback(), this);
         recyclerView.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(WaterInfoViewModel.class);
+        viewModel = new ViewModelProvider(this, new WaterInfoViewModelFactory(this.getApplication())).get(WaterInfoViewModel.class);
+        //journalsViewModel = new ViewModelProvider(this, new JournalViewModelFactory(this.getApplication(), plantUid)).get(JournalsViewModel.class);
+
         viewModel.getMoistureList().observe(this, new Observer<List<Moisture>>() {
             @Override
             public void onChanged(List<Moisture> moistures) {
