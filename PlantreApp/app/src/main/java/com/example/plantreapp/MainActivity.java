@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.db.AppDatabase;
+import com.example.plantreapp.login.LoginActivity;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 /*Splash Screen*/
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
