@@ -22,6 +22,9 @@ import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.os.Handler;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -53,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cz.msebera.android.httpclient.Header;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
 import kotlin.coroutines.EmptyCoroutineContext;
@@ -77,13 +81,23 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
     boolean udpConnected = false;*/
-    private Handler handler = new Handler();
+
+    public static boolean pumpOn, secondPumpOn;
+
     private int soilMoisture = 0;
     private int soilMoisture2 = 0;
+    TextView test;
+
+    private Handler handler = new Handler();
 
     private final static String TAG = MainActivity.class.getSimpleName();
     UdpServerThread udpServerThread;
     static final int UdpServerPORT = 4445;
+    boolean udpConnected = false;
+    InetAddress savedAddress = null;
+    int savedPort = 0;
+
+
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
@@ -93,6 +107,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private boolean secondSensorReceiving;
     private PlantIdentityRepository plantIdentityRepository; // Could be replaced with a view model
     private PlantRepository plantRepository;
+    private String firstWaterPumpUrl;
+    private String secondWaterPumpUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +127,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         // Setup repository
         // plantIdentityRepository = new PlantIdentityRepository(getApplicationContext());
         plantRepository = new PlantRepository(getApplicationContext());
+        firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
+        secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
 
         receiveData();
         /*OkHttpClient httpClient = new OkHttpClient();
@@ -140,7 +158,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 return false;
             }
         });
-
+        test = (TextView) findViewById(R.id.networkTest);
         /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
         circular_pro2 = (ProgressBar)findViewById(R.id.progessbar_circular2);
 
@@ -148,7 +166,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         status2= (TextView)findViewById(R.id.text_status2);
         //textViewPrompt = (TextView)findViewById(R.id.prompt);
         pumpOn = false;
-
+        test = (TextView) findViewById(R.id.networkTest);
         ButtonPump = (Button) findViewById(R.id.btnSendPump);
         ButtonPump2 = (Button) findViewById(R.id.btnSendPump2);
 
@@ -278,6 +296,38 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             }
         });
 */
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+
+                    if(savedAddress != null)
+                    {
+                        try {
+                            if(savedAddress.isReachable(savedPort))
+                            {
+                                //test.setText("Got it");
+                                udpConnected = true;
+                            }
+                            else
+                            {
+                                //test.setText("Went out of Home Network");
+                                udpConnected = false;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            udpConnected = false;
+                        }
+                    }
+                    else
+                    {
+                        //test.setText("Not in Home Network");
+                        //waterInfoArrayList.get(0).setPlantText("Not in Home Network");
+                        udpConnected = false;
+                    }
+                }
+            }
+        }).start();
 
     }
     public void updateWaterList() {
@@ -431,33 +481,27 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                     //updatePrompt("Request from: " + address + ":" + port + "\n");
                     //updatePrompt("Message: "+ soilMoisture +"\n");
 
-                    /*if(pumpOn == true)
-                    {
-                        if(udpConnected)
-                        {
-                            String dString = "5";
-                            buf = dString.getBytes();
-                            packet = new DatagramPacket(buf, buf.length, address, port);
-                            socket.send(packet);
-                            pumpOn = false;
-                        }
-                        else
-                        {
+                    savedAddress = address;
+                    savedPort = port;
 
-                        }
+                    if(pumpOn == true)
+                    {
+                        String dString = "5";
+                        buf = dString.getBytes();
+                        packet = new DatagramPacket(buf, buf.length, address, port);
+                        socket.send(packet);
+                        pumpOn = false;
 
                     }
 
                     if(secondPumpOn == true)
                     {
-                        if(udpConnected) {
-                            String dString = "4";
-                            buf = dString.getBytes();
-                            packet = new DatagramPacket(buf, buf.length, address, port);
-                            socket.send(packet);
-                            secondPumpOn = false;
-                        }
-                    }*/
+                        String dString = "4";
+                        buf = dString.getBytes();
+                        packet = new DatagramPacket(buf, buf.length, address, port);
+                        socket.send(packet);
+                        secondPumpOn = false;
+                    }
 
                 }
 
@@ -495,44 +539,52 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBtnClick(ArrayList<WaterInfo> w)
+    public void onBtnClick(int pos, ArrayList<WaterInfo> w)
     {
-        Random r = new Random();
+        if(udpConnected == true)
+        {
+            if(pos == 0)
+            {
+                pumpOn = true;
+            }
+            else if(pos == 1)
+            {
+                secondPumpOn = true;
+            }
+            //testbtn.setText("Watering via UDP");
+        }
+        else
+        {
+            if(pos == 0)
+            {
+                turnOnWaterPumpViaCloud(firstWaterPumpUrl);
+            }
+            else if(pos == 1)
+            {
+                turnOnWaterPumpViaCloud(secondWaterPumpUrl);
+            }
+            //status2.setText("UDP not Connected");
+            //httpClient.newCall(request2);
+            //testbtn.setText("Watering via Cloud");
 
-        //int result = r.nextInt(high-low) + low;
+        }
+    }
 
-        //ArrayList<WaterInfo> t = waterInfoArrayList;
 
-        WaterInfo w1 = waterInfoArrayList.get(0);
-        WaterInfo w2 = waterInfoArrayList.get(1);
-        int l = waterInfoArrayList.size();
-        w1.setText(String.valueOf(l));
-        adapter.notifyDataSetChanged();
-
-        new Thread(new Runnable() {
+    private void turnOnWaterPumpViaCloud(String url)
+    {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, new AsyncHttpResponseHandler() {
             @Override
-            public void run() {
-                while(true){
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            setProg(soilMoisture, w1);
-                            adapter.notifyDataSetChanged();
-                            setProg(soilMoisture2, w2);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                    try {
-                        Thread.sleep(200);
-
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                }
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
             }
-        }).start();
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                //
+            }
+        });
     }
 
     public void receiveData()
@@ -540,9 +592,6 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         WaterInfo w1 = waterInfoArrayList.get(0);
         WaterInfo w2 = waterInfoArrayList.get(1);
         updateWaterList();
-
-
-
 
 /*
         Intent intent = getIntent();

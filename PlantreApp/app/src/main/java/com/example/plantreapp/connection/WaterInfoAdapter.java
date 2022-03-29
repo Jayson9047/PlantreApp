@@ -68,7 +68,7 @@ public class WaterInfoAdapter extends RecyclerView.Adapter<WaterInfoAdapter.Wate
             btn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    waterInfoInterface.onBtnClick(waterInfoArr);
+                    waterInfoInterface.onBtnClick(getAdapterPosition(),waterInfoArr);
                 }
             });
             selectPlantBtn.setOnClickListener(new View.OnClickListener(){
@@ -89,7 +89,7 @@ public class WaterInfoAdapter extends RecyclerView.Adapter<WaterInfoAdapter.Wate
     }
 
     public interface WaterInfoInterface {
-        void onBtnClick(ArrayList<WaterInfo> w);
+        void onBtnClick(int position, ArrayList<WaterInfo> w);
         void onSelectPlantClick(int position);
     }
 }
