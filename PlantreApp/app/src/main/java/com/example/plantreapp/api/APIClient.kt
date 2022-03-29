@@ -35,23 +35,29 @@ class APIClient(context: Context) {
         var list = CompletableDeferred<List<Plant>>();
 
             val request = Request.Builder().url("https://plantre.azurewebsites.net/api/plant").build()
+            try {
             instance?.newCall(request)?.execute().use { response ->
                 if (response != null) {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                    val res = plantJsonAdapter.fromJson(response.body!!.source())
-                    if (res != null) {
 
-                        list.complete(res.data)
-                        println("Great Success")
+                        val res = plantJsonAdapter.fromJson(response.body!!.source())
+                        if (res != null) {
 
-                    } else {
-                        list.complete(emptyList())
-                    }
+                            list.complete(res.data)
+                            println("Great Success")
+
+                        } else {
+                            list.complete(emptyList())
+                        }
+
 
 
                 } else {
                     list.complete(emptyList())
                 }
+            }
+            } catch (e: IOException) {
+                list.complete(emptyList())
             }
         return@withContext list.await();
     }

@@ -20,7 +20,10 @@ interface PlantIdentityDAO {
     @Update
     suspend fun update(plant: PlantIdentity)
 
-    @Query("SELECT * FROM PlantIdentity WHERE uid = :id")
+    @Query("SELECT * FROM PlantIdentity WHERE position = :id")
     suspend fun findById(id: Int): List<PlantIdentity>
+
+    @Query("SELECT * FROM PlantIdentity WHERE position = :position")
+    suspend fun findByPositionNumber(position: Int): PlantIdentity
 
 }

@@ -9,19 +9,17 @@ import java.util.*
 
 @Entity
 data class PlantIdentity (
-        @PrimaryKey(autoGenerate = true) val uid:Int?,
+        @PrimaryKey(autoGenerate = true) val position: Int,
         @ColumnInfo(name = "pName") val pName: String?,
-        @ColumnInfo(name = "position") val position: Int, // How often to water - in days 1-7, generally seedlings need a higher rate
-
 ) {
 
     override fun hashCode(): Int {
-        return Objects.hash(uid, pName, position )
+        return Objects.hash(position, pName)
     }
     companion object {
         var itemCallback: DiffUtil.ItemCallback<PlantIdentity> = object : DiffUtil.ItemCallback<PlantIdentity>() {
             override fun areItemsTheSame(oldItem: PlantIdentity, newItem: PlantIdentity): Boolean {
-                return oldItem.uid == newItem.uid
+                return oldItem.position == newItem.position
             }
 
             override fun areContentsTheSame(oldItem: PlantIdentity, newItem: PlantIdentity): Boolean {

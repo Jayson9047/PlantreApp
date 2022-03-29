@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.plantreapp.db.AppDatabase;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 /*Splash Screen*/
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+
+        AppDatabase.Companion.invoke(getApplicationContext());
 
         /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             if(!isTimerServiceRunning()) {

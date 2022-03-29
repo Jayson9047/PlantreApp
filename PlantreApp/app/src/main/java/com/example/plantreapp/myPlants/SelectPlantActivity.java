@@ -17,6 +17,7 @@ import com.example.plantreapp.R;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.entities.PlantIdentity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -89,7 +90,15 @@ public class SelectPlantActivity extends AppCompatActivity
 
     @Override
     public void onSelect(Plant plant) {
-        PlantInfo info = new PlantInfo(
+
+        String plantName = plant.getName();
+        Bundle extras = getIntent().getExtras();
+        int i = -1;
+        if(extras != null)
+        {
+            i = extras.getInt("position");
+        }
+        Plant tempPlant = new Plant(plant.getUid(),
                 plant.getName(),
                 plant.getScientificName(),
                 plant.getPicture(),
@@ -103,24 +112,23 @@ public class SelectPlantActivity extends AppCompatActivity
                 plant.getMin_seedling_moisture(),
                 plant.getMax_seedling_moisture(),
                 plant.getMin_mature_moisture(),
-                plant.getMax_mature_moisture()
+                plant.getMax_mature_moisture(),
+                i == -1 ? null : i,
+                plant.getWater_running_time()
         );
-        String plantName = plant.getName();
-        Bundle extras = getIntent().getExtras();
-        int i = -1;
-        if(extras != null)
-        {
-            i = extras.getInt("position");
-        }
 /*        Intent intent = new Intent(SelectPlantActivity.this, ConnBtnActivity.class);
         intent.putExtra("plantInfo", info);
         intent.putExtra("position", getIntent().getIntExtra("position", -1));
         intent.putExtra("plantUid", plant.getUid());*/
         Intent intent = new Intent(SelectPlantActivity.this, ConnBtnActivity.class);
-        Bundle returnExtras = new Bundle();
+
+        // Update or add items in repository
+        plantsViewModel.updatePlantPosition(tempPlant, i);
+
+/*        Bundle returnExtras = new Bundle();
         returnExtras.putString("plantName", plantName);
         returnExtras.putInt("position", i);
-        intent.putExtras(returnExtras);
+        intent.putExtras(returnExtras);*/
         startActivity(intent);
     }
 }

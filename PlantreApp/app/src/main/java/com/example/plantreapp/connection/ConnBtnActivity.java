@@ -8,12 +8,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.entities.PlantIdentity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.myPlants.SelectPlantActivity;
+import com.example.plantreapp.repository.PlantIdentityRepository;
+import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -38,7 +43,12 @@ import android.widget.ProgressBar;
 //import cz.msebera.android.httpclient.Header;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
 
 
 public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapter.WaterInfoInterface {
@@ -74,6 +84,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private WaterInfo wInfo;
     private boolean firstSensorReceiving;
     private boolean secondSensorReceiving;
+    private PlantIdentityRepository plantIdentityRepository; // Could be replaced with a view model
+    private PlantRepository plantRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +100,10 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
         firstSensorReceiving = false;
         secondSensorReceiving = false;
+
+        // Setup repository
+        // plantIdentityRepository = new PlantIdentityRepository(getApplicationContext());
+        plantRepository = new PlantRepository(getApplicationContext());
 
         receiveData();
         /*OkHttpClient httpClient = new OkHttpClient();
@@ -257,11 +273,57 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 */
 
     }
+    public void updateWaterList() {
+        WaterInfo w1 = waterInfoArrayList.get(0);
+        WaterInfo w2 = waterInfoArrayList.get(1);
 
+        // First Water Pump
+        plantRepository.findByPosition(0, new Continuation<Plant>() {
+            @NonNull
+            @Override
+            public CoroutineContext getContext() {
+                return EmptyCoroutineContext.INSTANCE;
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void resumeWith(@NonNull Object o) {
+                if (o != null) {
+                    Plant plant = (Plant) o;
+                    w1.setPlantText(plant.getName());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        // First Water Pump
+        plantRepository.findByPosition(1, new Continuation<Plant>() {
+            @NonNull
+            @Override
+            public CoroutineContext getContext() {
+                return EmptyCoroutineContext.INSTANCE;
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void resumeWith(@NonNull Object o) {
+                if (o != null) {
+                    Plant plant = (Plant) o;
+                    w1.setPlantText(plant.getName());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
+    }
     @Override
     protected void onStart() {
         udpServerThread = new UdpServerThread(UdpServerPORT);
         udpServerThread.start();
+
+
+        updateWaterList();
 
         super.onStart();
     }
@@ -470,11 +532,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     {
         WaterInfo w1 = waterInfoArrayList.get(0);
         WaterInfo w2 = waterInfoArrayList.get(1);
+        updateWaterList();
 
 
+
+
+/*
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-
         if(extras != null)
         {
             String pName = extras.getString("plantName");
@@ -494,11 +559,11 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         {
             w1.setPlantText("No Name Found");
             w2.setPlantText("No Name Found");
-        }
+        }*/
 
 
-        int l = waterInfoArrayList.size();
-        w1.setText(String.valueOf(l));
+        //int l = waterInfoArrayList.size();
+        //w1.setText(String.valueOf(l));
         adapter.notifyDataSetChanged();
 
         new Thread(new Runnable() {

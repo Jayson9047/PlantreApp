@@ -34,9 +34,22 @@ class PlantRepository(context: Context) {
         return dao?.findByName(name) ?: list
     }
 
+    suspend fun updatePlantPosition(plant: Plant, position: Int) {
+        runBlocking {
+            dao?.clearOldPositions(position)
+        }
+        runBlocking { 
+            dao?.update(plant)
+        }
+    }
+
     suspend fun findById(id: Int) : List<Plant> {
         val list: List<Plant> = emptyList()
         return dao?.findById(id) ?: list
+    }
+
+    suspend fun findByPosition(position: Int) : Plant? {
+        return dao?.findByPosition(position)
     }
 
     suspend fun insert(plant: Plant) {
@@ -48,6 +61,13 @@ class PlantRepository(context: Context) {
 
     suspend fun delete(plant: Plant) {
         runBlocking { dao?.delete(plant) }
+        runBlocking {
+            plants.postValue(dao?.getAll())
+        }
+    }
+
+    suspend fun updatePlant(plant: Plant) {
+        runBlocking { dao?.update(plant)  }
         runBlocking {
             plants.postValue(dao?.getAll())
         }

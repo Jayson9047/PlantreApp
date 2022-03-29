@@ -1,7 +1,7 @@
+package com.example.plantreapp.repository;
+
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.example.plantreapp.dao.PlantIdentityDAO
 import com.example.plantreapp.db.AppDatabase
 import com.example.plantreapp.entities.PlantIdentity
@@ -24,12 +24,13 @@ class PlantIdentityRepository(context: Context) {
         return dao?.getAll() ?: list
     }
 
+    suspend fun update(plantIdentity: PlantIdentity) {
+        runBlocking { dao?.update(plantIdentity) }
+    }
 
-    suspend fun insert(plantIdentity: PlantIdentity, plant_uid: Int) {
+
+    suspend fun insert(plantIdentity: PlantIdentity) {
         runBlocking { dao?.insert(plantIdentity) }
-        runBlocking {
-            plantIDs.value = dao?.findById(plant_uid)
-        }
     }
 
     suspend fun delete(plantIdentity: PlantIdentity, plant_uid: Int) {
@@ -37,6 +38,10 @@ class PlantIdentityRepository(context: Context) {
         runBlocking {
             plantIDs.value = dao?.findById(plant_uid)
         }
+    }
+
+    suspend fun findByPosition(position: Int) : PlantIdentity? {
+        return dao?.findByPositionNumber(position)
     }
 
 }

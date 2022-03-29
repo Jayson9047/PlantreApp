@@ -150,7 +150,9 @@ public class MyPlantsActivity extends AppCompatActivity
                     plantInfo.getMinSeedlingMoisture(),
                     plantInfo.getMaxSeedlingMoisture(),
                     plantInfo.getMinMatureMoisture(),
-                    plantInfo.getMaxMatureMoisture()
+                    plantInfo.getMaxMatureMoisture(),
+                    null,
+                    30 // Update
             );
 
             plantsViewModel.addPlant(plant);

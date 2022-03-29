@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.plantreapp.dao.*
 import com.example.plantreapp.entities.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, Moisture::class, PlantIdentity::class], version = 11)
+@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, Moisture::class, PlantIdentity::class], version = 16)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDAO
     abstract fun journalDao(): JournalDAO
@@ -25,7 +29,21 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context) = Room.databaseBuilder(context,
-            AppDatabase::class.java, "local")
+            AppDatabase::class.java, "local").addCallback(object : Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                // insert the data on the IO Thread
+
+                runBlocking {
+                    launch(Dispatchers.IO) {
+                        instance?.plantIdentityDao()?.insert(PlantIdentity(0, "Not Selected"))
+                        instance?.plantIdentityDao()?.insert(PlantIdentity(1, "Not Selected"))
+                    }
+                }
+
+            }
+        })
             .fallbackToDestructiveMigration().build()
+
     }
 }
