@@ -318,7 +318,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             public void resumeWith(@NonNull Object o) {
                 if (o != null) {
                     Plant plant = (Plant) o;
-                    w2.setPlantText(plant.getName());
+                    w1.setPlantText(plant.getName());
                     adapter.notifyDataSetChanged();
                 }
             }
