@@ -113,7 +113,6 @@ public class PlantsViewModel extends AndroidViewModel {
 
 
     public void deletePlant(Plant plant) {
-
         repository.delete(plant, new Continuation<Unit>() {
             @NonNull
             @Override

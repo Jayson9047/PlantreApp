@@ -32,6 +32,7 @@ class TimerRepository(context: Context) {
         return dao?.getAll() ?: list
     }
 
+
     suspend fun findById(id: Int) : List<Timer> {
         val list: List<Timer> = emptyList()
         return dao?.findById(id) ?: list
@@ -42,17 +43,8 @@ class TimerRepository(context: Context) {
         return dao?.findByPlantUID(id) ?: list
     }
 
-    suspend fun findByName(name: String) : List<Timer> {
-        val list: List<Timer> = emptyList()
-        return dao?.findByName(name) ?: list
-    }
-
     suspend fun insert(timer: Timer) {
         dao?.insert(timer)
-    }
-
-    suspend fun delete(timer: Timer) {
-        dao?.delete(timer)
     }
 
     suspend fun update(timer: Timer) {

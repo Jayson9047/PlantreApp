@@ -27,9 +27,6 @@ import androidx.core.content.ContextCompat;
 import com.example.plantreapp.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.example.plantreapp.TimerService;
-import com.example.plantreapp.logs.AddLogActivity;
-import com.example.plantreapp.logs.LogsActivity;
 
 public class AddPlantActivity extends AppCompatActivity {
     private Button addBtn, cancelBtn;
@@ -69,7 +66,6 @@ public class AddPlantActivity extends AppCompatActivity {
 
     //Image uri var
     private Uri imageUri;
-    private PlantInfo plantInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +89,6 @@ public class AddPlantActivity extends AppCompatActivity {
                 showImagePickerDialog();
             }
         });
-        // Check if plant info is being passed in
-        Intent intent = new Intent();
-        plantInfo = intent.getParcelableExtra("PLANTINFO");
-
 
         nameTxt = findViewById(R.id.editPlantName);
         scifiNameTxt = findViewById(R.id.editScifiName);
