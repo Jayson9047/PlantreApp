@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, Moisture::class, PlantIdentity::class], version = 16)
+@Database(entities = [Plant::class, Journal::class, Log::class, Timer::class, Moisture::class, PlantIdentity::class], version = 17)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDAO
