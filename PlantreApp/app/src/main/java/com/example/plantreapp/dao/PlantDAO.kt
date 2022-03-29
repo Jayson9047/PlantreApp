@@ -11,6 +11,9 @@ interface PlantDAO {
     @Insert
     suspend fun insert(plant: Plant)
 
+    @Insert
+    suspend fun insertAll(plants: List<Plant>)
+
     @Delete
     suspend fun delete(plant: Plant)
 
@@ -22,5 +25,4 @@ interface PlantDAO {
 
     @Query("SELECT * FROM plant WHERE uid = :id")
     suspend fun findById(id: Int) : List<Plant>
-
 }
