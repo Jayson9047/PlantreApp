@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -32,6 +33,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 //import com.loopj.android.http.AsyncHttpClient;
 //import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -68,8 +70,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
     private WaterInfoViewModel viewModel;
-    private ArrayList<WaterInfo> waterInfoArrayList;
-    private WaterInfo wInfo;
+    //private ArrayList<WaterInfo> waterInfoArrayList;
+    //private WaterInfo wInfo;
     private boolean firstSensorReceiving;
     private boolean secondSensorReceiving;
     @Override
@@ -77,7 +79,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conn_btn);
 
-        wInfo = new WaterInfo(10,"buttonName","test");
+        //wInfo = new WaterInfo(10,"buttonName","test");
 
         firstSensorReceiving = false;
         secondSensorReceiving = false;
@@ -498,7 +500,18 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     @Override
     public void onWaterBtnClick(Moisture moisture, int position) {
+        List<Moisture> m = viewModel.getMoistureList().getValue();
+        Moisture m1 = m.get(0);
+        //moisture.
+        //moisture.percentage = 10;
+        Random rand = new Random(); //instance of random class
+        int upperbound = 25;
+        //generate random values from 0-24
+        int int_random = rand.nextInt(upperbound);
 
+        m1.setPercentage(int_random);
+        m1.setText(String.valueOf(int_random));
+        viewModel.updateMoisture(m1);
         return;
     }
 
@@ -510,7 +523,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         return;
     }
 
-    private void setProg(int sMoisture, WaterInfo w)
+/*    private void setProg(int sMoisture, WaterInfo w)
     {
         w.setPercentage(sMoisture);
         if(sMoisture <0 )
@@ -522,6 +535,6 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             sMoisture = 100;
         }
         w.setText(sMoisture+"%");
-    }
+    }*/
 }
 

@@ -40,7 +40,7 @@ public class WaterInfoAdapter extends ListAdapter<Moisture, WaterInfoAdapter.Wat
         private ProgressBar bar;
         Button waterBtn, selectPlantBtn;
         TextView txt, txtPlantName;
-
+        Moisture m;
         public WaterInfoViewHolder(@NonNull View itemView) {
             super(itemView);
             bar = itemView.findViewById(R.id.progessbar_circular);
@@ -48,11 +48,12 @@ public class WaterInfoAdapter extends ListAdapter<Moisture, WaterInfoAdapter.Wat
             selectPlantBtn = itemView.findViewById(R.id.btnSelectPlant);
             txt = itemView.findViewById(R.id.text_status);
             txtPlantName = itemView.findViewById(R.id.text_plant_name);
-
+            m = new Moisture(0, 0, /*info.getName()*/"percentage", "Button", 0);
             waterBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     waterInfoInterface.onWaterBtnClick(getItem(getAdapterPosition()), getAdapterPosition());
+                    //m.
                 }
             });
 
@@ -73,6 +74,7 @@ public class WaterInfoAdapter extends ListAdapter<Moisture, WaterInfoAdapter.Wat
             if (plantUid != -1) {
                 txtPlantName.setText(String.format("Selected Plant: %s", plantUid));
             }
+
         }
     }
 

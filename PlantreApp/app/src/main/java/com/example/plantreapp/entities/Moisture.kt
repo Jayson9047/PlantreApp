@@ -10,10 +10,15 @@ import java.util.*
 @Entity
 data class Moisture (
         @PrimaryKey(autoGenerate = true) val uid: Int?,
-        @ColumnInfo(name = "percentage") val percentage: Int,
-        @ColumnInfo(name = "text") val text: String,
-        @ColumnInfo(name = "btnName") val btnName: String,
-        @ColumnInfo(name = "plant_uid") val plantUid: Int // The plant that the moisture sensor is connected to
+        @ColumnInfo(name = "percentage") var percentage: Int,
+        @ColumnInfo(name = "text") var text: String,
+        @ColumnInfo(name = "btnName") var btnName: String,
+        @ColumnInfo(name = "plant_uid") var plantUid: Int // The plant that the moisture sensor is connected to
+        /*@PrimaryKey(autoGenerate = true) val uid: Int?,
+        @JvmField var percentage: Int,
+        @JvmField var text: String,
+        @JvmField var btnName: String,
+        @JvmField var plantUid: Int // The plant that the moisture sensor is connected to*/
 ) {
     override fun hashCode(): Int {
         return Objects.hash(uid, percentage, text, btnName, plantUid)
