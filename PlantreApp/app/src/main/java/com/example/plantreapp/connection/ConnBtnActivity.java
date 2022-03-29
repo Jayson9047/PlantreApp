@@ -87,7 +87,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
-    private ArrayList<WaterInfo> waterInfoArrayList;
+    public static ArrayList<WaterInfo> waterInfoArrayList;
     private WaterInfo wInfo;
     private boolean firstSensorReceiving;
     private boolean secondSensorReceiving;

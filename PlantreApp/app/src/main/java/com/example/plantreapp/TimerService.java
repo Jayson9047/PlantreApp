@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.example.plantreapp.connection.WaterInfo;
 import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.entities.Timer;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
@@ -181,7 +182,15 @@ public class TimerService extends Service {
                                                             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                                             int id = (int) System.currentTimeMillis();
                                                             notificationManager.notify(id, notifyBuilder.build());
-                                                            //ConnBtnActivity.pumpOn = true;
+
+                                                            /*
+                                                            if(ConnBtnActivity.waterInfoArrayList.get(0).getPlantText() == timer.getName()){
+                                                                ConnBtnActivity.pumpOn = true;
+                                                            }else{
+                                                                ConnBtnActivity.secondPumpOn = true;
+                                                            }
+                                                            */
+
                                                         }
                                                     });
                                                 } else {
