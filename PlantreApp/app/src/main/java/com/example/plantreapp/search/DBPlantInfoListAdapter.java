@@ -1,12 +1,9 @@
-package com.example.plantreapp.myPlants;
+package com.example.plantreapp.search;
 
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,41 +14,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
 import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.entities.PlantInfo;
+import com.example.plantreapp.myPlants.PlantListAdapter;
 
-public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantViewHolder> {
+public class DBPlantInfoListAdapter extends ListAdapter<PlantInfo, DBPlantInfoListAdapter.DBPlantInfoViewHolder> {
 
-    PlantClickInterface plantClickInterface;
+    DBPlantInfoListAdapter.PlantInfoClickInterface plantClickInterface;
 
-    public PlantListAdapter(@NonNull DiffUtil.ItemCallback<Plant> diffCallback, PlantClickInterface plantClickInterface) {
+    public DBPlantInfoListAdapter(@NonNull DiffUtil.ItemCallback<PlantInfo> diffCallback, DBPlantInfoListAdapter.PlantInfoClickInterface plantClickInterface) {
         super(diffCallback);
         this.plantClickInterface = plantClickInterface;
     }
 
     @NonNull
     @Override
-    public PlantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PlantViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_plant, parent, false));
+    public DBPlantInfoListAdapter.DBPlantInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DBPlantInfoListAdapter.DBPlantInfoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_plant, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlantViewHolder holder, int position) {
-        Plant plant = getItem(position);
-        holder.bind(plant);
+    public void onBindViewHolder(@NonNull DBPlantInfoListAdapter.DBPlantInfoViewHolder holder, int position) {
+        PlantInfo plantInfo = getItem(position);
+        holder.bind(plantInfo);
     }
 
-    class PlantViewHolder extends RecyclerView.ViewHolder {
+    class DBPlantInfoViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView, descriptionTextView;
         ImageButton deleteButton;
         RelativeLayout plantItem;
-        ImageView imageView;
 
-        public PlantViewHolder(@NonNull View itemView) {
+        public DBPlantInfoViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextview);
             descriptionTextView = itemView.findViewById(R.id.DescriptionTextView);
             deleteButton = itemView.findViewById(R.id.deletePlantButton);
             plantItem = itemView.findViewById(R.id.plantItem);
-            imageView = itemView.findViewById(R.id.imageView);
 
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,15 +66,14 @@ public class PlantListAdapter extends ListAdapter<Plant, PlantListAdapter.PlantV
             });
         }
 
-        public void bind(Plant plant) {
-            nameTextView.setText(plant.getName());
-            descriptionTextView.setText(plant.getDescription());
-            imageView.setImageURI(Uri.parse(plant.getPicture()));
+        public void bind(PlantInfo plantInfo) {
+            nameTextView.setText(plantInfo.getName());
+            descriptionTextView.setText(plantInfo.getScientific_name());
         }
     }
 
-    public interface PlantClickInterface {
-        void onDelete(Plant plant);
-        void onSelect(Plant plant);
+    public interface PlantInfoClickInterface {
+        public void onDelete(PlantInfo plantInfo);
+        public void onSelect(PlantInfo plantInfo);
     }
 }
