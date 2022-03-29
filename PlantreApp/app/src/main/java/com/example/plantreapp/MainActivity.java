@@ -8,6 +8,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,8 +57,16 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+                SharedPreferences sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
+                String token = sharedPreferences.getString("secret_token", "");
+                if (token.isEmpty()) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
+                    startActivity(intent);
+                }
+
                 finish();
             }
         }, SPLASH_TIME);
