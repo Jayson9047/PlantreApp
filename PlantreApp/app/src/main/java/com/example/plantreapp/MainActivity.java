@@ -2,7 +2,13 @@
 
 package com.example.plantreapp;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -17,13 +23,14 @@ import com.example.plantreapp.onBoarding.OnBoardingActivity;
 
 public class MainActivity extends AppCompatActivity {
     private int SPLASH_TIME = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-        AppDatabase.Companion.invoke(getApplicationContext());
+        //AppDatabase.Companion.invoke(getApplicationContext());
 
         /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             if(!isTimerServiceRunning()) {
@@ -55,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         }, SPLASH_TIME);
     }
 
-    /*public Boolean isTimerServiceRunning(){
+
+    public Boolean isTimerServiceRunning(){
         @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
             if(TimerService.class.getName().equals(service.service.getClassName())){
@@ -63,6 +71,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }*/
+    }
     //this is test
 }

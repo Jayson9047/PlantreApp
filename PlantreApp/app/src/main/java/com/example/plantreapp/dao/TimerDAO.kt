@@ -1,6 +1,7 @@
 package com.example.plantreapp.dao
 
 import androidx.room.*
+import com.example.plantreapp.entities.Plant
 import com.example.plantreapp.entities.Timer
 
 @Dao
@@ -23,4 +24,7 @@ interface TimerDAO {
     // Change to match relationship - ie find by journal_UID, plant_UID, log_UID
     @Query("SELECT * FROM timer WHERE plant_uid = :plantUID")
     suspend fun findByPlantUID(plantUID: Int): List<Timer>
+
+    @Query("SELECT * FROM timer WHERE name = :name")
+    suspend fun findByName(name: String) : List<Timer>
 }

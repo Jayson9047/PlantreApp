@@ -2,12 +2,14 @@
 package com.example.plantreapp.myPlants;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -17,14 +19,27 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.TimerService;
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
+import com.example.plantreapp.entities.Timer;
+import com.example.plantreapp.journals.JournalsActivity;
+import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
 
 /*My Plants Screen*/
 
@@ -35,6 +50,7 @@ public class MyPlantsActivity extends AppCompatActivity
     private PlantsViewModel plantsViewModel;
     private List<Plant> tmpPlantList;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,16 +118,20 @@ public class MyPlantsActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onDelete(Plant plant) {
         plantsViewModel.deletePlant(plant);
+        Intent deletePlant = new Intent(this, TimerService.class);
+        deletePlant.putExtra("deletedPlant", plant.getName());
+        startForegroundService(deletePlant);
     }
 
     @Override
     public void onSelect(Plant plant) {
         PlantInfo info = new PlantInfo(
                 plant.getName(),
-                plant.getScientificName(),
+                plant.getScientific_name(),
                 null,
                 plant.getDescription(),
                 plant.getStage(),
@@ -133,10 +153,13 @@ public class MyPlantsActivity extends AppCompatActivity
     }
 
     // updating plants in plants view model
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void applyTexts(Intent i) {
         PlantInfo plantInfo = i.getParcelableExtra("plantInfo");
         if (plantInfo != null) {
             Plant plant = new Plant(null,
+                    null,
+                    null,
                     plantInfo.getName(),
                     plantInfo.getScifiName(),
                     plantInfo.getUri(),
@@ -156,8 +179,10 @@ public class MyPlantsActivity extends AppCompatActivity
             );
 
             plantsViewModel.addPlant(plant);
+            
+            Intent newPlantIntent = new Intent(this, TimerService.class);
+            startForegroundService(newPlantIntent);
         }
-
     }
 
     // search plants

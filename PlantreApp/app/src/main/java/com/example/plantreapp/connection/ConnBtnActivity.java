@@ -21,11 +21,17 @@ import com.example.plantreapp.repository.PlantIdentityRepository;
 import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.os.Handler;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.MainActivity;
 //import com.loopj.android.http.AsyncHttpClient;
@@ -36,6 +42,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+
 
 import android.os.Handler;
 import android.widget.ProgressBar;
@@ -66,7 +73,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private final static String TAG = MainActivity.class.getSimpleName();
 
     //TextView textViewPrompt;
-    boolean pumpOn, secondPumpOn;
+    public static boolean pumpOn, secondPumpOn;
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
     boolean udpConnected = false;*/
