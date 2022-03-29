@@ -16,7 +16,7 @@ data class Moisture (
         @ColumnInfo(name = "plant_uid") val plantUid: Int // The plant that the moisture sensor is connected to
 ) {
     override fun hashCode(): Int {
-        return Objects.hash(uid, percentage, text, btnName, plantUid)
+        return Objects.hash(uid, percentage, text)
     }
     companion object {
         var itemCallback: DiffUtil.ItemCallback<Moisture> = object : DiffUtil.ItemCallback<Moisture>() {

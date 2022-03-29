@@ -33,14 +33,23 @@ class MoistureRepository(context: Context) {
 
     suspend fun insert(moisture: Moisture) {
         runBlocking { dao?.insert(moisture) }
+        runBlocking {
+            moistures.postValue(dao?.getAll())
+        }
     }
 
     suspend fun update(moisture: Moisture) {
         runBlocking { dao?.update(moisture) }
+        runBlocking {
+            moistures.postValue(dao?.getAll())
+        }
     }
 
     suspend fun delete(moisture: Moisture) {
         runBlocking { dao?.delete(moisture) }
+        runBlocking {
+            moistures.postValue(dao?.getAll())
+        }
     }
 
 }

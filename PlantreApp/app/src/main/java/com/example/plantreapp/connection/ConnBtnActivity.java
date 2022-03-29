@@ -106,8 +106,6 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
 
 
-
-        // todo: init list on the first time the page loads instead of having to changing activities and then coming back
         // init list if its empty
         if (viewModel.getMoistureList().getValue().isEmpty()) {
             viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
@@ -123,7 +121,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
         if (plantUid != -1 && posToChange != -1 && info != null) {
             Moisture tmpMoisture = viewModel.getMoistureList().getValue().get(posToChange);
-            Moisture moisture = new Moisture(tmpMoisture.getUid(), tmpMoisture.getPercentage(), /*info.getName()*/"percentage", tmpMoisture.getBtnName(), plantUid);
+            Moisture moisture = new Moisture(tmpMoisture.getUid(), tmpMoisture.getPercentage(),"percentage", tmpMoisture.getBtnName(), plantUid);
             viewModel.updateMoisture(moisture);
 
             //adapter.submitList(viewModel.getMoistureList().getValue());
