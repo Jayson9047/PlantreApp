@@ -181,7 +181,7 @@ public class TimerService extends Service {
                                                             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                                             int id = (int) System.currentTimeMillis();
                                                             notificationManager.notify(id, notifyBuilder.build());
-                                                            ConnBtnActivity.pumpOn = true;
+                                                            //ConnBtnActivity.pumpOn = true;
                                                         }
                                                     });
                                                 } else {

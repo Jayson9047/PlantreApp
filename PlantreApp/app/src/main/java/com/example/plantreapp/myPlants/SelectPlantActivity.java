@@ -99,8 +99,10 @@ public class SelectPlantActivity extends AppCompatActivity
             i = extras.getInt("position");
         }
         Plant tempPlant = new Plant(plant.getUid(),
+                null,
+                null,
                 plant.getName(),
-                plant.getScientificName(),
+                plant.getScientific_name(),
                 plant.getPicture(),
                 plant.getDescription(),
                 plant.getStage(),

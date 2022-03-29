@@ -305,7 +305,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             }
         });
 
-        // First Water Pump
+        // Second Water Pump
         plantRepository.findByPosition(1, new Continuation<Plant>() {
             @NonNull
             @Override
@@ -318,7 +318,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             public void resumeWith(@NonNull Object o) {
                 if (o != null) {
                     Plant plant = (Plant) o;
-                    w1.setPlantText(plant.getName());
+                    w2.setPlantText(plant.getName());
                     adapter.notifyDataSetChanged();
                 }
             }
