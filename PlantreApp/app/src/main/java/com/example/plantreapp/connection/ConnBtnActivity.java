@@ -1,16 +1,17 @@
 package com.example.plantreapp.connection;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.view.MenuItem;
+import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
@@ -24,12 +25,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+
 import android.os.Handler;
 import android.widget.ProgressBar;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-
 
 public class ConnBtnActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class ConnBtnActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
     //TextView textViewPrompt;
-    boolean pumpOn, secondPumpOn;
+    public static boolean pumpOn, secondPumpOn;
     static final int UdpServerPORT = 4445;
     UdpServerThread udpServerThread;
     boolean udpConnected = false;
