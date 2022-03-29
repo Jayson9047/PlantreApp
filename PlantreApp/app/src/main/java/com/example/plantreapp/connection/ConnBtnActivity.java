@@ -1,41 +1,44 @@
 package com.example.plantreapp.connection;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plantreapp.MainActivity;
 import com.example.plantreapp.R;
-import com.example.plantreapp.entities.Moisture;
-import com.example.plantreapp.journals.JournalViewModelFactory;
-import com.example.plantreapp.journals.JournalsViewModel;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
-import com.example.plantreapp.myPlants.PlantInfo;
 import com.example.plantreapp.myPlants.SelectPlantActivity;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.plantreapp.connection.WaterInfoViewModel;
+
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.plantreapp.MainActivity;
+//import com.loopj.android.http.AsyncHttpClient;
+//import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
 
-//import com.loopj.android.http.AsyncHttpClient;
-//import com.loopj.android.http.AsyncHttpResponseHandler;
+import android.os.Handler;
+import android.widget.ProgressBar;
+
 //import cz.msebera.android.httpclient.Header;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapter.WaterInfoInterface {
@@ -67,7 +70,6 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
-    private WaterInfoViewModel viewModel;
     private ArrayList<WaterInfo> waterInfoArrayList;
     private WaterInfo wInfo;
     private boolean firstSensorReceiving;
@@ -77,66 +79,44 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conn_btn);
 
-        wInfo = new WaterInfo(10,"buttonName","test");
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
+        bottomNavigationView.setSelectedItemId(R.id.home_item);
+
+        wInfo = new WaterInfo(10,"buttonName","test", "");
+        // init recycler view
+        initView();
 
         firstSensorReceiving = false;
         secondSensorReceiving = false;
 
+        receiveData();
         /*OkHttpClient httpClient = new OkHttpClient();
         String firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         String secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
         Request request1 = new Request.Builder().url(firstWaterPumpUrl).build();
         Request request2 = new Request.Builder().url(secondWaterPumpUrl).build();*/
 
-        // nav
-        setNavigation();
-
-
-        RecyclerView recyclerView = findViewById(R.id.connBtnRecyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter = new WaterInfoAdapter( Moisture.Companion.getItemCallback(), this);
-        recyclerView.setAdapter(adapter);
-
-        viewModel = new ViewModelProvider(this, new WaterInfoViewModelFactory(this.getApplication())).get(WaterInfoViewModel.class);
-        //journalsViewModel = new ViewModelProvider(this, new JournalViewModelFactory(this.getApplication(), plantUid)).get(JournalsViewModel.class);
-
-        viewModel.getMoistureList().observe(this, new Observer<List<Moisture>>() {
+        // nav click handler
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onChanged(List<Moisture> moistures) {
-                adapter.submitList(moistures);
-                //adapter.notifyDataSetChanged();
-                //tmpPlantList = plantListAdapter.getCurrentList();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_item:
+                        //startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
+                        return true;
+                    case R.id.my_plants_item:
+                        startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
+                        return true;
+                    case R.id.search_item:
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                        return true;
+                    case R.id.connection_item:
+                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
+                        return true;
+                }
+                return false;
             }
         });
-
-
-
-
-        // todo: init list on the first time the page loads instead of having to changing activities and then coming back
-        // init list if its empty
-        if (viewModel.getMoistureList().getValue().isEmpty()) {
-            viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
-            viewModel.addMoisture(new Moisture(null, 0, "percentage", "Water Plant", -1));
-            //adapter.submitList(viewModel.getMoistureList().getValue());
-            //adapter.notifyDataSetChanged();
-        }
-
-        // get selected plant info
-        int plantUid = getIntent().getIntExtra("plantUid", -1);
-        int posToChange = getIntent().getIntExtra("position", -1);
-        PlantInfo info = getIntent().getParcelableExtra("plantInfo");
-
-        if (plantUid != -1 && posToChange != -1 && info != null) {
-            Moisture tmpMoisture = viewModel.getMoistureList().getValue().get(posToChange);
-            Moisture moisture = new Moisture(tmpMoisture.getUid(), tmpMoisture.getPercentage(), /*info.getName()*/"percentage", tmpMoisture.getBtnName(), plantUid);
-            viewModel.updateMoisture(moisture);
-
-            //adapter.submitList(viewModel.getMoistureList().getValue());
-            //adapter.notifyItemChanged(posToChange);
-        }
-
-
-
 
         /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
         circular_pro2 = (ProgressBar)findViewById(R.id.progessbar_circular2);
@@ -278,36 +258,11 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     }
 
-    public void setNavigation() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setSelectedItemId(R.id.home_item);
-        // nav click handler
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home_item:
-                        //startActivity(new Intent(getApplicationContext(), ConnBtnActivity.class));
-                        return true;
-                    case R.id.my_plants_item:
-                        startActivity(new Intent(getApplicationContext(), MyPlantsActivity.class));
-                        return true;
-                    case R.id.search_item:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        return true;
-                    case R.id.connection_item:
-                        startActivity(new Intent(getApplicationContext(), ConnectionActivity.class));
-                        return true;
-                }
-                return false;
-            }
-        });
-    }
-
     @Override
     protected void onStart() {
         udpServerThread = new UdpServerThread(UdpServerPORT);
         udpServerThread.start();
+
         super.onStart();
     }
     @Override
@@ -453,22 +408,35 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     }
 
     private void initView() {
+        // Initialize RecyclerView and set Adapter
+        recyclerView = findViewById(R.id.connBtnRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        waterInfoArrayList = new ArrayList<>();
+        adapter = new WaterInfoAdapter(this, waterInfoArrayList, this);
+        recyclerView.setAdapter(adapter);
+        initList(2);
     }
 
     private void initList(int numItems) {
-        //for (int i = 0; i < numItems; i++) {
-        //}
+        for (int i = 0; i < numItems; i++) {
+            //data to be shown in list
+            waterInfoArrayList.add(new WaterInfo(0, "Water Plant", "Percentage", ""));
+        }
     }
 
-    /*@SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onWaterBtnClick(int position, WaterInfo waterInfo, ArrayList<WaterInfo> w)
+    public void onBtnClick(ArrayList<WaterInfo> w)
     {
-        wInfo = waterInfo;
+        Random r = new Random();
 
-        WaterInfo w1 = w.get(0);
-        WaterInfo w2 = w.get(1);
-        int l = w.size();
+        //int result = r.nextInt(high-low) + low;
+
+        //ArrayList<WaterInfo> t = waterInfoArrayList;
+
+        WaterInfo w1 = waterInfoArrayList.get(0);
+        WaterInfo w2 = waterInfoArrayList.get(1);
+        int l = waterInfoArrayList.size();
         w1.setText(String.valueOf(l));
         adapter.notifyDataSetChanged();
 
@@ -479,6 +447,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
+
                             setProg(soilMoisture, w1);
                             adapter.notifyDataSetChanged();
                             setProg(soilMoisture2, w2);
@@ -492,18 +461,73 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         e.printStackTrace();
                     }
                 }
+
             }
         }).start();
-    }*/
-
-    @Override
-    public void onWaterBtnClick(Moisture moisture, int position) {
-
-        return;
     }
 
+    public void receiveData()
+    {
+        WaterInfo w1 = waterInfoArrayList.get(0);
+        WaterInfo w2 = waterInfoArrayList.get(1);
+
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
+        if(extras != null)
+        {
+            String pName = extras.getString("plantName");
+            int position = extras.getInt("position");
+
+            if(position == 0)
+            {
+                w1.setPlantText(pName);
+            }
+            if(position == 1)
+            {
+                w2.setPlantText(pName);
+            }
+
+        }
+        else
+        {
+            w1.setPlantText("No Name Found");
+            w2.setPlantText("No Name Found");
+        }
+
+
+        int l = waterInfoArrayList.size();
+        w1.setText(String.valueOf(l));
+        adapter.notifyDataSetChanged();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            setProg(soilMoisture, w1);
+                            adapter.notifyDataSetChanged();
+                            setProg(soilMoisture2, w2);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                    try {
+                        Thread.sleep(200);
+
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }).start();
+    }
     @Override
-    public void onSelectPlantClick(Moisture moisture, int position) {
+    public void onSelectPlantClick(int position) {
         Intent intent = new Intent(ConnBtnActivity.this, SelectPlantActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
@@ -524,4 +548,3 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         w.setText(sMoisture+"%");
     }
 }
-

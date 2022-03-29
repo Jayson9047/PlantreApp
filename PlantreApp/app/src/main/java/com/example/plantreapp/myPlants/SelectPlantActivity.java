@@ -105,11 +105,22 @@ public class SelectPlantActivity extends AppCompatActivity
                 plant.getMin_mature_moisture(),
                 plant.getMax_mature_moisture()
         );
-
-        Intent intent = new Intent(SelectPlantActivity.this, ConnBtnActivity.class);
+        String plantName = plant.getName();
+        Bundle extras = getIntent().getExtras();
+        int i = -1;
+        if(extras != null)
+        {
+            i = extras.getInt("position");
+        }
+/*        Intent intent = new Intent(SelectPlantActivity.this, ConnBtnActivity.class);
         intent.putExtra("plantInfo", info);
         intent.putExtra("position", getIntent().getIntExtra("position", -1));
-        intent.putExtra("plantUid", plant.getUid());
+        intent.putExtra("plantUid", plant.getUid());*/
+        Intent intent = new Intent(SelectPlantActivity.this, ConnBtnActivity.class);
+        Bundle returnExtras = new Bundle();
+        returnExtras.putString("plantName", plantName);
+        returnExtras.putInt("position", i);
+        intent.putExtras(returnExtras);
         startActivity(intent);
     }
 }

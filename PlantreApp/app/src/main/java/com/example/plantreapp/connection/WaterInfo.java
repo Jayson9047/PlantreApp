@@ -2,12 +2,13 @@ package com.example.plantreapp.connection;
 
 public class WaterInfo {
     private int percentage;
-    private String btnName, text;
+    private String btnName, text, plantName;
 
-    public WaterInfo(int percentage, String btnName, String text) {
+    public WaterInfo(int percentage, String btnName, String text, String plantName) {
         this.percentage = percentage;
         this.btnName = btnName;
         this.text = text;
+        this.plantName = plantName;
     }
 
     public int getPercentage() {
@@ -33,4 +34,13 @@ public class WaterInfo {
     public void setText(String txt) {
         this.text = txt;
     }
+
+    public String getPlantText() {
+        return plantName;
+    }
+
+    public void setPlantText(String txt) {
+        this.plantName = txt;
+    }
+
 }
