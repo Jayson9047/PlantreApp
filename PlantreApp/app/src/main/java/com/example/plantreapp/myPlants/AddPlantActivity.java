@@ -47,7 +47,7 @@ public class AddPlantActivity extends AppCompatActivity {
     SeekBar seekbar1, seekbar2, seekbar3, seekbar4, seekbar5, seekbar6, seekbar7, seekbar8, seekbar9;
     TextView Seed_Max, Seed_min, Seeding_max, Seeding_min, Mature_max, Mature_min, Seed_hour, Seeding_hour, Mature_hour;
 
-    private EditText nameTxt, scifiNameTxt, descriptionTxt;
+    private EditText nameTxt, scifiNameTxt, descriptionTxt , timmer;
 
     private AutoCompleteTextView stageTxt;
     private float maxSeedMoisture, minSeedMoisture,maxSeedingMoisture, minSeedingMoisture, maxMatureMoisture, minMatureMoisture , hourRateSeed, hourRateSeeding, hourRateMature;
@@ -103,6 +103,7 @@ public class AddPlantActivity extends AppCompatActivity {
 
 
         nameTxt = findViewById(R.id.editPlantName);
+        timmer = findViewById(R.id.waterTimmer);
         scifiNameTxt = findViewById(R.id.editScifiName);
         descriptionTxt = findViewById(R.id.editDescription);
 
@@ -410,6 +411,7 @@ public class AddPlantActivity extends AppCompatActivity {
                 String name, scifiName, uri, description, stage;
 
                 name = nameTxt.getText().toString();
+                String time = timmer.getText().toString();
                 scifiName = scifiNameTxt.getText().toString();
                 try {
                     uri = imageUri.toString();
