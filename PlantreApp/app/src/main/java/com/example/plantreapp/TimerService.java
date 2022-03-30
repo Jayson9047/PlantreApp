@@ -65,7 +65,7 @@ public class TimerService extends Service {
             });
         }
 
-        if(deletePlant == null) {
+        if (deletePlant == null) {
             if (timer[0] != null) {
                 repoTimer.insert(timer[0], new Continuation<Unit>() {
                     @NonNull
@@ -81,7 +81,7 @@ public class TimerService extends Service {
                 plantUIDS[PLANTUIDAMOUNT] = timer[0].getPlantUID();
                 PLANTUIDAMOUNT++;
             }
-        }else{
+        } else {
             repoTimer.findByName(deletePlant, new Continuation<List<? extends Timer>>() {
                 @Override
                 public void resumeWith(@NonNull Object o) {
@@ -97,7 +97,8 @@ public class TimerService extends Service {
                                 }
 
                                 @Override
-                                public void resumeWith(@NonNull Object o) {}
+                                public void resumeWith(@NonNull Object o) {
+                                }
                             });
                         }
                     }
@@ -113,8 +114,8 @@ public class TimerService extends Service {
 
         new Thread(
                 () -> {
-                    while(true){
-                            // Getting All Timers on a single Plant - could be changed to log, journal, etc
+                    while (true) {
+                        // Getting All Timers on a single Plant - could be changed to log, journal, etc
                         for (int plantUID : plantUIDS) {
                             if (plantUID != 0) {
                                 repoTimer.findByPlantUID(plantUID, new Continuation<List<? extends Timer>>() {
@@ -173,7 +174,7 @@ public class TimerService extends Service {
 
                                                             NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(getApplicationContext(), "waterPlantChannel")
                                                                     .setSmallIcon(R.drawable.water_plant_icon)
-                                                                    .setContentTitle("Watering:")
+                                                                    .setContentTitle("Watering: ")
                                                                     .setContentText(timer.getName())
                                                                     .setAutoCancel(true)
                                                                     .setContentIntent(resultOpenPlantPage);
@@ -181,7 +182,8 @@ public class TimerService extends Service {
                                                             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                                             int id = (int) System.currentTimeMillis();
                                                             notificationManager.notify(id, notifyBuilder.build());
-                                                            //ConnBtnActivity.pumpOn = true;
+                                                            ConnBtnActivity.pumpOn = true;
+                                                            ConnBtnActivity.secondPumpOn = true;
                                                         }
                                                     });
                                                 } else {
@@ -229,7 +231,7 @@ public class TimerService extends Service {
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
                 .setContentText("Timer Is Running")
                 .setContentTitle("Timer Service")
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setSmallIcon(R.drawable.leaf);
 
         startForeground(1111, notification.build());
         return super.onStartCommand(intent, flags, startId);
@@ -241,3 +243,4 @@ public class TimerService extends Service {
         return null;
     }
 }
+
