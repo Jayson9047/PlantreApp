@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.LoginActivity">
+    tools:context=".login.LoginActivity"
+    android:theme="@android:style/Theme.Light">
 
     <ImageView
         android:id="@+id/imageViewLogin"
@@ -13,7 +14,7 @@
         app:srcCompat="@drawable/app_logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextEmailAddress"
@@ -27,6 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogin"
         android:background="@drawable/border"
         app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+        android:textColor="@color/black"
         />
 
     <EditText
@@ -41,7 +43,8 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/border"
-        app:layout_constraintVertical_bias="0.9"/>
+        app:layout_constraintVertical_bias="0.9"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/buttonLogin"

@@ -158,7 +158,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 return false;
             }
         });
-        test = (TextView) findViewById(R.id.networkTest);
+        //test = (TextView) findViewById(R.id.networkTest);
         /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
         circular_pro2 = (ProgressBar)findViewById(R.id.progessbar_circular2);
 
