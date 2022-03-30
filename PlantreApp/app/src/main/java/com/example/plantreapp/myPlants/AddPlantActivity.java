@@ -3,8 +3,10 @@ package com.example.plantreapp.myPlants;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -31,22 +33,13 @@ public class AddPlantActivity extends AppCompatActivity {
 
     private EditText nameTxt, scifiNameTxt, uriTxt, descriptionTxt;
 
-    private AutoCompleteTextView stageTxt, seedWaterRateTxt, seedlingWaterRateTxt, matureWaterRateTxt,
-            minSeedMoistureTxt, maxSeedMoistureTxt, minSeedlingMoistureTxt, maxSeedlingMoistureTxt,
-            minMatureMoistureTxt, maxMatureMoistureTxt;
+    private AutoCompleteTextView stageTxt;
+    private float maxSeedMoisture, minSeedMoisture,maxSeedingMoisture, minSeedingMoisture, maxMatureMoisture, minMatureMoisture , hourRateSeed, hourRateSeeding, hourRateMature;
 
     private ArrayAdapter<String> adapterItems;
+    private int pos;
 
     private final String[] stages = {"Seed", "Seedling", "Mature"};
-  /*  private final String[] seedWaterRates = {"1", "2", "3", "4", "5"};
-    private final String[] seedlingWaterRates = {"1", "2", "3", "4", "5"};
-    private final String[] matureWaterRates = {"1", "2", "3", "4", "5"};
-    private final String[] minSeedMoistures = {"20", "40", "60", "80", "100"};
-    private final String[] maxSeedMoistures = {"20", "40", "60", "80", "100"};
-    private final String[] minSeedlingMoistures = {"20", "40", "60", "80", "100"};
-    private final String[] maxSeedlingMoistures = {"20", "40", "60", "80", "100"};
-    private final String[] minMatureMoistures = {"20", "40", "60", "80", "100"};
-    private final String[] maxMatureMoistures = {"20", "40", "60", "80", "100"};*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +80,125 @@ public class AddPlantActivity extends AppCompatActivity {
         Seed_hour =(TextView)findViewById(R.id.Seed_hour);
         Seeding_hour =(TextView)findViewById(R.id.Seeding_hour);
         Mature_hour =(TextView)findViewById(R.id.Mature_hour);
+        radioButton1 = findViewById(R.id.radio_one);
+        radioButton2 = findViewById(R.id.radio_two);
 
         moistureLayout = findViewById(R.id.moistureLayout);
         hourLayout = findViewById(R.id.hourLayout);
+        hourLayout.setVisibility(View.INVISIBLE);
+
+        Seed_Max.setVisibility(View.INVISIBLE);
+        Seed_min.setVisibility(View.INVISIBLE);
+        Seeding_max.setVisibility(View.INVISIBLE);
+        Seeding_min.setVisibility(View.INVISIBLE);
+        Mature_max.setVisibility(View.INVISIBLE);
+        Mature_min.setVisibility(View.INVISIBLE);
+
+        seekbar1.setVisibility(View.INVISIBLE);
+        seekbar2.setVisibility(View.INVISIBLE);
+        seekbar3.setVisibility(View.INVISIBLE);
+        seekbar4.setVisibility(View.INVISIBLE);
+        seekbar5.setVisibility(View.INVISIBLE);
+        seekbar6.setVisibility(View.INVISIBLE);
+
+        Seed_hour.setVisibility(View.INVISIBLE);
+        Seeding_hour.setVisibility(View.INVISIBLE);
+        Mature_hour.setVisibility(View.INVISIBLE);
+        seekbar7.setVisibility(View.INVISIBLE);
+        seekbar8.setVisibility(View.INVISIBLE);
+        seekbar9.setVisibility(View.INVISIBLE);
 
 
+        stageTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                if(radioButton1.isChecked()) {
+                    if (i == 0) {
+                        Seed_Max.setVisibility(View.VISIBLE);
+                        Seed_min.setVisibility(View.VISIBLE);
+                        Seeding_max.setVisibility(View.INVISIBLE);
+                        Seeding_min.setVisibility(View.INVISIBLE);
+                        Mature_max.setVisibility(View.INVISIBLE);
+                        Mature_min.setVisibility(View.INVISIBLE);
+
+                        seekbar1.setVisibility(View.VISIBLE);
+                        seekbar2.setVisibility(View.VISIBLE);
+                        seekbar3.setVisibility(View.INVISIBLE);
+                        seekbar4.setVisibility(View.INVISIBLE);
+                        seekbar5.setVisibility(View.INVISIBLE);
+                        seekbar6.setVisibility(View.INVISIBLE);
+                    }
+                    if (i == 1) {
+                        Seed_Max.setVisibility(View.INVISIBLE);
+                        Seed_min.setVisibility(View.INVISIBLE);
+                        Seeding_max.setVisibility(View.VISIBLE);
+                        Seeding_min.setVisibility(View.VISIBLE);
+                        Mature_max.setVisibility(View.INVISIBLE);
+                        Mature_min.setVisibility(View.INVISIBLE);
+
+                        seekbar1.setVisibility(View.INVISIBLE);
+                        seekbar2.setVisibility(View.INVISIBLE);
+                        seekbar3.setVisibility(View.VISIBLE);
+                        seekbar4.setVisibility(View.VISIBLE);
+                        seekbar5.setVisibility(View.INVISIBLE);
+                        seekbar6.setVisibility(View.INVISIBLE);
+                    }
+                    if (i == 2) {
+                        Seed_Max.setVisibility(View.INVISIBLE);
+                        Seed_min.setVisibility(View.INVISIBLE);
+                        Seeding_max.setVisibility(View.INVISIBLE);
+                        Seeding_min.setVisibility(View.INVISIBLE);
+                        Mature_max.setVisibility(View.VISIBLE);
+                        Mature_min.setVisibility(View.VISIBLE);
+
+                        seekbar1.setVisibility(View.INVISIBLE);
+                        seekbar2.setVisibility(View.INVISIBLE);
+                        seekbar3.setVisibility(View.INVISIBLE);
+                        seekbar4.setVisibility(View.INVISIBLE);
+                        seekbar5.setVisibility(View.VISIBLE);
+                        seekbar6.setVisibility(View.VISIBLE);
+                    }
+                }
+                 if (radioButton2.isChecked())
+                {
+                    if(i==0)
+                    {
+                        Seed_hour.setVisibility(View.VISIBLE);
+                        Seeding_hour.setVisibility(View.INVISIBLE);
+                        Mature_hour.setVisibility(View.INVISIBLE);
+                        seekbar7.setVisibility(View.VISIBLE);
+                        seekbar8.setVisibility(View.INVISIBLE);
+                        seekbar9.setVisibility(View.INVISIBLE);
+                    }
+                    if(i==1)
+                    {
+                        Seed_hour.setVisibility(View.INVISIBLE);
+                        Seeding_hour.setVisibility(View.VISIBLE);
+                        Mature_hour.setVisibility(View.INVISIBLE);
+                        seekbar7.setVisibility(View.INVISIBLE);
+                        seekbar8.setVisibility(View.VISIBLE);
+                        seekbar9.setVisibility(View.INVISIBLE);
+                    }
+                    if(i==2)
+                    {
+                        Seed_hour.setVisibility(View.INVISIBLE);
+                        Seeding_hour.setVisibility(View.INVISIBLE);
+                        Mature_hour.setVisibility(View.VISIBLE);
+                        seekbar7.setVisibility(View.INVISIBLE);
+                        seekbar8.setVisibility(View.INVISIBLE);
+                        seekbar9.setVisibility(View.VISIBLE);
+                    }
+                }
+
+
+            }
+        });
         seekbar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Seed_Max.setText("Seed Max Soil Moisture : " + String.valueOf(progress));
+                maxSeedMoisture = progress;
             }
 
             @Override
@@ -113,6 +215,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Seed_min.setText("Seed Min Soil Moisture : " + String.valueOf(progress));
+                minSeedMoisture= progress;
             }
 
             @Override
@@ -129,6 +232,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Seeding_max.setText("Seeding Max Soil Moisture : " + String.valueOf(progress));
+                maxSeedingMoisture= progress;
             }
 
             @Override
@@ -145,6 +249,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Seeding_min.setText("Seeding Max Soil Moisture : " + String.valueOf(progress));
+                minSeedingMoisture=progress;
             }
 
             @Override
@@ -162,6 +267,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Mature_max.setText("Mature Max Soil Moisture : " + String.valueOf(progress));
+                maxMatureMoisture= progress;
             }
 
             @Override
@@ -178,6 +284,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Mature_min.setText("Mature Min Soil Moisture : " + String.valueOf(progress));
+                minMatureMoisture=progress;
             }
 
             @Override
@@ -195,6 +302,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Seed_hour.setText("Seed Water Rate (/hr) : " + String.valueOf(progress));
+                hourRateSeed=progress;
             }
 
             @Override
@@ -211,6 +319,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Seeding_hour.setText("Seeding Water Rate (/hr) : " + String.valueOf(progress));
+                hourRateSeeding=progress;
             }
 
             @Override
@@ -227,6 +336,7 @@ public class AddPlantActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 Mature_hour.setText("Mature Water Rate (/hr) : " + String.valueOf(progress));
+                hourRateMature=progress;
             }
 
             @Override
@@ -240,53 +350,12 @@ public class AddPlantActivity extends AppCompatActivity {
             }
         });
 
-
-//        // setting seed water rate items
-//        seedWaterRateTxt = findViewById(R.id.seed_water_rate_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, seedWaterRates);
-//        seedWaterRateTxt.setAdapter(adapterItems);
-//
-//        // seedling water rate items...
-//        seedlingWaterRateTxt = findViewById(R.id.seedling_water_rate_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, seedlingWaterRates);
-//        seedlingWaterRateTxt.setAdapter(adapterItems);
-//
-//        matureWaterRateTxt = findViewById(R.id.mature_water_rate_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, matureWaterRates);
-//        matureWaterRateTxt.setAdapter(adapterItems);
-//
-//        minSeedMoistureTxt = findViewById(R.id.min_seed_moisture_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, minSeedMoistures);
-//        minSeedMoistureTxt.setAdapter(adapterItems);
-//
-//        maxSeedMoistureTxt = findViewById(R.id.max_seed_moisture_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, maxSeedMoistures);
-//        maxSeedMoistureTxt.setAdapter(adapterItems);
-//
-//        minSeedlingMoistureTxt = findViewById(R.id.min_seedling_moisture_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, minSeedlingMoistures);
-//        minSeedlingMoistureTxt.setAdapter(adapterItems);
-//
-//        maxSeedlingMoistureTxt = findViewById(R.id.max_seedling_moisture_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, maxSeedlingMoistures);
-//        maxSeedlingMoistureTxt.setAdapter(adapterItems);
-//
-//        minMatureMoistureTxt = findViewById(R.id.min_mature_moisture_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, minMatureMoistures);
-//        minMatureMoistureTxt.setAdapter(adapterItems);
-//
-//        maxMatureMoistureTxt = findViewById(R.id.max_mature_moisture_txt);
-//        adapterItems = new ArrayAdapter<String>(this, R.layout.dropdown_item, maxMatureMoistures);
-//        maxMatureMoistureTxt.setAdapter(adapterItems);
-
         // add btn click listener
         addBtn = findViewById(R.id.add_plant_btn);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name, scifiName, uri, description, stage;
-                float seedWaterRate, seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture,
-                        minSeedlingMoisture, maxSeedlingMoisture, minMatureMoisture, maxMatureMoisture;
 
                 name = nameTxt.getText().toString();
                 scifiName = scifiNameTxt.getText().toString();
@@ -294,16 +363,13 @@ public class AddPlantActivity extends AppCompatActivity {
                 description = descriptionTxt.getText().toString();
                 stage = stageTxt.getText().toString();
 
+                if (name.length()==0 || scifiName.length()==0 || uri.length()==0 || description.length()==0 || stage.length()==0 )
+                {
+                    Toast.makeText(AddPlantActivity.this, "Fill all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 try {
-                    seedWaterRate = Float.parseFloat(seedWaterRateTxt.getText().toString());
-                    seedlingWaterRate = Float.parseFloat(seedlingWaterRateTxt.getText().toString());
-                    matureWaterRate = Float.parseFloat(matureWaterRateTxt.getText().toString());
-                    minSeedMoisture = Float.parseFloat(minSeedMoistureTxt.getText().toString());
-                    maxSeedMoisture = Float.parseFloat(maxSeedMoistureTxt.getText().toString());
-                    minSeedlingMoisture = Float.parseFloat(minSeedlingMoistureTxt.getText().toString());
-                    maxSeedlingMoisture = Float.parseFloat(maxSeedlingMoistureTxt.getText().toString());
-                    minMatureMoisture = Float.parseFloat(minMatureMoistureTxt.getText().toString());
-                    maxMatureMoisture = Float.parseFloat(maxMatureMoistureTxt.getText().toString());
+
                 } catch (Exception e) {
                     Toast.makeText(AddPlantActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                     return;
@@ -314,18 +380,20 @@ public class AddPlantActivity extends AppCompatActivity {
                     Toast.makeText(AddPlantActivity.this, "Min Seed Moisture can not be greater than Max Seed Moisture", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (minSeedlingMoisture > maxSeedlingMoisture) {
+                else if (minSeedingMoisture > maxSeedingMoisture) {
                     Toast.makeText(AddPlantActivity.this, "Min Seedling Moisture can not be greater than Max Seedling Moisture", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
                 else if (minMatureMoisture > maxMatureMoisture) {
                     Toast.makeText(AddPlantActivity.this, "Min Mature-Plant Moisture can not be greater than Max Mature-Plant Moisture", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
 
-                PlantInfo plantInfo = new PlantInfo(name, scifiName, uri, description, stage,seedWaterRate,
-                        seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture, minSeedlingMoisture,
-                        maxSeedlingMoisture, minMatureMoisture, maxMatureMoisture);
+                PlantInfo plantInfo = new PlantInfo(name, scifiName, uri, description, stage,hourRateSeed,
+                        hourRateSeeding, hourRateMature, minSeedMoisture, maxSeedMoisture, minSeedingMoisture,
+                        maxSeedingMoisture, minMatureMoisture, maxMatureMoisture);
 
                 Intent intent = new Intent(AddPlantActivity.this, MyPlantsActivity.class);
                 intent.putExtra("plantInfo", plantInfo);
@@ -345,158 +413,17 @@ public class AddPlantActivity extends AppCompatActivity {
     }
     public void checkbutton(View v){
         int radioId= radioGroup.getCheckedRadioButtonId();
-        radioButton1 = findViewById(R.id.radio_one);
-        radioButton2 = findViewById(R.id.radio_two);
+
 
 
         if (radioButton1.isChecked()) {
             moistureLayout.setVisibility(View.VISIBLE);
             hourLayout.setVisibility(View.INVISIBLE);
+           // Toast.makeText(this,"Seed Max Moisture: "+ maxSeedMoisture, Toast.LENGTH_SHORT).show();
         } else if (radioButton2.isChecked()) {
             moistureLayout.setVisibility(View.INVISIBLE);
             hourLayout.setVisibility(View.VISIBLE);
         }
-
-        /*if (radioButton1.isChecked())
-        {
-            seekbar1.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar2.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar3.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar4.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar5.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar6.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar7.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    Seed_hour.setEnabled(false);
-                    seekbar7.setEnabled(false);
-                    return true;
-
-                }
-            });
-            seekbar8.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar9.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            Toast.makeText(this, "You selected Soil moisture Sensor", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            seekbar1.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar2.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar3.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar4.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar5.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar6.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-
-                }
-            });
-            seekbar7.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    Seed_hour.setEnabled(true);
-                    seekbar7.setEnabled(true);
-                    return false;
-
-                }
-            });
-            seekbar8.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-            seekbar9.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-
-                }
-            });
-
-            Toast.makeText(this, "You selected Water Pump", Toast.LENGTH_SHORT).show();
-
-        }*/
 
     }
 
