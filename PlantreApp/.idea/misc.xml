@@ -19,6 +19,34 @@
         <entry key="..\:/Users/Jayson Biswas/AndroidStudioProjects/PlantreApp/app/src/main/res/layout/activity_connection.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/Jayson Biswas/AndroidStudioProjects/PlantreApp/app/src/main/res/layout/activity_main.xml" value="0.21875" />
         <entry key="..\:/Users/Jayson Biswas/AndroidStudioProjects/PlantreApp/app/src/main/res/layout/connection.xml" value="0.21875" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/circular_progressbar.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_home.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_menu.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_settings.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/logo.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/water_plant_icon.xml" value="0.178" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_add_log.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_add_plant.xml" value="0.264" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_conn_btn.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_connection.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_journals.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_logs.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_my_plants.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_note.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_plant_info.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_progress_bar.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_search.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_splash.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/credential_dialog.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/dropdown_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/layout_journal_dialog.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/recycler_row_journal.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/recycler_row_log.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/recycler_row_plant.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/menu/bottom_menu.xml" value="0.25" />
+        <entry key="..\:/Users/Mandeep/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/menu/search_menu.xml" value="0.25" />
         <entry key="..\:/Users/satbi/Desktop/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_settings.xml" value="0.1245" />
         <entry key="..\:/Users/satbi/Desktop/PlantreApp/PlantreApp/app/src/main/res/layout/activity_add_log.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Desktop/PlantreApp/PlantreApp/app/src/main/res/layout/activity_conn_btn.xml" value="0.2" />
@@ -34,27 +62,15 @@
         <entry key="..\:/Users/satbi/Desktop/PlantreApp/PlantreApp/app/src/main/res/layout/credential_dialog.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Desktop/PlantreApp/PlantreApp/app/src/main/res/menu/bottom_menu.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/border.xml" value="0.1" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_add.xml" value="0.128" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_delete.xml" value="0.128" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_home.xml" value="0.128" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_menu.xml" value="0.128" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_search.xml" value="0.128" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/drawable/ic_settings.xml" value="0.128" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/font/poppins.xml" value="0.22666666666666666" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/font/poppins_bold.xml" value="0.22666666666666666" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/font/poppins_light.xml" value="0.22666666666666666" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/font/poppins_medium.xml" value="0.22666666666666666" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_add_log.xml" value="0.22" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_add_plant.xml" value="0.22" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_conn_btn.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_connection.xml" value="0.22" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_image_select.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_journals.xml" value="0.18" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_logs.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_my_plants.xml" value="0.22" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_note.xml" value="0.2" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_on_boarding.xml" value="0.1" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_plant_info.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_progress_bar.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_search.xml" value="0.2" />
@@ -63,7 +79,6 @@
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_settings.xml" value="0.1" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/credential_dialog.xml" value="0.2" />
-        <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/dropdown_item.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/layout_journal_dialog.xml" value="0.2" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/layout_plant_dialog.xml" value="0.22" />
         <entry key="..\:/Users/satbi/Documents/GitHub/PlantreApp/PlantreApp/app/src/main/res/layout/list_item.xml" value="0.2" />
