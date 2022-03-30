@@ -28,11 +28,12 @@ public class NoteActivity extends AppCompatActivity {
         Intent i = getIntent();
         String name = i.getStringExtra("logName");
         String description = i.getStringExtra("logDescription");
+        String date = i.getStringExtra("date");
 
         logNameTxt = findViewById(R.id.logNameTxt);
         logDescTxt = findViewById(R.id.logDescriptionTxt);
 
-        logNameTxt.setText(name);
+        logNameTxt.setText(name + " (" + date + ")");
         logDescTxt.setText(description);
 
         ActionBar actionBar = getSupportActionBar();

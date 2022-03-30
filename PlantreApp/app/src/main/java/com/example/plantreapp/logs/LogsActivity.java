@@ -48,8 +48,8 @@ public class LogsActivity extends AppCompatActivity
         Intent i = getIntent();
 
         String title = i.getStringExtra("journalName");
-        int uid = i.getIntExtra("journalUid", 0);
-        if (uid != 0) {
+        int uid = i.getIntExtra("journalUid", -1);
+        if (uid != -1) {
             journalUid = uid;
         }
 
@@ -101,7 +101,8 @@ public class LogsActivity extends AppCompatActivity
         if (i.getStringExtra("newNoteName") != null) {
             String name = i.getStringExtra("newNoteName");
             String info = i.getStringExtra("newNoteInfo");
-            Log log = new Log(null, name, journalUid, "date...", info, "");
+            String date = i.getStringExtra("date");
+            Log log = new Log(null, name, journalUid, date, info, "");
             logsViewModel.addLog(log);
         }
     }
@@ -123,8 +124,7 @@ public class LogsActivity extends AppCompatActivity
 
         intent.putExtra("logName", log.getName());
         intent.putExtra("logDescription", log.getDescription());
-
-        // todo: send entire log object
+        intent.putExtra("date", log.getDateCreated());
 
         startActivity(intent);
     }
