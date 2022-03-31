@@ -52,6 +52,7 @@ import android.widget.ProgressBar;
 
 //import cz.msebera.android.httpclient.Header;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -88,7 +89,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private int soilMoisture2 = 0;
     TextView test;
 
-    boolean tStarted = false;
+    boolean justStarted = false;
 
     private Handler handler = new Handler();
 
@@ -111,6 +112,15 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private PlantRepository plantRepository;
     private String firstWaterPumpUrl;
     private String secondWaterPumpUrl;
+
+    //1st recycler view in the list
+    int minMoisture1 = 0;
+    String wateringMethod1 = "";
+
+    //2nd recyler view in the list
+    int minMoisture2 = 0;
+    String wateringMethod2 = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,11 +144,6 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
 
 
-        /*OkHttpClient httpClient = new OkHttpClient();
-        String firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
-        String secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
-        Request request1 = new Request.Builder().url(firstWaterPumpUrl).build();
-        Request request2 = new Request.Builder().url(secondWaterPumpUrl).build();*/
 
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -161,145 +166,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 return false;
             }
         });
-        //test = (TextView) findViewById(R.id.networkTest);
-        /*circular_pro = (ProgressBar)findViewById(R.id.progessbar_circular);
-        circular_pro2 = (ProgressBar)findViewById(R.id.progessbar_circular2);
 
-        status= (TextView)findViewById(R.id.text_status);
-        status2= (TextView)findViewById(R.id.text_status2);
-        //textViewPrompt = (TextView)findViewById(R.id.prompt);
-        pumpOn = false;
-        test = (TextView) findViewById(R.id.networkTest);
-        ButtonPump = (Button) findViewById(R.id.btnSendPump);
-        ButtonPump2 = (Button) findViewById(R.id.btnSendPump2);
-
-        ButtonPump.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(udpConnected == true)
-                {
-                    pumpOn = true;
-                }
-                else
-                {
-                    httpClient.newCall(request1);
-                }
-            }
-        });
-
-        ButtonPump2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(udpConnected == true)
-                {
-                    secondPumpOn = true;
-                }
-                else
-                {
-                    httpClient.newCall(request2);
-                }
-            }
-        });
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true){
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                circular_pro.setProgress(soilMoisture);
-                                if(soilMoisture <0 )
-                                {
-                                    soilMoisture = 0;
-                                }
-                                if(soilMoisture > 100)
-                                {
-                                    soilMoisture = 100;
-                                }
-                                status.setText(soilMoisture+"%");
-
-                                circular_pro2.setProgress(soilMoisture2);
-                                if(soilMoisture2 <0 )
-                                {
-                                    soilMoisture2 = 0;
-                                }
-                                if(soilMoisture2 > 100)
-                                {
-                                    soilMoisture2 = 100;
-                                }
-                                status2.setText(soilMoisture2+"%");
-                                udpConnected = true;
-                            }
-                            catch (Exception e)
-                            {
-                                //UDP not receiving yet
-                                status.setText("Not receiving");
-                                status2.setText("Not receiving");
-                                udpConnected = false;
-                            }
-
-                        }
-                    });
-                    try {
-                        Thread.sleep(200);
-
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }).start();*/
-/*
-        clickme_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while(true){
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    circular_pro.setProgress(soilMoisture);
-                                    if(soilMoisture <0 )
-                                    {
-                                        soilMoisture = 0;
-                                    }
-                                    if(soilMoisture > 100)
-                                    {
-                                        soilMoisture = 100;
-                                    }
-                                    status.setText(soilMoisture+"%");
-
-                                    circular_pro2.setProgress(soilMoisture2);
-                                    if(soilMoisture2 <0 )
-                                    {
-                                        soilMoisture2 = 0;
-                                    }
-                                    if(soilMoisture2 > 100)
-                                    {
-                                        soilMoisture2 = 100;
-                                    }
-                                    status2.setText(soilMoisture2+"%");
-                                }
-                            });
-                            try {
-                                Thread.sleep(200);
-
-                            }catch (InterruptedException e){
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }
-                }).start();
-            }
-        });
-
-*/
 
         new Thread(new Runnable() {
             @Override
@@ -395,6 +262,17 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             if (plant.getMin_seed_moisture() != null) {
                 wateringPath = "\n\nWatering Method: Moisture Rate";
                 pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nMin Moisture Rate:" + plant.getMin_seed_moisture();
+                if(pos == 0)
+                {
+                    minMoisture1 = plant.getMin_seed_moisture().intValue();
+                    wateringMethod1 = "Moisture1";
+                }
+                if(pos == 1)
+                {
+                    minMoisture2 = plant.getMin_seed_moisture().intValue();
+                    wateringMethod2 = "Moisture2";
+                }
+
             }
             else if (plant.getSeed_water_rate() != null)
             {
@@ -476,12 +354,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         public void run() {
 
                 running = true;
+                justStarted = true;
                 try {
                     socket = new DatagramSocket(serverPort);
                     Log.e(TAG, "UDP Server is running");
 
                     while(running){
                         byte[] buf = new byte[256];
+                        byte[] buf1 = new byte[256];
 
                         // receive request
                         DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -558,6 +438,17 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                             packet = new DatagramPacket(buf, buf.length, address, port);
                             socket.send(packet);
                             secondPumpOn = false;
+                        }
+
+                        if(justStarted)
+                        {
+                            String dString = wateringMethod1+","+ Integer.toString(minMoisture1) + "\n" + wateringMethod2 + "," +Integer.toString(minMoisture2);
+                            buf1 = dString.getBytes();
+                            packet = new DatagramPacket(buf1, buf1.length, address, port);
+                            socket.send(packet);
+                            justStarted = false;
+                            //buf1
+
                         }
 
                     }

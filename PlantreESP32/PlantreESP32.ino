@@ -59,7 +59,7 @@ unsigned int udpPort;
 bool pumpOn;
 bool secondPumpOn;
 
-char pktbuf[10];
+char pktbuf[30];
 String x_val;
 int randNum = 0;
 
@@ -210,14 +210,15 @@ void sendUdpPacket()
     }
     else
     {
-      udp.read(pktbuf,1);
+      udp.read(pktbuf,30);
       Serial.print("Packet from " + String(udpAddress)+": ");
-      Serial.println(pktbuf);
-      if(pktbuf[0] == '5')
+      String packet = pktbuf;
+      Serial.println(packet);
+      if(strcmp(pktbuf,"5") == 0)
       {
         pumpOn = true;
       }
-      else if(pktbuf[0] == '4')
+      else if(strcmp(pktbuf,"4") == 0)
       {
         secondPumpOn = true;
       }
