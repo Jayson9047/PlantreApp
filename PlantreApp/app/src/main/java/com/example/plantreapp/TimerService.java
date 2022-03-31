@@ -44,7 +44,15 @@ public class TimerService extends Service {
         PlantRepository repoPlant = new PlantRepository(this);
         Timer[] timer = new Timer[1];
         int[] plantUIDS = new int[256];
-        String deletePlant = intent.getStringExtra("deletedPlant");
+        String dPlant = "";
+        try {
+            dPlant = intent.getStringExtra("deletedPlant");
+        }
+        catch (NullPointerException e)
+        {
+            dPlant = "";
+        }
+        String deletePlant = dPlant;
 
         for (int x = 0; x < 1000; x++) {
             repoPlant.findById(x, new Continuation<List<? extends Plant>>() {

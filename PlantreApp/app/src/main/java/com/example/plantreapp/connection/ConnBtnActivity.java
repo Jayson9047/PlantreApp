@@ -258,29 +258,50 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         String pInfo = "";
         String wateringPath = "";
 
-        if(plant.getStage().equals("Seed")) {
-            if (plant.getMin_seed_moisture() != null) {
-                wateringPath = "\n\nWatering Method: Moisture Rate";
-                pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nMin Moisture Rate:" + plant.getMin_seed_moisture();
-                if(pos == 0)
-                {
-                    minMoisture1 = plant.getMin_seed_moisture().intValue();
-                    wateringMethod1 = "Moisture1";
+        String[] seed = new String[3];
+        float[] minMoisture = new float[3];
+        int[] minWaterTimer = new int[3];
+        seed[0] = "Seed";
+        seed[1] = "Seedling";
+        seed[2] = "Mature";
+
+        minMoisture[0] = plant.getMin_seed_moisture();
+        minMoisture[1] = plant.getMin_seedling_moisture();
+        minMoisture[2] = plant.getMin_mature_moisture();
+
+        minWaterTimer[0] = plant.getSeed_water_rate();
+        minWaterTimer[1] = plant.getSeedling_water_rate();
+        minWaterTimer[2] = plant.getMature_water_rate();
+
+
+        for (int i = 0; i < 3; i++)
+        {
+
+            if(plant.getStage().equals(seed[i])) {
+                if (minMoisture[i] != 0f) {
+                    wateringPath = "\n\nWatering Method: Moisture Rate";
+                    pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nMin Moisture Rate:" + minMoisture[i];
+                    if(pos == 0)
+                    {
+                        minMoisture1 = (int)minMoisture[i];
+                        wateringMethod1 = "Moisture1";
+                    }
+                    if(pos == 1)
+                    {
+                        minMoisture2 = plant.getMin_seed_moisture().intValue();
+                        wateringMethod2 = "Moisture2";
+                    }
+
                 }
-                if(pos == 1)
+                if (minWaterTimer[i] != 0)
                 {
-                    minMoisture2 = plant.getMin_seed_moisture().intValue();
-                    wateringMethod2 = "Moisture2";
+                    wateringPath = "\n\nWatering Method: Timer";
+                    pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + minWaterTimer[i];
                 }
 
             }
-            else if (plant.getSeed_water_rate() != null)
-            {
-                wateringPath = "\n\nWatering Method: Timer";
-                pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + plant.getSeed_water_rate();
-            }
-
         }
+
         return pInfo;
     }
 
@@ -443,6 +464,9 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         if(justStarted)
                         {
                             String dString = wateringMethod1+","+ Integer.toString(minMoisture1) + "\n" + wateringMethod2 + "," +Integer.toString(minMoisture2);
+                            buf1 = dString.getBytes();
+                            packet = new DatagramPacket(buf1, buf1.length, address, port);
+                            socket.send(packet);
                             buf1 = dString.getBytes();
                             packet = new DatagramPacket(buf1, buf1.length, address, port);
                             socket.send(packet);
