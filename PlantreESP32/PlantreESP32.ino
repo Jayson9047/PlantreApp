@@ -28,7 +28,7 @@ BluetoothSerial SerialBT;
 const int AirValue = 2580;   //you need to replace this value with Value_1
 const int WaterValue = 1070;  //you need to replace this value with Value_2
 int soilMoistureValue = 0;
-int soilmoisturepercent=0;
+int soilmoisturepercent=100;
 const int SensorPin1 = 36;
 
 //this is for second sensor
@@ -36,7 +36,7 @@ const int AirValue2 = 3380;   //you need to replace this value with Value_1
 const int WaterValue2 = 1370;  //you need to replace this value with Value_2
 const int SensorPin2 = 35;
 int soilMoistureValue2 = 0;
-int soilmoisturepercent2=0;
+int soilmoisturepercent2=100;
 char auth[] = "ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00";
 
 bool wifiConnected = false;
@@ -63,11 +63,20 @@ char pktbuf[30];
 String x_val;
 int randNum = 0;
 
+String wateringInfo[4];
+String wateringFragmentInfo[2];
+int minMoistureValues[2];
+
+bool plant1WateredWithMoisture;
+bool plant2WateredWithMoisture;
+
+int receivedPktCount;
+
 //--------------------------------------------------------------------------------------------------------------------------
 
  
 void setup() {
- 
+
    Serial.begin(115200);
    SerialBT.begin("ESP32test"); //Bluetooth device name
    Serial.println("The device started, now you can pair it with bluetooth!");
@@ -77,8 +86,15 @@ void setup() {
    pinMode(SECONDWATERPUMP, OUTPUT);
    digitalWrite(WATERPUMP, HIGH); 
    digitalWrite(SECONDWATERPUMP, HIGH); 
+  
+   plant1WateredWithMoisture = false;
+   plant2WateredWithMoisture = false;
+   receivedPktCount = 0;
    pumpOn = false;
    secondPumpOn = false;
+
+   minMoistureValues[0] = -20;
+   minMoistureValues[1] = -20;
 
    display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //initialize with the I2C addr 0x3C (128x64)
    display.clearDisplay();
@@ -212,44 +228,126 @@ void sendUdpPacket()
     {
       udp.read(pktbuf,30);
       Serial.print("Packet from " + String(udpAddress)+": ");
+      receivedPktCount += 1;
       String packet = pktbuf;
       Serial.println(packet);
-      if(strcmp(pktbuf,"5") == 0)
+      if(pktbuf[0] == '5')
       {
         pumpOn = true;
       }
-      else if(strcmp(pktbuf,"4") == 0)
+      else if(pktbuf[0] == '4')
       {
         secondPumpOn = true;
       }
+      else
+      {
+        getAllValues(packet, '\n', 0);
+        getAllValues(wateringFragmentInfo[0], ',', 1);
+        getAllValues(wateringFragmentInfo[1], ',', 2);
+      }
+
+      for(int i = 0; i < 4; i++)
+      {
+        Serial.println(wateringInfo[i]);
+      }
+      minMoistureValues[0] = wateringInfo[1]. toInt();
+      minMoistureValues[1] = wateringInfo[3]. toInt();
+
+
+      
       delay(1000);
     }
 }
 
-void *printThreadId(void *threadid) {
+void getAllValues(String str, char c, int workFlow)
+{
+  int StringCount = 0;
+  String strs[2];
+  
+  while (str.length() > 0)
+  {
+    int index = str.indexOf(c);
+    if (index == -1) // No space found
+    {
+      strs[StringCount++] = str;
+      break;
+    }
+    else
+    {
+      strs[StringCount++] = str.substring(0, index);
+      str = str.substring(index+1);
+    }
+  }
+
+  if(workFlow == 0)
+  {
+    wateringFragmentInfo[0] = strs[0];
+    wateringFragmentInfo[1] = strs[1];
+  }
+  else if(workFlow == 1)
+  {
+    wateringInfo[0] = strs[0];
+    wateringInfo[1] = strs[1];
+  }
+  else if(workFlow == 2)
+  {
+    wateringInfo[2] = strs[0];
+    wateringInfo[3] = strs[1];
+  }
+}
+
+void *printThreadId2(void *threadid) {
    
    while(true)
    {
      
-     int i = 0;
-     if(pumpOn == true)
+     //int i = 0;
+     /*if(pumpOn == true)
      {
        runWaterPump(WATERPUMP);
      }
      else
      {
        delay(1000);
+     }*/
+     if((plant1WateredWithMoisture == false) && (soilmoisturepercent < minMoistureValues[0]) && (receivedPktCount > 1))
+     {
+       Serial.println("Watering Plant 1");
+       runWaterPump(WATERPUMP);
+       plant1WateredWithMoisture = true;
      }
+     if((plant2WateredWithMoisture == false) && (soilmoisturepercent2 < minMoistureValues[1])&& (receivedPktCount > 1))
+     {
+       Serial.println("Watering Plant 2");
+       runWaterPump(SECONDWATERPUMP);
+       plant2WateredWithMoisture = true;
+     }
+
+     if(plant1WateredWithMoisture) 
+     {
+       Serial.println("Waiting 1 hour for 1st plant");
+     }
+     
+     if(plant2WateredWithMoisture)
+     {
+       Serial.println("Waiting 1 hour for 2nd plant");
+     }
+     delay(1000);
+
    }
    return NULL;
 }
 
-void *printThreadId2(void *threadid) {
+void *printThreadId1(void *threadid) {
    
    while(true)
    {    
      int i = 0;
-     if(secondPumpOn == true)
+     if(pumpOn == true)
+     {
+       runWaterPump(WATERPUMP);
+     }
+     else if(secondPumpOn == true)   
      {
        runWaterPump(SECONDWATERPUMP);
      }
@@ -261,7 +359,7 @@ void *printThreadId2(void *threadid) {
    return NULL;
 }
 
-void *printThreadId1(void *threadid) {
+void *printThreadId(void *threadid) {
    
    while(true)
    {
