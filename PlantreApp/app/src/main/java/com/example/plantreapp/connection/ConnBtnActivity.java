@@ -356,7 +356,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             public void resumeWith(@NonNull Object o) {
                 if (o != null) {
                     Plant plant = (Plant) o;
-                    w1.setPlantText(plant.getName());
+                    String s = showInfo(plant, 0);
+                    w1.setPlantText(s);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -375,7 +376,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
             public void resumeWith(@NonNull Object o) {
                 if (o != null) {
                     Plant plant = (Plant) o;
-                    w2.setPlantText(plant.getName());
+                    String s = showInfo(plant, 1);
+                    w2.setPlantText(s);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -383,6 +385,27 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
 
     }
+
+    public String showInfo(Plant plant, int pos)
+    {
+        String pInfo = "";
+        String wateringPath = "";
+
+        if(plant.getStage().equals("Seed")) {
+            if (plant.getMin_seed_moisture() != null) {
+                wateringPath = "\n\nWatering Method: Moisture Rate";
+                pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nMin Moisture Rate:" + plant.getMin_seed_moisture();
+            }
+            else if (plant.getSeed_water_rate() != null)
+            {
+                wateringPath = "\n\nWatering Method: Timer";
+                pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + plant.getSeed_water_rate();
+            }
+
+        }
+        return pInfo;
+    }
+
     @Override
     protected void onStart() {
 
