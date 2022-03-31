@@ -490,6 +490,7 @@ public class ConnectionActivity extends AppCompatActivity {
             }
             inputStream = tempIn;
             outputStream = tempOut;
+
         }
 
         public void run()

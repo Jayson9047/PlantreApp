@@ -88,15 +88,17 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private int soilMoisture2 = 0;
     TextView test;
 
+    boolean tStarted = false;
+
     private Handler handler = new Handler();
 
-    private final static String TAG = MainActivity.class.getSimpleName();
+    private final static String TAG = ConnBtnActivity.class.getSimpleName();
     UdpServerThread udpServerThread;
     static final int UdpServerPORT = 4445;
     boolean udpConnected = false;
     InetAddress savedAddress = null;
     int savedPort = 0;
-
+    TextView tv;
 
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
@@ -123,6 +125,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
         firstSensorReceiving = false;
         secondSensorReceiving = false;
+        tv = (TextView) findViewById(R.id.testText);
 
         // Setup repository
         // plantIdentityRepository = new PlantIdentityRepository(getApplicationContext());
@@ -130,7 +133,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
 
-        receiveData();
+
         /*OkHttpClient httpClient = new OkHttpClient();
         String firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         String secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
@@ -295,12 +298,13 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 }).start();
             }
         });
+
 */
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-
                     if(savedAddress != null)
                     {
                         try {
@@ -326,8 +330,13 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         udpConnected = false;
                     }
                 }
+
             }
         }).start();
+
+
+        receiveData();
+
 
     }
     public void updateWaterList() {
@@ -376,23 +385,36 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     }
     @Override
     protected void onStart() {
-        udpServerThread = new UdpServerThread(UdpServerPORT);
-        udpServerThread.start();
 
+       udpServerThread = new UdpServerThread(UdpServerPORT);
+       udpServerThread.start();
+       udpServerThread.setPgStopped(false);
+       //udpServerThread.getRunning();
 
         updateWaterList();
-
         super.onStart();
+
     }
     @Override
     protected void onStop() {
         if(udpServerThread != null){
+            udpServerThread.setPgStopped(true);
             udpServerThread.setRunning(false);
             udpServerThread = null;
         }
 
         super.onStop();
     }
+
+/*    @Override
+    protected void onPause() {
+        if(udpServerThread != null){
+            udpServerThread.setRunning(false);
+            udpServerThread = null;
+        }
+
+        super.onPause();
+    }*/
 
     /*private void updatePrompt(final String prompt){
         runOnUiThread(new Runnable() {
@@ -409,117 +431,146 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         DatagramSocket socket;
 
         boolean running;
+        boolean pageStopped;
 
         public UdpServerThread(int serverPort) {
             super();
             this.serverPort = serverPort;
+            this.pageStopped = false;
         }
 
         public void setRunning(boolean running){
             this.running = running;
         }
 
+        public boolean getRunning(){ return this.running; }
+
+        public void setPgStopped(boolean pageStopped){
+            this.pageStopped = pageStopped;
+        }
+
         @Override
         public void run() {
 
-            running = true;
+                running = true;
+                try {
+                    socket = new DatagramSocket(serverPort);
+                    Log.e(TAG, "UDP Server is running");
 
-            try {
-                socket = new DatagramSocket(serverPort);
-                Log.e(TAG, "UDP Server is running");
+                    while(running){
+                        byte[] buf = new byte[256];
 
-                while(running){
-                    byte[] buf = new byte[256];
+                        // receive request
+                        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                        socket.receive(packet);     //this code block the program flow
 
-                    // receive request
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                    socket.receive(packet);     //this code block the program flow
+                        //tv.setText("Came this far");
+                        InetAddress address = packet.getAddress();
+                        int port = packet.getPort();
+                        savedAddress = address;
+                        savedPort = port;
 
-                    String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
-                    String[] allValues = msg.split(",");
-                    int l = Integer.valueOf(allValues[0]);
-                    int m = Integer.valueOf(allValues[1]);
-                    //wInfo.setPercentage(soilMoisture);
-                    //wInfo.setText(String.valueOf(soilMoisture));
-                    //adapter.notifyDataSetChanged();
-                    if(soilMoisture <0 )
-                    {
-                        soilMoisture = 0;
+
+                        String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
+                        String[] allValues = msg.split(",");
+                        int l = Integer.valueOf(allValues[0]);
+                        int m = Integer.valueOf(allValues[1]);
+                        //wInfo.setPercentage(soilMoisture);
+                        //wInfo.setText(String.valueOf(soilMoisture));
+                        //adapter.notifyDataSetChanged();
+                        if(soilMoisture <0 )
+                        {
+                            soilMoisture = 0;
+                        }
+                        else if(soilMoisture > 100)
+                        {
+                            soilMoisture = 100;
+                        }
+                        else
+                        {
+                            soilMoisture = l;
+                        }
+
+                        //wInfo.setPercentage(soilMoisture2);
+                        //wInfo.setText(String.valueOf(soilMoisture2));
+                        //adapter.notifyDataSetChanged();
+                        if(soilMoisture2 <0 )
+                        {
+                            soilMoisture2 = 0;
+                        }
+                        else if(soilMoisture2 > 100)
+                        {
+                            soilMoisture2 = 100;
+                        }
+                        else
+                        {
+                            soilMoisture2 = m;
+                        }
+
+                        //int li = ByteBuffer.wrap(packet.getData()).getInt();
+
+                        //String m = String.valueOf(li);
+                        // send the response to the client at "address" and "port"
+
+
+                        //updatePrompt("Request from: " + address + ":" + port + "\n");
+                        //updatePrompt("Message: "+ soilMoisture +"\n");
+
+
+
+                        if(pumpOn == true)
+                        {
+                            String dString = "5";
+                            buf = dString.getBytes();
+                            packet = new DatagramPacket(buf, buf.length, address, port);
+                            socket.send(packet);
+                            pumpOn = false;
+
+                        }
+
+                        if(secondPumpOn == true)
+                        {
+                            String dString = "4";
+                            buf = dString.getBytes();
+                            packet = new DatagramPacket(buf, buf.length, address, port);
+                            socket.send(packet);
+                            secondPumpOn = false;
+                        }
+
                     }
-                    else if(soilMoisture > 100)
-                    {
-                        soilMoisture = 100;
+
+                    Log.e(TAG, "UDP Server ended");
+
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Exception 1");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Exception 2");
+                } finally {
+                    if(socket != null){
+                        socket.close();
+                        Log.e(TAG, "socket.close()");
                     }
-                    else
-                    {
-                        soilMoisture = l;
-                    }
-
-                    //wInfo.setPercentage(soilMoisture2);
-                    //wInfo.setText(String.valueOf(soilMoisture2));
-                    //adapter.notifyDataSetChanged();
-                    if(soilMoisture2 <0 )
-                    {
-                        soilMoisture2 = 0;
-                    }
-                    else if(soilMoisture2 > 100)
-                    {
-                        soilMoisture2 = 100;
-                    }
-                    else
-                    {
-                        soilMoisture2 = m;
-                    }
-
-                    //int li = ByteBuffer.wrap(packet.getData()).getInt();
-
-                    //String m = String.valueOf(li);
-                    // send the response to the client at "address" and "port"
-                    InetAddress address = packet.getAddress();
-                    int port = packet.getPort();
-
-                    //updatePrompt("Request from: " + address + ":" + port + "\n");
-                    //updatePrompt("Message: "+ soilMoisture +"\n");
-
-                    savedAddress = address;
-                    savedPort = port;
-
-                    if(pumpOn == true)
-                    {
-                        String dString = "5";
-                        buf = dString.getBytes();
-                        packet = new DatagramPacket(buf, buf.length, address, port);
-                        socket.send(packet);
-                        pumpOn = false;
-
-                    }
-
-                    if(secondPumpOn == true)
-                    {
-                        String dString = "4";
-                        buf = dString.getBytes();
-                        packet = new DatagramPacket(buf, buf.length, address, port);
-                        socket.send(packet);
-                        secondPumpOn = false;
-                    }
-
+                }
+                if(!pageStopped)
+                {
+                    threadRestart();
+                    Log.e(TAG, "Thread Restarting");
                 }
 
-                Log.e(TAG, "UDP Server ended");
-
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if(socket != null){
-                    socket.close();
-                    Log.e(TAG, "socket.close()");
-                }
-            }
         }
+
     }
 
+    public void threadRestart()
+    {
+        udpServerThread = new UdpServerThread(UdpServerPORT);
+        udpServerThread.start();
+        udpServerThread.setPgStopped(false);
+        //udpServerThread.getRunning();
+        updateWaterList();
+    }
     private void initView() {
         // Initialize RecyclerView and set Adapter
         recyclerView = findViewById(R.id.connBtnRecyclerView);
@@ -539,7 +590,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBtnClick(int pos, ArrayList<WaterInfo> w)
+    public void onWaterBtnClick(int pos, ArrayList<WaterInfo> w)
     {
         if(udpConnected == true)
         {
