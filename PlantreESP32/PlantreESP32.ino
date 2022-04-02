@@ -70,7 +70,20 @@ int minMoistureValues[2];
 bool plant1WateredWithMoisture;
 bool plant2WateredWithMoisture;
 
+int timerValue[2];
+int savedTimerValue[2];
+
+int calculatedTime[2];
+
+int elapsedTime[2];
+
 int receivedPktCount;
+
+unsigned long Timer1StartTime;
+unsigned long Timer2StartTime;
+
+bool WateringMethod1IsTimer;
+bool WateringMethod2IsTimer;
 
 //--------------------------------------------------------------------------------------------------------------------------
 
@@ -93,6 +106,12 @@ void setup() {
    pumpOn = false;
    secondPumpOn = false;
 
+   Timer1StartTime = 0;
+   Timer2StartTime = 0;
+
+   savedTimerValue[0] = 0;
+   savedTimerValue[1] = 0;
+  
    minMoistureValues[0] = -20;
    minMoistureValues[1] = -20;
 
@@ -250,13 +269,59 @@ void sendUdpPacket()
       {
         Serial.println(wateringInfo[i]);
       }
-      minMoistureValues[0] = wateringInfo[1]. toInt();
-      minMoistureValues[1] = wateringInfo[3]. toInt();
+      if(wateringInfo[0].equals("Moisture1"))
+      {
+        WateringMethod1IsTimer = false;
+        minMoistureValues[0] = wateringInfo[1]. toInt();
+      }
+      else if(wateringInfo[0].equals("Timer1"))
+      {       
+        timerValue[0] = wateringInfo[1]. toInt();
+        triggerTimerForPlant(1);
+        WateringMethod1IsTimer = true;
+      }
+      
+      if( wateringInfo[2].equals("Moisture2"))
+      {
+        WateringMethod2IsTimer = false;
+        minMoistureValues[1] = wateringInfo[3]. toInt();
+      }
+      else if(wateringInfo[2].equals("Timer2"))
+      {
+        
+        timerValue[1] = wateringInfo[3]. toInt();
+        triggerTimerForPlant(2);
+        WateringMethod2IsTimer = true;
+      }
+      
 
-
+      for( int i = 0; i < sizeof(pktbuf);  ++i )
+      {
+        pktbuf[i] = (char)0;
+      }
+   
       
       delay(1000);
     }
+}
+
+void triggerTimerForPlant(int timerNo)
+{
+  if((timerNo == 1) && (savedTimerValue[0] != timerValue[0]))
+  {
+    Serial.println("Timer 1 Has Started For plant 1");
+    Timer1StartTime = millis();
+    //calculatedTime[0] = timerValue[0] * 60 * 60* 1000;
+    calculatedTime[0] = timerValue[0] * 60 * 1000;
+    savedTimerValue[0] = timerValue[0];
+  }
+  if((timerNo == 2) && (savedTimerValue[1] != timerValue[1]))
+  {
+    Serial.println("Timer 2 Has Started For plant 2");
+    Timer2StartTime = millis();
+    calculatedTime[1] = timerValue[1] * 60 * 1000;
+    savedTimerValue[1] = timerValue[1];
+  } 
 }
 
 void getAllValues(String str, char c, int workFlow)
@@ -296,32 +361,64 @@ void getAllValues(String str, char c, int workFlow)
   }
 }
 
+
+
 void *printThreadId2(void *threadid) {
    
    while(true)
    {
      
-     //int i = 0;
-     /*if(pumpOn == true)
+
+     if(WateringMethod1IsTimer == false)
      {
-       runWaterPump(WATERPUMP);
+         if((plant1WateredWithMoisture == false) && (soilmoisturepercent < minMoistureValues[0]) && (receivedPktCount > 1))
+         {
+           Serial.println("Watering Plant 1");
+           runWaterPump(WATERPUMP);
+           plant1WateredWithMoisture = true;
+         }
      }
-     else
+     else if (WateringMethod1IsTimer == true) 
      {
-       delay(1000);
-     }*/
-     if((plant1WateredWithMoisture == false) && (soilmoisturepercent < minMoistureValues[0]) && (receivedPktCount > 1))
-     {
-       Serial.println("Watering Plant 1");
-       runWaterPump(WATERPUMP);
-       plant1WateredWithMoisture = true;
+        if(Timer1StartTime != 0)
+        {
+          unsigned long currentTime = millis();
+          elapsedTime[0] = (int)currentTime - (int)Timer1StartTime;
+          if(elapsedTime[0] >= calculatedTime[0])
+          {
+            Serial.println("1st plant watering with timer");
+            runWaterPump(WATERPUMP);
+            Timer1StartTime = millis();;
+            elapsedTime[0] = 0;           
+          }
+        }
      }
-     if((plant2WateredWithMoisture == false) && (soilmoisturepercent2 < minMoistureValues[1])&& (receivedPktCount > 1))
+
+     if(WateringMethod2IsTimer == false)
      {
-       Serial.println("Watering Plant 2");
-       runWaterPump(SECONDWATERPUMP);
-       plant2WateredWithMoisture = true;
+       if((plant2WateredWithMoisture == false) && (soilmoisturepercent2 < minMoistureValues[1])&& (receivedPktCount > 1))
+       {
+         Serial.println("Watering Plant 2");
+         runWaterPump(SECONDWATERPUMP);
+         plant2WateredWithMoisture = true;
+       }
      }
+     else if (WateringMethod2IsTimer == true) 
+     {
+        if(Timer2StartTime != 0)
+        {
+          int currentTime = millis();
+          elapsedTime[1] = currentTime - Timer2StartTime;
+          if(elapsedTime[1] >= calculatedTime[1])
+          {
+            Serial.println("2nd plant watering with timer");
+            runWaterPump(SECONDWATERPUMP);
+            Timer2StartTime = millis();;
+            elapsedTime[1] = 0;           
+          }
+        }
+     }
+
 
      if(plant1WateredWithMoisture) 
      {

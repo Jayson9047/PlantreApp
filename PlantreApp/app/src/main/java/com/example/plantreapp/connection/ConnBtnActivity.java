@@ -116,10 +116,13 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     //1st recycler view in the list
     int minMoisture1 = 0;
     String wateringMethod1 = "";
+    int timer1 = 0;
+
 
     //2nd recyler view in the list
     int minMoisture2 = 0;
     String wateringMethod2 = "";
+    int timer2 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,6 +300,18 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 {
                     wateringPath = "\n\nWatering Method: Timer";
                     pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + minWaterTimer[i];
+
+                    if(pos == 0)
+                    {
+                        timer1 = (int)minWaterTimer[i];
+                        wateringMethod1 = "Timer1";
+                    }
+                    if(pos == 1)
+                    {
+                        timer2 = (int)minWaterTimer[i];
+                        wateringMethod2 = "Timer2";
+                    }
+
                 }
 
             }
@@ -463,7 +478,25 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
                         if(justStarted)
                         {
-                            String dString = wateringMethod1+","+ Integer.toString(minMoisture1) + "\n" + wateringMethod2 + "," +Integer.toString(minMoisture2);
+                            int timeOrMoisture1 = 0;
+                            int timeOrMoisture2 = 0;
+                            if(wateringMethod1.equals("Moisture1"))
+                            {
+                                timeOrMoisture1 = minMoisture1;
+                            }
+                            else if(wateringMethod1.equals("Timer1"))
+                            {
+                                timeOrMoisture1 = timer1;
+                            }
+                            if(wateringMethod2.equals("Moisture2"))
+                            {
+                                timeOrMoisture2 = minMoisture2;
+                            }
+                            else if(wateringMethod2.equals("Timer2"))
+                            {
+                                timeOrMoisture2 = timer2;
+                            }
+                            String dString = wateringMethod1+","+ Integer.toString(timeOrMoisture1) + "\n" + wateringMethod2 + "," +Integer.toString(timeOrMoisture2);
                             buf1 = dString.getBytes();
                             packet = new DatagramPacket(buf1, buf1.length, address, port);
                             socket.send(packet);
