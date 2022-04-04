@@ -27,7 +27,9 @@ data class PlantInfo (
     @ColumnInfo(name = "min_seedling_moisture") val min_seedling_moisture: Float, // minimum moisture level - seedling
     @ColumnInfo(name = "max_seedling_moisture")  val max_seedling_moisture: Float, // maximum moisture level - seedling
     @ColumnInfo(name = "min_mature_moisture") val min_mature_moisture: Float, // minimum moisture level - Mature
-    @ColumnInfo(name = "max_mature_moisture")  val max_mature_moisture: Float // maximum moisture level - Mature
+    @ColumnInfo(name = "max_mature_moisture")  val max_mature_moisture: Float, // maximum moisture level - Mature
+    @ColumnInfo(name = "water_running_time")  val water_Running_Time: Int // maximum moisture level - Mature
+
 ) : Parcelable {
 
     override fun hashCode(): Int {

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
-import com.example.plantreapp.TimerService;
+/*import com.example.plantreapp.TimerService;*/
 import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.connection.ConnectionActivity;
 import com.example.plantreapp.entities.Plant;
@@ -122,9 +122,9 @@ public class MyPlantsActivity extends AppCompatActivity
     @Override
     public void onDelete(Plant plant) {
         plantsViewModel.deletePlant(plant);
-        Intent deletePlant = new Intent(this, TimerService.class);
+        /*Intent deletePlant = new Intent(this, TimerService.class);
         deletePlant.putExtra("deletedPlant", plant.getName());
-        startForegroundService(deletePlant);
+        startForegroundService(deletePlant);*/
     }
 
     @Override
@@ -143,7 +143,8 @@ public class MyPlantsActivity extends AppCompatActivity
                 plant.getMin_seedling_moisture(),
                 plant.getMax_seedling_moisture(),
                 plant.getMin_mature_moisture(),
-                plant.getMax_mature_moisture()
+                plant.getMax_mature_moisture(),
+                plant.getWater_running_time()
         );
 
         Intent intent = new Intent(MyPlantsActivity.this, PlantInfoActivity.class);
@@ -175,13 +176,13 @@ public class MyPlantsActivity extends AppCompatActivity
                     plantInfo.getMinMatureMoisture(),
                     plantInfo.getMaxMatureMoisture(),
                     null,
-                    30 // Update
+                    plantInfo.getWaterTime() // Update
             );
 
             plantsViewModel.addPlant(plant);
             
-            Intent newPlantIntent = new Intent(this, TimerService.class);
-            startForegroundService(newPlantIntent);
+            /*Intent newPlantIntent = new Intent(this, TimerService.class);
+            startForegroundService(newPlantIntent);*/
         }
     }
 

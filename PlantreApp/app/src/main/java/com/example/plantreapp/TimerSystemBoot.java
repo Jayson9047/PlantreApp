@@ -1,3 +1,4 @@
+/*
 package com.example.plantreapp;
 
 import android.content.BroadcastReceiver;
@@ -16,3 +17,4 @@ public class TimerSystemBoot extends BroadcastReceiver {
         }
     }
 }
+*/

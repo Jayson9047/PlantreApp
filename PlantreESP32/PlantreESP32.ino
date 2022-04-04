@@ -387,8 +387,8 @@ void *printThreadId2(void *threadid) {
           if(elapsedTime[0] >= calculatedTime[0])
           {
             Serial.println("1st plant watering with timer");
+            Timer1StartTime = millis();
             runWaterPump(WATERPUMP);
-            Timer1StartTime = millis();;
             elapsedTime[0] = 0;           
           }
         }
@@ -412,8 +412,8 @@ void *printThreadId2(void *threadid) {
           if(elapsedTime[1] >= calculatedTime[1])
           {
             Serial.println("2nd plant watering with timer");
+            Timer2StartTime = millis();
             runWaterPump(SECONDWATERPUMP);
-            Timer2StartTime = millis();;
             elapsedTime[1] = 0;           
           }
         }

@@ -35,7 +35,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.plantreapp.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.example.plantreapp.TimerService;
+//import com.example.plantreapp.TimerService;
 import com.example.plantreapp.logs.AddLogActivity;
 import com.example.plantreapp.logs.LogsActivity;
 
@@ -412,6 +412,7 @@ public class AddPlantActivity extends AppCompatActivity {
 
                 name = nameTxt.getText().toString();
                 String time = timmer.getText().toString();
+                int wTime = Integer.parseInt(time);
                 scifiName = scifiNameTxt.getText().toString();
                 try {
                     uri = imageUri.toString();
@@ -452,7 +453,7 @@ public class AddPlantActivity extends AppCompatActivity {
 
                 PlantInfo plantInfo = new PlantInfo(name, scifiName, uri, description, stage,hourRateSeed,
                         hourRateSeeding, hourRateMature, minSeedMoisture, maxSeedMoisture, minSeedingMoisture,
-                        maxSeedingMoisture, minMatureMoisture, maxMatureMoisture);
+                        maxSeedingMoisture, minMatureMoisture, maxMatureMoisture, wTime);
 
                 Intent intent = new Intent(AddPlantActivity.this, MyPlantsActivity.class);
                 intent.putExtra("plantInfo", plantInfo);

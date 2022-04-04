@@ -19,13 +19,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-2dp"
         tools:listitem="@layout/recycler_row_conn_btn" />
-    <TextView
-        android:id="@+id/testText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/black"
-        android:text="this is my test"
-        />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"

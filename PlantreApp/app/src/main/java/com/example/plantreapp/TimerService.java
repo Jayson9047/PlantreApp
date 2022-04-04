@@ -1,3 +1,4 @@
+/*
 package com.example.plantreapp;
 
 import android.annotation.SuppressLint;
@@ -252,3 +253,4 @@ public class TimerService extends Service {
     }
 }
 
+*/

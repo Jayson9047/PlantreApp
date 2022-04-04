@@ -124,6 +124,9 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     String wateringMethod2 = "";
     int timer2 = 0;
 
+    int waterTime1 = 0;
+    int waterTime2 = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +141,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
         firstSensorReceiving = false;
         secondSensorReceiving = false;
-        tv = (TextView) findViewById(R.id.testText);
+        //tv = (TextView) findViewById(R.id.testText);
 
         // Setup repository
         // plantIdentityRepository = new PlantIdentityRepository(getApplicationContext());
@@ -277,17 +280,19 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         minWaterTimer[2] = plant.getMature_water_rate();
 
 
+
         for (int i = 0; i < 3; i++)
         {
 
             if(plant.getStage().equals(seed[i])) {
                 if (minMoisture[i] != 0f) {
-                    wateringPath = "\n\nWatering Method: Moisture Rate";
-                    pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nMin Moisture Rate:" + minMoisture[i];
+                    wateringPath = "\nWatering Method: Moisture Rate";
+                    pInfo = "Name: " + plant.getName() + "\nStage:" + plant.getStage() + wateringPath + "\nMin Moisture Rate:" + minMoisture[i]+ "\nWatering Duration:" + plant.getWater_running_time();
                     if(pos == 0)
                     {
                         minMoisture1 = (int)minMoisture[i];
                         wateringMethod1 = "Moisture1";
+                        //pInfo = pInfo + "Watering Duration:" + plant.getWater_running_time();
                     }
                     if(pos == 1)
                     {
@@ -299,7 +304,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 if (minWaterTimer[i] != 0)
                 {
                     wateringPath = "\n\nWatering Method: Timer";
-                    pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + minWaterTimer[i];
+                    pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + minWaterTimer[i]+ "\nWatering Duration:" + plant.getWater_running_time();
 
                     if(pos == 0)
                     {

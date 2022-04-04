@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public Boolean isTimerServiceRunning(){
+    /*public Boolean isTimerServiceRunning(){
         @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
             if(TimerService.class.getName().equals(service.service.getClassName())){
@@ -72,6 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
+    }*/
     //this is test
 }

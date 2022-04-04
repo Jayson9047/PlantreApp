@@ -7,10 +7,11 @@ public class PlantInfo implements Parcelable {
     private String name, scifiName, uri, description, stage;
     private float seedWaterRate, seedlingWaterRate, matureWaterRate, minSeedMoisture, maxSeedMoisture,
             minSeedlingMoisture, maxSeedlingMoisture, minMatureMoisture, maxMatureMoisture;
+    private int waterTime;
 
     public PlantInfo(String name, String scifiName, String uri, String description, String stage, float seedWaterRate,
                      float seedlingWaterRate, float matureWaterRate, float minSeedMoisture, float maxSeedMoisture,
-                     float minSeedlingMoisture, float maxSeedlingMoisture, float minMatureMoisture, float maxMatureMoisture) {
+                     float minSeedlingMoisture, float maxSeedlingMoisture, float minMatureMoisture, float maxMatureMoisture, int waterTime) {
         this.name = name;
         this.scifiName = scifiName;
         this.uri = uri;
@@ -25,6 +26,7 @@ public class PlantInfo implements Parcelable {
         this.maxSeedlingMoisture = maxSeedlingMoisture;
         this.minMatureMoisture = minMatureMoisture;
         this.maxMatureMoisture = maxMatureMoisture;
+        this.waterTime = waterTime;
     }
 
     protected PlantInfo(Parcel in) {
@@ -42,6 +44,7 @@ public class PlantInfo implements Parcelable {
         maxSeedlingMoisture = in.readFloat();
         minMatureMoisture = in.readFloat();
         maxMatureMoisture = in.readFloat();
+        waterTime = in.readInt();
     }
 
     public static final Creator<PlantInfo> CREATOR = new Creator<PlantInfo>() {
@@ -168,6 +171,14 @@ public class PlantInfo implements Parcelable {
         this.maxMatureMoisture = maxMatureMoisture;
     }
 
+    public int getWaterTime() {
+        return waterTime;
+    }
+
+    public void setWaterTime(int waterTime) {
+        this.waterTime = waterTime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -189,6 +200,8 @@ public class PlantInfo implements Parcelable {
         parcel.writeFloat(maxSeedlingMoisture);
         parcel.writeFloat(minMatureMoisture);
         parcel.writeFloat(maxMatureMoisture);
+        parcel.writeInt(waterTime);
+
     }
 }
 
