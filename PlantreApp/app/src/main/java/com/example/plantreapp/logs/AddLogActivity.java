@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantreapp.R;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+
 public class AddLogActivity extends AppCompatActivity {
 
     private EditText logName, logInfo;
@@ -37,11 +40,27 @@ public class AddLogActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = logName.getText().toString();
                 String info = logInfo.getText().toString();
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+                int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+                int day = Calendar.getInstance().get(Calendar.DATE);
+
+                String date = Integer.toString(year);
+                if(month < 10) {
+                    date += "-0" + month;
+                } else {
+                    date += "-" + month;
+                }
+                if(day < 10) {
+                    date += "-0" + day;
+                } else {
+                    date += "-" + day;
+                }
 
                 Intent intent = new Intent(AddLogActivity.this, LogsActivity.class);
                 intent.putExtra("newNoteName", name);
                 intent.putExtra("newNoteInfo", info);
                 intent.putExtra("journalName", journalName);
+                intent.putExtra("date", date);
                 startActivity(intent);
             }
         });
