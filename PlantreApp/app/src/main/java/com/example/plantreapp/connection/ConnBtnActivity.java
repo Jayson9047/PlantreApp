@@ -127,8 +127,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     int wTime1;
     int wTime2;
 
-    boolean wateringMethod1Exists;
-    boolean wateringMethod2Exists;
+    //boolean wateringMethod1Exists;
+    //boolean wateringMethod2Exists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,14 +303,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         wateringMethod1 = "Moisture1";
                         //pInfo = pInfo + "Watering Duration:" + plant.getWater_running_time();
                         wTime1 = plant.getWater_running_time();
-                        wateringMethod1Exists = true;
+                        //wateringMethod1Exists = true;
                     }
                     if(pos == 1)
                     {
                         minMoisture2 = plant.getMin_seed_moisture().intValue();
                         wateringMethod2 = "Moisture2";
                         wTime1 = plant.getWater_running_time();
-                        wateringMethod2Exists = true;
+                        //wateringMethod2Exists = true;
                     }
 
                 }
@@ -324,14 +324,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         timer1 = (int)minWaterTimer[i];
                         wateringMethod1 = "Timer1";
                         wTime2 = plant.getWater_running_time();
-                        wateringMethod1Exists = true;
+                       // wateringMethod1Exists = true;
                     }
                     if(pos == 1)
                     {
                         timer2 = (int)minWaterTimer[i];
                         wateringMethod2 = "Timer2";
                         wTime2 = plant.getWater_running_time();
-                        wateringMethod2Exists = true;
+                        //wateringMethod2Exists = true;
                     }
 
                 }
@@ -525,14 +525,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                                 timeOrMoisture2 = timer2;
                             }
                             String dString = wateringMethod1+","+ Integer.toString(timeOrMoisture1) + "," +Integer.toString(sTest1 ) +"\n" + wateringMethod2 + "," +Integer.toString(timeOrMoisture2) +"," +Integer.toString(sTest2);
-                            if(!wateringMethod1Exists)
+                            /*if(!wateringMethod1Exists)
                             {
                                 dString = "M1,0,20\n" + wateringMethod2 + "," +Integer.toString(timeOrMoisture2) +"," +Integer.toString(sTest2);
                             }
                             if(!wateringMethod2Exists)
                             {
                                 dString = wateringMethod1+","+ Integer.toString(timeOrMoisture1) + "," +Integer.toString(sTest1 ) +"\nM2,0,20";
-                            }
+                            }*/
                             Log.e(TAG, dString);
                             buf1 = dString.getBytes();
                             packet = new DatagramPacket(buf1, buf1.length, address, port);
