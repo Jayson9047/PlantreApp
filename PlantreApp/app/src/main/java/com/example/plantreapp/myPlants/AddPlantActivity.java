@@ -162,9 +162,9 @@ public class AddPlantActivity extends AppCompatActivity {
         seekbar8.setVisibility(View.INVISIBLE);
         seekbar9.setVisibility(View.INVISIBLE);
 
-        if (plantInfo != null) {
+        if (dbPlantInfo != null) {
             scifiNameTxt.setText(dbPlantInfo.getScientific_name());
-            descriptionTxt.setHint(plantInfo.getDescription());
+            descriptionTxt.setHint(dbPlantInfo.getDescription());
         }
 
 
