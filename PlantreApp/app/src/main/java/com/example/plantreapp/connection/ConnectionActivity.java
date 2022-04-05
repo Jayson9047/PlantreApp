@@ -49,7 +49,7 @@ public class ConnectionActivity extends AppCompatActivity {
     private Button ButtonActive, ButtonInactive, ButtonListPairedDevices;
     private TextView textView;
     private TextView connectStat;
-    private TextView msg_box;
+    //private TextView msg_box;
     BluetoothAdapter bluetoothAdapter;
     private ListView emp;
     private String NAME;
@@ -117,7 +117,7 @@ public class ConnectionActivity extends AppCompatActivity {
         ButtonInactive.setEnabled(false);
         ButtonListPairedDevices.setEnabled(false);
         emp = (ListView) findViewById(R.id.pairedDeviceList);
-        msg_box = (TextView)findViewById(R.id.messageBox);
+        //msg_box = (TextView)findViewById(R.id.messageBox);
         //permissions[0] = "android.permission.BLUETOOTH_CONNECT";
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

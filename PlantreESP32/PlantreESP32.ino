@@ -108,7 +108,7 @@ bool lightRequested;
 void setup() {
 
    Serial.begin(115200);
-   SerialBT.begin("ESP32test"); //Bluetooth device name
+   SerialBT.begin("MyPlantre"); //Bluetooth device name
    Serial.println("The device started, now you can pair it with bluetooth!");
    //display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //initialize with the I2C addr 0x3C (128x64)
    //display.clearDisplay();
@@ -410,8 +410,9 @@ void *printThreadId2(void *threadid) {
          if((plant1WateredWithMoisture == false) && (soilmoisturepercent < minMoistureValues[0]) && (receivedPktCount > 1))
          {
            Serial.println("Watering Plant 1");
-           runWaterPump(WATERPUMP,wateringDuration[0]);
            plant1WateredWithMoisture = true;
+           runWaterPump(WATERPUMP,wateringDuration[0]);
+           
          }
      }
      else if (WateringMethod1IsTimer == true) 
@@ -435,8 +436,9 @@ void *printThreadId2(void *threadid) {
        if((plant2WateredWithMoisture == false) && (soilmoisturepercent2 < minMoistureValues[1])&& (receivedPktCount > 1))
        {
          Serial.println("Watering Plant 2");
-         runWaterPump(SECONDWATERPUMP,wateringDuration[1]);
          plant2WateredWithMoisture = true;
+         runWaterPump(SECONDWATERPUMP,wateringDuration[1]);
+         
        }
      }
      else if (WateringMethod2IsTimer == true) 
@@ -550,9 +552,6 @@ void runWaterPump(int waterPumpPin, int wateringTime)
   digitalWrite(waterPumpPin, LOW);   // turn the LED on (HIGH is the voltage level)
   delay(wTime);                       // wait for a second
   digitalWrite(waterPumpPin, HIGH);    // turn the LED off by making the voltage LOW
-  
-  pumpOn = false;
-  secondPumpOn = false;
 }
 
 void runDefaultWaterPump(int waterPumpPin)
