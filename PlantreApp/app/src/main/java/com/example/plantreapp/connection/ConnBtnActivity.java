@@ -238,6 +238,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 if (o != null) {
                     Plant plant = (Plant) o;
                     String s = showInfo(plant, 0);
+                    if(s.length() > 3)
+                    {
+                        infoExists = true;
+                    }
+                    else
+                    {
+                        infoExists = false;
+                    }
                     w1.setPlantText(s);
                     adapter.notifyDataSetChanged();
                 }
@@ -258,6 +266,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 if (o != null) {
                     Plant plant = (Plant) o;
                     String s = showInfo(plant, 1);
+                    if(s.length() > 3)
+                    {
+                        infoExists = true;
+                    }
+                    else
+                    {
+                        infoExists = false;
+                    }
                     w2.setPlantText(s);
                     adapter.notifyDataSetChanged();
                 }
@@ -293,7 +309,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         {
 
             if(plant.getStage().equals(seed[i])) {
-                infoExists = true;
+                //infoExists = true;
                 if (minMoisture[i] != 0f) {
                     wateringPath = "\nWatering Method: Moisture Rate";
                     pInfo = "Name: " + plant.getName() + "\nStage:" + plant.getStage() + wateringPath + "\nMin Moisture Rate:" + minMoisture[i]+ "\nWatering Duration:" + plant.getWater_running_time();
@@ -337,9 +353,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                 }
 
             }
-            else {
-                infoExists = false;
-            }
+
         }
 
         return pInfo;
