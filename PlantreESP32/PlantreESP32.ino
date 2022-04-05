@@ -552,6 +552,8 @@ void runWaterPump(int waterPumpPin, int wateringTime)
   digitalWrite(waterPumpPin, LOW);   // turn the LED on (HIGH is the voltage level)
   delay(wTime);                       // wait for a second
   digitalWrite(waterPumpPin, HIGH);    // turn the LED off by making the voltage LOW
+  pumpOn = false;
+  secondPumpOn = false;
 }
 
 void runDefaultWaterPump(int waterPumpPin)
