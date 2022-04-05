@@ -1,4 +1,4 @@
-/*
+
 package com.example.plantreapp;
 
 import android.annotation.SuppressLint;
@@ -16,12 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.entities.Plant;
 import com.example.plantreapp.entities.Timer;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.repository.TimerRepository;
-import com.example.plantreapp.connection.ConnBtnActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -158,7 +158,7 @@ public class TimerService extends Service {
                                                     waterRateStage = 1000f;
                                                 }
 
-                                                int waterRate = Math.round(waterRateStage * HOUR);
+                                                int waterRate = Math.round(waterRateStage * 1000);
 
                                                 // add the watering rate, will be the actual plant one later
                                                 assert lastNotifyDate != null;
@@ -191,8 +191,13 @@ public class TimerService extends Service {
                                                             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                                             int id = (int) System.currentTimeMillis();
                                                             notificationManager.notify(id, notifyBuilder.build());
-                                                            //ConnBtnActivity.pumpOn = true;
-                                                            //ConnBtnActivity.secondPumpOn = true;
+
+                                                            if(ConnBtnActivity.waterInfoArrayList.get(0).getPlantText() == timer.getName()){
+                                                                ConnBtnActivity.pumpOn = true;
+                                                            }
+                                                            if(ConnBtnActivity.waterInfoArrayList.get(1).getPlantText() == timer.getName()){
+                                                                ConnBtnActivity.secondPumpOn = true;
+                                                            }
                                                         }
                                                     });
                                                 } else {
@@ -253,4 +258,4 @@ public class TimerService extends Service {
     }
 }
 
-*/
+

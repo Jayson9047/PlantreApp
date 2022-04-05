@@ -1,66 +1,52 @@
 package com.example.plantreapp.connection;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantreapp.R;
+import com.example.plantreapp.TimerService;
 import com.example.plantreapp.entities.Plant;
-import com.example.plantreapp.entities.PlantIdentity;
 import com.example.plantreapp.myPlants.MyPlantsActivity;
 import com.example.plantreapp.myPlants.SelectPlantActivity;
 import com.example.plantreapp.repository.PlantIdentityRepository;
 import com.example.plantreapp.repository.PlantRepository;
 import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.os.Handler;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-
-
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.plantreapp.MainActivity;
-//import com.loopj.android.http.AsyncHttpClient;
-//import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.AsyncHttpClient;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-
-
-import android.os.Handler;
-import android.widget.ProgressBar;
-
-//import cz.msebera.android.httpclient.Header;
-
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
 import kotlin.coroutines.EmptyCoroutineContext;
+
+//import com.loopj.android.http.AsyncHttpClient;
+//import com.loopj.android.http.AsyncHttpResponseHandler;
+//import cz.msebera.android.httpclient.Header;
 
 
 public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapter.WaterInfoInterface {
@@ -104,7 +90,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
     private WaterInfoAdapter adapter;
-    private ArrayList<WaterInfo> waterInfoArrayList;
+    public static ArrayList<WaterInfo> waterInfoArrayList;
     private WaterInfo wInfo;
     private boolean firstSensorReceiving;
     private boolean secondSensorReceiving;
@@ -162,6 +148,24 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
         wTime1 = 10;
         wTime2 = 10;
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            if(!isTimerServiceRunning()) {
+                Intent timerIntent = new Intent(this, TimerService.class);
+                startForegroundService(timerIntent);
+            }
+            CharSequence name = "waterPlantChannel";
+            String description = "Channel for watering the plants";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("waterPlantChannel", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -233,6 +237,17 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
 
     }
+
+    private Boolean isTimerServiceRunning(){
+        @SuppressLint("ServiceCast") ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
+            if(TimerService.class.getName().equals(service.service.getClassName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void updateWaterList() {
         WaterInfo w1 = waterInfoArrayList.get(0);
         WaterInfo w2 = waterInfoArrayList.get(1);
