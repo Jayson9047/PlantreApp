@@ -35,14 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
             AppDatabase::class.java, "local").addCallback(object : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                // insert the data on the IO Thread
 
-                runBlocking {
-                    launch(Dispatchers.IO) {
-                        instance?.plantIdentityDao()?.insert(PlantIdentity(0, "Not Selected"))
-                        instance?.plantIdentityDao()?.insert(PlantIdentity(1, "Not Selected"))
-                    }
-                }
 
             }
         })

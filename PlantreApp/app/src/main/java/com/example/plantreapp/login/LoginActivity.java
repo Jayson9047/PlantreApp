@@ -16,6 +16,7 @@ import com.example.plantreapp.R;
 import com.example.plantreapp.api.APIClient;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
 import com.example.plantreapp.register.RegisterActivity;
+import com.example.plantreapp.search.SearchActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import kotlin.coroutines.Continuation;

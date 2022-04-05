@@ -41,10 +41,23 @@ public class DBPlantInfoActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.dbPlantInfoImage);
         TextView textView = (TextView) findViewById(R.id.textPlantInfoDescription);
+        TextView matureWaterRateTextView = (TextView) findViewById(R.id.textMatureWateringRate);
+        TextView seedlingWaterRateTextView = (TextView) findViewById(R.id.textSeedlingWateringRate);
+        TextView seedWaterRateTextView = (TextView) findViewById(R.id.textSeedWateringRate);
+        TextView harvestDayTextView = (TextView) findViewById(R.id.textDaysToHarvest);
 
-        textView.setText(_plantInfo.getDescription());
-        Log.d("eee", _plantInfo.getPictures().get(0));
-        Glide.with(this).load(_plantInfo.getPictures().get(0)).into(imageView);
+        if (_plantInfo != null) {
+            textView.setText(_plantInfo.getDescription());
+            matureWaterRateTextView.setText("At full maturity water the plant every " + (String.valueOf(_plantInfo.getMature_water_rate())) + " hours.");
+            seedlingWaterRateTextView.setText("At the seedling stage, water the plant every " + (String.valueOf(_plantInfo.getMature_water_rate())) + " hours.");
+            seedWaterRateTextView.setText("At the seedling stage, water the plant every " + (String.valueOf(_plantInfo.getMature_water_rate())) + " hours.");
+            harvestDayTextView.setText(String.valueOf(_plantInfo.getMin_harvest_day()) + " - " + _plantInfo.getMax_harvest_day());
+            Log.d("eee", _plantInfo.getPictures().get(0));
+            Glide.with(this).load(_plantInfo.getPictures().get(0)).into(imageView);
+        } else {
+            finish();
+        }
+
     }
 
     public void addItem(View view) {
