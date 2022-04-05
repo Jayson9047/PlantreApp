@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="45dp"
-        android:backgroundTint="@color/aqua"
+        android:backgroundTint="#00BCD4"
         android:text="Add Log"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
