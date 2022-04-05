@@ -112,6 +112,9 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private PlantRepository plantRepository;
     private String firstWaterPumpUrl;
     private String secondWaterPumpUrl;
+    private boolean lightOn;
+
+    private Button lights;
 
     //1st recycler view in the list
     int minMoisture1 = 0;
@@ -145,7 +148,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         infoExists = false;
         boolean wateringMethod1Exists = false;
         boolean wateringMethod2Exists = false;
-
+        lightOn = false;
         firstSensorReceiving = false;
         secondSensorReceiving = false;
         //tv = (TextView) findViewById(R.id.testText);
@@ -155,7 +158,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         plantRepository = new PlantRepository(getApplicationContext());
         firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
-
+        lights = (Button) findViewById(R.id.myUVLight);
 
         wTime1 = 10;
         wTime2 = 10;
@@ -217,6 +220,16 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
 
         receiveData();
+
+        lights.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                lightOn = true;
+                //lights.setText("Lights Off");
+
+            }
+        });
 
 
     }
@@ -513,6 +526,15 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                             packet = new DatagramPacket(buf, buf.length, address, port);
                             socket.send(packet);
                             secondPumpOn = false;
+                        }
+
+                        if(lightOn)
+                        {
+                            String dString = "6";
+                            buf = dString.getBytes();
+                            packet = new DatagramPacket(buf, buf.length, address, port);
+                            socket.send(packet);
+                            lightOn = false;
                         }
 
                         if(justStarted && infoExists)

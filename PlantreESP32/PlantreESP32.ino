@@ -23,6 +23,11 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+const int ledPin = 15;
+const int prPin = 26;
+int bigValue = 2704;
+int smallValue = 790;
+
 BluetoothSerial SerialBT; 
 //this is for first sensor
 const int AirValue = 2580;   //you need to replace this value with Value_1
@@ -58,6 +63,7 @@ WiFiUDP udp;
 unsigned int udpPort;
 bool pumpOn;
 bool secondPumpOn;
+bool lightOn;
 
 char pktbuf[30];
 String x_val;
@@ -94,6 +100,8 @@ int count2;
 
 int moistureElapsedTime[2];
 int moistureEndTime[2];
+
+bool lightRequested;
 //--------------------------------------------------------------------------------------------------------------------------
 
  
@@ -108,7 +116,11 @@ void setup() {
    pinMode(SECONDWATERPUMP, OUTPUT);
    digitalWrite(WATERPUMP, HIGH); 
    digitalWrite(SECONDWATERPUMP, HIGH); 
-  
+   pinMode(ledPin,OUTPUT);
+   digitalWrite(ledPin, LOW); 
+
+   lightRequested = false;
+   lightOn = false;
    plant1WateredWithMoisture = false;
    plant2WateredWithMoisture = false;
    receivedPktCount = 0;
@@ -222,6 +234,7 @@ void loop()
    {
       Blynk.run();
    }
+
 }
 
 void readSoilMoistureValue()
@@ -239,6 +252,8 @@ void readSoilMoistureValue()
     Serial.println(soilmoisturepercent2);
     Serial.println("pin2 value:");
     Serial.println(soilMoistureValue2);
+
+    
 }
 
 void sendUdpPacket()
@@ -269,6 +284,10 @@ void sendUdpPacket()
       else if(pktbuf[0] == '4')
       {
         secondPumpOn = true;
+      }
+      else if(pktbuf[0] == '6')
+      {
+        lightRequested = true;
       }
       else
       {
@@ -492,6 +511,11 @@ void *printThreadId1(void *threadid) {
      {
        runDefaultWaterPump(SECONDWATERPUMP);
      }
+     else if(lightRequested)
+     {
+       runUVLight();
+       lightRequested = false;
+     }
      else
      {
        delay(1000);
@@ -539,6 +563,20 @@ void runDefaultWaterPump(int waterPumpPin)
   
   pumpOn = false;
   secondPumpOn = false;
+}
+
+void runUVLight()
+{
+  if(lightOn == false)
+  {
+    digitalWrite(ledPin, HIGH);
+    lightOn = true;
+  }
+  else
+  {
+    digitalWrite(ledPin, LOW);
+    lightOn = false;
+  }
 }
 
 void showInOLED()
