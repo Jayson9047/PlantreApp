@@ -74,6 +74,7 @@ public class AddPlantActivity extends AppCompatActivity {
     //Image uri var
     private Uri imageUri;
     private PlantInfo plantInfo;
+    private com.example.plantreapp.entities.PlantInfo dbPlantInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +99,8 @@ public class AddPlantActivity extends AppCompatActivity {
             }
         });
         // Check if plant info is being passed in
-        Intent intent = new Intent();
-        plantInfo = intent.getParcelableExtra("PLANTINFO");
+        Intent intent = getIntent();
+        dbPlantInfo = intent.getParcelableExtra("PLANTINFO");
 
 
         nameTxt = findViewById(R.id.editPlantName);
@@ -160,6 +161,11 @@ public class AddPlantActivity extends AppCompatActivity {
         seekbar7.setVisibility(View.INVISIBLE);
         seekbar8.setVisibility(View.INVISIBLE);
         seekbar9.setVisibility(View.INVISIBLE);
+
+        if (plantInfo != null) {
+            scifiNameTxt.setText(dbPlantInfo.getScientific_name());
+            descriptionTxt.setHint(plantInfo.getDescription());
+        }
 
 
         stageTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
