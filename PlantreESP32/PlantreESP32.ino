@@ -63,7 +63,7 @@ char pktbuf[30];
 String x_val;
 int randNum = 0;
 
-String wateringInfo[4];
+String wateringInfo[6];
 String wateringFragmentInfo[2];
 int minMoistureValues[2];
 
@@ -85,6 +85,15 @@ unsigned long Timer2StartTime;
 bool WateringMethod1IsTimer;
 bool WateringMethod2IsTimer;
 
+int wateringDuration[2];
+
+unsigned long moisture1StartTime;
+unsigned long moisture2StartTime;
+int count1;
+int count2;
+
+int moistureElapsedTime[2];
+int moistureEndTime[2];
 //--------------------------------------------------------------------------------------------------------------------------
 
  
@@ -114,6 +123,9 @@ void setup() {
   
    minMoistureValues[0] = -20;
    minMoistureValues[1] = -20;
+
+   wateringDuration[0] = 0;
+   wateringDuration[1] = 0;
 
    display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //initialize with the I2C addr 0x3C (128x64)
    display.clearDisplay();
@@ -265,10 +277,13 @@ void sendUdpPacket()
         getAllValues(wateringFragmentInfo[1], ',', 2);
       }
 
-      for(int i = 0; i < 4; i++)
+      for(int i = 0; i < 6; i++)
       {
         Serial.println(wateringInfo[i]);
       }
+      wateringDuration[0] = wateringInfo[2]. toInt();
+      wateringDuration[1] = wateringInfo[5]. toInt();
+      
       if(wateringInfo[0].equals("Moisture1"))
       {
         WateringMethod1IsTimer = false;
@@ -281,15 +296,15 @@ void sendUdpPacket()
         WateringMethod1IsTimer = true;
       }
       
-      if( wateringInfo[2].equals("Moisture2"))
+      if( wateringInfo[3].equals("Moisture2"))
       {
         WateringMethod2IsTimer = false;
-        minMoistureValues[1] = wateringInfo[3]. toInt();
+        minMoistureValues[1] = wateringInfo[4]. toInt();
       }
-      else if(wateringInfo[2].equals("Timer2"))
+      else if(wateringInfo[3].equals("Timer2"))
       {
         
-        timerValue[1] = wateringInfo[3]. toInt();
+        timerValue[1] = wateringInfo[4]. toInt();
         triggerTimerForPlant(2);
         WateringMethod2IsTimer = true;
       }
@@ -327,7 +342,7 @@ void triggerTimerForPlant(int timerNo)
 void getAllValues(String str, char c, int workFlow)
 {
   int StringCount = 0;
-  String strs[2];
+  String strs[3];
   
   while (str.length() > 0)
   {
@@ -353,11 +368,13 @@ void getAllValues(String str, char c, int workFlow)
   {
     wateringInfo[0] = strs[0];
     wateringInfo[1] = strs[1];
+    wateringInfo[2] = strs[2];
   }
   else if(workFlow == 2)
   {
-    wateringInfo[2] = strs[0];
-    wateringInfo[3] = strs[1];
+    wateringInfo[3] = strs[0];
+    wateringInfo[4] = strs[1];
+    wateringInfo[5] = strs[2];
   }
 }
 
@@ -374,7 +391,7 @@ void *printThreadId2(void *threadid) {
          if((plant1WateredWithMoisture == false) && (soilmoisturepercent < minMoistureValues[0]) && (receivedPktCount > 1))
          {
            Serial.println("Watering Plant 1");
-           runWaterPump(WATERPUMP);
+           runWaterPump(WATERPUMP,wateringDuration[0]);
            plant1WateredWithMoisture = true;
          }
      }
@@ -388,7 +405,7 @@ void *printThreadId2(void *threadid) {
           {
             Serial.println("1st plant watering with timer");
             Timer1StartTime = millis();
-            runWaterPump(WATERPUMP);
+            runWaterPump(WATERPUMP,wateringDuration[0]);
             elapsedTime[0] = 0;           
           }
         }
@@ -399,7 +416,7 @@ void *printThreadId2(void *threadid) {
        if((plant2WateredWithMoisture == false) && (soilmoisturepercent2 < minMoistureValues[1])&& (receivedPktCount > 1))
        {
          Serial.println("Watering Plant 2");
-         runWaterPump(SECONDWATERPUMP);
+         runWaterPump(SECONDWATERPUMP,wateringDuration[1]);
          plant2WateredWithMoisture = true;
        }
      }
@@ -413,7 +430,7 @@ void *printThreadId2(void *threadid) {
           {
             Serial.println("2nd plant watering with timer");
             Timer2StartTime = millis();
-            runWaterPump(SECONDWATERPUMP);
+            runWaterPump(SECONDWATERPUMP,wateringDuration[1]);
             elapsedTime[1] = 0;           
           }
         }
@@ -423,11 +440,38 @@ void *printThreadId2(void *threadid) {
      if(plant1WateredWithMoisture) 
      {
        Serial.println("Waiting 1 hour for 1st plant");
+       if(count1 == 0)
+       {
+         moisture1StartTime = millis();
+         moistureEndTime[0] = 2*60*1000;
+       }
+       count1 += 1;
+       unsigned long curTime =  millis();
+       moistureElapsedTime[0] = (int)curTime - (int)moisture1StartTime;
+       if(moistureElapsedTime[0] >= moistureEndTime[0])
+       {
+         plant1WateredWithMoisture = false;
+         count1 = 0;
+       }
+       
      }
      
      if(plant2WateredWithMoisture)
      {
        Serial.println("Waiting 1 hour for 2nd plant");
+       if(count2 == 0)
+       {
+         moisture2StartTime = millis();
+         moistureEndTime[1] = 2*60*1000;
+       }
+       count2 += 1;
+       unsigned long curTime =  millis();
+       moistureElapsedTime[1] = (int)curTime - (int)moisture2StartTime;
+       if(moistureElapsedTime[1] >= moistureEndTime[1])
+       {
+         plant2WateredWithMoisture = false;
+         count2 = 0;
+       }
      }
      delay(1000);
 
@@ -442,11 +486,11 @@ void *printThreadId1(void *threadid) {
      int i = 0;
      if(pumpOn == true)
      {
-       runWaterPump(WATERPUMP);
+       runDefaultWaterPump(WATERPUMP);
      }
      else if(secondPumpOn == true)   
      {
-       runWaterPump(SECONDWATERPUMP);
+       runDefaultWaterPump(SECONDWATERPUMP);
      }
      else
      {
@@ -476,7 +520,18 @@ void *printThreadId(void *threadid) {
    return NULL;
 }
 
-void runWaterPump(int waterPumpPin)
+void runWaterPump(int waterPumpPin, int wateringTime)
+{
+  int wTime = wateringTime * 1000;
+  digitalWrite(waterPumpPin, LOW);   // turn the LED on (HIGH is the voltage level)
+  delay(wTime);                       // wait for a second
+  digitalWrite(waterPumpPin, HIGH);    // turn the LED off by making the voltage LOW
+  
+  pumpOn = false;
+  secondPumpOn = false;
+}
+
+void runDefaultWaterPump(int waterPumpPin)
 {
   digitalWrite(waterPumpPin, LOW);   // turn the LED on (HIGH is the voltage level)
   delay(10000);                       // wait for a second
@@ -563,11 +618,11 @@ void showInOLED()
 BLYNK_WRITE(V1)
 {
   int pinValue = param.asInt();
-  runWaterPump(WATERPUMP);
+  runWaterPump(WATERPUMP, wateringDuration[0]);
 }
 
 BLYNK_WRITE(V2)
 {
   int pinValue = param.asInt();
-  runWaterPump(SECONDWATERPUMP);
+  runWaterPump(SECONDWATERPUMP, wateringDuration[1]);
 }

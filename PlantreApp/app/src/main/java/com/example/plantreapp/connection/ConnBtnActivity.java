@@ -118,14 +118,17 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     String wateringMethod1 = "";
     int timer1 = 0;
 
-
+    boolean infoExists;
     //2nd recyler view in the list
     int minMoisture2 = 0;
     String wateringMethod2 = "";
     int timer2 = 0;
 
-    int waterTime1 = 0;
-    int waterTime2 = 0;
+    int wTime1;
+    int wTime2;
+
+    boolean wateringMethod1Exists;
+    boolean wateringMethod2Exists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +142,10 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         // init recycler view
         initView();
 
+        infoExists = false;
+        boolean wateringMethod1Exists = false;
+        boolean wateringMethod2Exists = false;
+
         firstSensorReceiving = false;
         secondSensorReceiving = false;
         //tv = (TextView) findViewById(R.id.testText);
@@ -150,7 +157,8 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
 
 
-
+        wTime1 = 10;
+        wTime2 = 10;
         // nav click handler
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -285,6 +293,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         {
 
             if(plant.getStage().equals(seed[i])) {
+                infoExists = true;
                 if (minMoisture[i] != 0f) {
                     wateringPath = "\nWatering Method: Moisture Rate";
                     pInfo = "Name: " + plant.getName() + "\nStage:" + plant.getStage() + wateringPath + "\nMin Moisture Rate:" + minMoisture[i]+ "\nWatering Duration:" + plant.getWater_running_time();
@@ -293,32 +302,43 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                         minMoisture1 = (int)minMoisture[i];
                         wateringMethod1 = "Moisture1";
                         //pInfo = pInfo + "Watering Duration:" + plant.getWater_running_time();
+                        wTime1 = plant.getWater_running_time();
+                        wateringMethod1Exists = true;
                     }
                     if(pos == 1)
                     {
                         minMoisture2 = plant.getMin_seed_moisture().intValue();
                         wateringMethod2 = "Moisture2";
+                        wTime1 = plant.getWater_running_time();
+                        wateringMethod2Exists = true;
                     }
 
                 }
                 if (minWaterTimer[i] != 0)
                 {
-                    wateringPath = "\n\nWatering Method: Timer";
-                    pInfo = "Name: " + plant.getName() + "\n\nStage:" + plant.getStage() + wateringPath + "\n\nWatering Hour:" + minWaterTimer[i]+ "\nWatering Duration:" + plant.getWater_running_time();
+                    wateringPath = "\nWatering Method: Timer";
+                    pInfo = "Name: " + plant.getName() + "\nStage:" + plant.getStage() + wateringPath + "\nWatering Hour:" + minWaterTimer[i]+ "\nWatering Duration:" + plant.getWater_running_time();
 
                     if(pos == 0)
                     {
                         timer1 = (int)minWaterTimer[i];
                         wateringMethod1 = "Timer1";
+                        wTime2 = plant.getWater_running_time();
+                        wateringMethod1Exists = true;
                     }
                     if(pos == 1)
                     {
                         timer2 = (int)minWaterTimer[i];
                         wateringMethod2 = "Timer2";
+                        wTime2 = plant.getWater_running_time();
+                        wateringMethod2Exists = true;
                     }
 
                 }
 
+            }
+            else {
+                infoExists = false;
             }
         }
 
@@ -481,10 +501,13 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                             secondPumpOn = false;
                         }
 
-                        if(justStarted)
+                        if(justStarted && infoExists)
                         {
                             int timeOrMoisture1 = 0;
                             int timeOrMoisture2 = 0;
+
+                            int sTest1 = wTime1;
+                            int sTest2 = wTime2;
                             if(wateringMethod1.equals("Moisture1"))
                             {
                                 timeOrMoisture1 = minMoisture1;
@@ -501,7 +524,16 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
                             {
                                 timeOrMoisture2 = timer2;
                             }
-                            String dString = wateringMethod1+","+ Integer.toString(timeOrMoisture1) + "\n" + wateringMethod2 + "," +Integer.toString(timeOrMoisture2);
+                            String dString = wateringMethod1+","+ Integer.toString(timeOrMoisture1) + "," +Integer.toString(sTest1 ) +"\n" + wateringMethod2 + "," +Integer.toString(timeOrMoisture2) +"," +Integer.toString(sTest2);
+                            if(!wateringMethod1Exists)
+                            {
+                                dString = "M1,0,20\n" + wateringMethod2 + "," +Integer.toString(timeOrMoisture2) +"," +Integer.toString(sTest2);
+                            }
+                            if(!wateringMethod2Exists)
+                            {
+                                dString = wateringMethod1+","+ Integer.toString(timeOrMoisture1) + "," +Integer.toString(sTest1 ) +"\nM2,0,20";
+                            }
+                            Log.e(TAG, dString);
                             buf1 = dString.getBytes();
                             packet = new DatagramPacket(buf1, buf1.length, address, port);
                             socket.send(packet);
