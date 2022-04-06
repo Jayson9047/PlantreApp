@@ -8,6 +8,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.plantreapp.connection.ConnBtnActivity;
 import com.example.plantreapp.db.AppDatabase;
 import com.example.plantreapp.login.LoginActivity;
 import com.example.plantreapp.onBoarding.OnBoardingActivity;
@@ -56,9 +58,21 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+
+                SharedPreferences settings = getSharedPreferences("prefs",0);
+                String secret_token = settings.getString("secret_token", "");
+                if (!secret_token.isEmpty()) // running for the first time
+                {
+                    Intent i = new Intent(MainActivity.this, ConnBtnActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+
             }
         }, SPLASH_TIME);
     }
