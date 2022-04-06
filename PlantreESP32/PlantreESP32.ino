@@ -559,7 +559,7 @@ void runWaterPump(int waterPumpPin, int wateringTime)
 void runDefaultWaterPump(int waterPumpPin)
 {
   digitalWrite(waterPumpPin, LOW);   // turn the LED on (HIGH is the voltage level)
-  delay(10000);                       // wait for a second
+  delay(30000);                       // wait for 30 seconds
   digitalWrite(waterPumpPin, HIGH);    // turn the LED off by making the voltage LOW
   
   pumpOn = false;
@@ -657,13 +657,13 @@ void showInOLED()
 BLYNK_WRITE(V1)
 {
   int pinValue = param.asInt();
-  runWaterPump(WATERPUMP, wateringDuration[0]);
+  runDefaultWaterPump(WATERPUMP);
 }
 
 BLYNK_WRITE(V2)
 {
   int pinValue = param.asInt();
-  runWaterPump(SECONDWATERPUMP, wateringDuration[1]);
+  runDefaultWaterPump(SECONDWATERPUMP);
 }
 
 BLYNK_WRITE(V3)
