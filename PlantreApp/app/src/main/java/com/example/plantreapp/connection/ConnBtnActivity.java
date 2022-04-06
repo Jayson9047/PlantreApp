@@ -112,6 +112,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
     private PlantRepository plantRepository;
     private String firstWaterPumpUrl;
     private String secondWaterPumpUrl;
+    private String lightUrl;
     private boolean lightOn;
 
     private Button lights;
@@ -158,6 +159,7 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         plantRepository = new PlantRepository(getApplicationContext());
         firstWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V1?value=1";
         secondWaterPumpUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/V2?value=1";
+        lightUrl = "http://blynk-cloud.com/ihbYhRnEL8H3lw84v8fyU-CPtH-BJs00/update/v3?value=1";
         lights = (Button) findViewById(R.id.myUVLight);
 
         wTime1 = 10;
@@ -224,8 +226,14 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
         lights.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                lightOn = true;
+                if (udpConnected)
+                {
+                    lightOn = true;
+                }
+                else
+                {
+                    turnOnLightViaCloud(lightUrl);
+                }
                 //lights.setText("Lights Off");
 
             }
@@ -667,6 +675,22 @@ public class ConnBtnActivity extends AppCompatActivity implements WaterInfoAdapt
 
 
     private void turnOnWaterPumpViaCloud(String url)
+    {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                //
+            }
+        });
+    }
+
+    private void turnOnLightViaCloud(String url)
     {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {

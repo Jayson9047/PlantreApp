@@ -665,3 +665,9 @@ BLYNK_WRITE(V2)
   int pinValue = param.asInt();
   runWaterPump(SECONDWATERPUMP, wateringDuration[1]);
 }
+
+BLYNK_WRITE(V3)
+{
+  int pinValue = param.asInt();
+  runUVLight();
+}

@@ -414,11 +414,11 @@ public class AddPlantActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name, scifiName, uri, description, stage;
+                String name, scifiName, uri, description, stage,time;
 
                 name = nameTxt.getText().toString();
-                String time = timmer.getText().toString();
-                int wTime = Integer.parseInt(time);
+                time = timmer.getText().toString();
+                int wTime = 0;
                 scifiName = scifiNameTxt.getText().toString();
                 try {
                     uri = imageUri.toString();
@@ -435,7 +435,7 @@ public class AddPlantActivity extends AppCompatActivity {
                     return;
                 }
                 try {
-
+                    wTime = Integer.parseInt(time);
                 } catch (Exception e) {
                     Toast.makeText(AddPlantActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                     return;
